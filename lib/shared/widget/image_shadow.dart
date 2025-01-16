@@ -1,15 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
 class ImageShadow extends StatelessWidget {
   const ImageShadow({
-    required this.image,
+    required this.pokemon,
     // required this.imgDefault,
     super.key,
   });
 
-  final String image;
+  final PokemonModel pokemon;
   // final String imgDefault;
 
   @override
@@ -20,7 +21,7 @@ class ImageShadow extends StatelessWidget {
       offset: const Offset(5, -3),
       sigma: 3,
       child: CachedNetworkImage(
-        imageUrl: image,
+        imageUrl: pokemon.imageurl ?? '',
         imageBuilder: (context, imageProvider) => Container(
           // width: double.infinity,
           // width: 100,

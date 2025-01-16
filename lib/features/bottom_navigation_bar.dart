@@ -15,6 +15,7 @@ class BottomNavigationScreen extends StatelessWidget {
 
     return Scaffold(
       // backgroundColor: Colors.transparent,
+
       body: navigationShell,
       bottomNavigationBar: Builder(builder: (context) {
         return ClipRRect(
@@ -23,6 +24,7 @@ class BottomNavigationScreen extends StatelessWidget {
           //   topLeft: Radius.circular(30),
           // ),
           child: NavigationBar(
+            height: 70,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             elevation: 3,
             destinations: [

@@ -17,13 +17,14 @@ class MyText extends StatelessWidget {
     required String text,
     bool isFontBold = false,
     bool isBorderText = false,
+    Color? color,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
       style: appTextTheme.labelSmall!.copyWith(
-        color: appColors.onBackground,
+        color: color ?? appColors.onBackground,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
@@ -111,13 +112,14 @@ class MyText extends StatelessWidget {
     required String text,
     bool isFontBold = false,
     bool isBorderText = false,
+    Color? color,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
       style: appTextTheme.labelLarge!.copyWith(
-        color: appColors.onBackground,
+        color: color ?? appColors.onBackground,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
@@ -156,9 +158,6 @@ class MyText extends StatelessWidget {
     return Text(
       text,
       style: style,
-      // style: appTextTheme.labelSmall?.copyWith(
-      //   fontWeight: FontWeight.bold,
-      // ),
     );
   }
 }

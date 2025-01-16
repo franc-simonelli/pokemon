@@ -6,3 +6,4 @@ const kGen4 = 'gen_4';
 const kGen5 = 'gen_5';
 const kGen6 = 'gen_6';
 const kGen7 = 'gen_7';
+const kChronology = 'chronology';

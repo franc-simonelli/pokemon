@@ -16,9 +16,9 @@ class InfoSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: Colors.black45,
-      ),
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.black54,
+          border: Border.all(color: Colors.white)),
       child: Padding(
         padding: const EdgeInsets.only(
           left: 5,
@@ -32,7 +32,10 @@ class InfoSection extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               element,
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

@@ -5,9 +5,11 @@ class ImageType extends StatelessWidget {
   const ImageType({
     super.key,
     required this.typeImg,
+    this.width,
   });
 
   final String typeImg;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {

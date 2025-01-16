@@ -56,7 +56,9 @@ mixin _$LoadingHandler {
   }) =>
       throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $LoadingHandlerCopyWith<LoadingHandler> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -80,6 +82,8 @@ class _$LoadingHandlerCopyWithImpl<$Res, $Val extends LoadingHandler>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -113,6 +117,8 @@ class __$$FullScreenImplCopyWithImpl<$Res>
       _$FullScreenImpl _value, $Res Function(_$FullScreenImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -152,7 +158,9 @@ class _$FullScreenImpl implements _FullScreen {
   @override
   int get hashCode => Object.hash(runtimeType, idLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$FullScreenImplCopyWith<_$FullScreenImpl> get copyWith =>
@@ -226,8 +234,11 @@ abstract class _FullScreen implements LoadingHandler {
 
   @override
   String get idLoading;
+
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$FullScreenImplCopyWith<_$FullScreenImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -251,6 +262,8 @@ class __$$CustomImplCopyWithImpl<$Res>
       _$CustomImpl _value, $Res Function(_$CustomImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -290,7 +303,9 @@ class _$CustomImpl implements _Custom {
   @override
   int get hashCode => Object.hash(runtimeType, idLoading);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CustomImplCopyWith<_$CustomImpl> get copyWith =>
@@ -364,8 +379,11 @@ abstract class _Custom implements LoadingHandler {
 
   @override
   String get idLoading;
+
+  /// Create a copy of LoadingHandler
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CustomImplCopyWith<_$CustomImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,0 +1,3 @@
+class ApplicationRepository {
+  ApplicationRepository();
+}

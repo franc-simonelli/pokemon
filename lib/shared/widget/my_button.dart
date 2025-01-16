@@ -12,13 +12,16 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final appTextTheme = Theme.of(context).textTheme;
+    final appTextTheme = Theme.of(context).textTheme;
 
     return ElevatedButton(
       onPressed: onPress,
       child: Text(
         text,
-        // style: appTextTheme.labelSmall,
+        style: appTextTheme.labelMedium?.copyWith(
+          color: Colors.deepPurple.shade100,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

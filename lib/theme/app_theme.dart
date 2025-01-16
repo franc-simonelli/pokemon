@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 class AppTheme {
   ThemeData toThemeData() {
     return ThemeData(
-      colorSchemeSeed: Colors.deepPurple,
+      colorSchemeSeed: Colors.red,
       brightness: Brightness.dark,
       useMaterial3: true,
     ).copyWith(
@@ -29,13 +29,13 @@ class AppTheme {
                 fontSize: 16.sp,
               ),
               labelLarge: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 18.sp,
               ),
               labelMedium: TextStyle(
-                fontSize: 12.sp,
+                fontSize: 16.sp,
               ),
               labelSmall: TextStyle(
-                fontSize: 10.sp,
+                fontSize: 14.sp,
               ),
             ),
       ),
@@ -47,6 +47,7 @@ class AppTheme {
           ),
         ),
       ),
+
       navigationBarTheme: const NavigationBarThemeData(
         elevation: 0,
       ),

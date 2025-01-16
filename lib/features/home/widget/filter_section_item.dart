@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pokedex/pokemon/widget/info_type_section.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
@@ -23,8 +21,18 @@ class FilterSectionItem extends StatelessWidget {
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          color: Colors.grey.shade800,
+          color: Colors.grey.shade900,
           borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade800,
+              offset: const Offset(-1, -1),
+            ),
+            const BoxShadow(
+              color: Colors.black,
+              offset: Offset(3, 3),
+            )
+          ],
         ),
         child: typesSelect != null && typesSelect!.isNotEmpty
             ? Padding(

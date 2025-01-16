@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/features/home/widget/filter_section_item.dart';
-import 'package:pokedex/type/all_type_widget.dart';
-import 'package:pokedex/type/cubit/type_cubit.dart';
+import 'package:pokedex/filters/widgets/all_type_widget.dart';
+import 'package:pokedex/filters/cubit/filters_cubit.dart';
 
 class FilterSection extends StatelessWidget {
   const FilterSection({
@@ -16,7 +16,7 @@ class FilterSection extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: BlocBuilder<TypeCubit, TypeState>(
+            child: BlocBuilder<FiltersCubit, FiltersState>(
               builder: (context, state) {
                 return FilterSectionItem(
                   text: 'Tipo',
