@@ -47,76 +47,65 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       value: _pokemonDetailCubit,
       child: BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
         builder: (context, state) {
-          if (state.pokemonStatus == Status.loading) {
-            return Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          if (state.pokemonStatus == Status.success) {
-            return Scaffold(
-              backgroundColor: Colors.grey.shade900,
-              appBar: _buildAppBar(context, state.pokemonSelected),
-              body: GestureDetector(
-                // onPanEnd: (details) {
-                //   print('onPanEnd');
-                // },
-                // onHorizontalDragEnd: (details) {
-                //   print('onHorizontalDragEnd');
-                // },
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: -30,
-                      right: -80,
-                      child: SizedBox(
-                        width: 400,
-                        child: Opacity(
-                          opacity: 0.1,
-                          child: Image.asset(
-                            mappingType(
-                              state.pokemonSelected.typeofpokemon?[0],
-                            ),
-                            fit: BoxFit.cover,
-                            // fit: BoxFit.contain,
-                          ),
+          // if (state.pokemonStatus == Status.loading) {
+          //   return Center(
+          //     child: CircularProgressIndicator.adaptive(),
+          //   );
+          // }
+          // if (state.pokemonStatus == Status.success) {
+          return Scaffold(
+            backgroundColor: Colors.grey.shade900,
+            appBar: _buildAppBar(context, state.pokemonSelected),
+            body: Stack(
+              children: [
+                Positioned(
+                  top: -30,
+                  right: -80,
+                  child: SizedBox(
+                    width: 400,
+                    child: Opacity(
+                      opacity: 0.1,
+                      child: Image.asset(
+                        mappingType(
+                          state.pokemonSelected.typeofpokemon?[0],
                         ),
+                        fit: BoxFit.cover,
+                        // fit: BoxFit.contain,
                       ),
                     ),
-                    SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: HeaderSection(),
-                            ),
-                            SizedBox(height: 20),
-                            _buildDescription(context, state.pokemonSelected),
-                            SizedBox(height: 30),
-                            _buildStats(state.pokemonSelected),
-                            SizedBox(height: 50),
-                            _buildInfo(state.pokemonSelected),
-                            SizedBox(height: 50),
-                            _buildDebolezze(state.pokemonSelected),
-                            SizedBox(height: 50),
-                            EvolutionLinePage(
-                              pokemon: state.pokemonSelected,
-                              key: UniqueKey(),
-                            ),
-                            SizedBox(height: 50),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            );
-          }
-          return Container();
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: HeaderSection(),
+                        ),
+                        SizedBox(height: 20),
+                        _buildDescription(context, state.pokemonSelected),
+                        SizedBox(height: 30),
+                        _buildStats(state.pokemonSelected),
+                        SizedBox(height: 50),
+                        _buildInfo(state.pokemonSelected),
+                        SizedBox(height: 50),
+                        _buildDebolezze(state.pokemonSelected),
+                        SizedBox(height: 50),
+                        EvolutionLinePage(
+                          pokemon: state.pokemonSelected,
+                          key: UniqueKey(),
+                        ),
+                        SizedBox(height: 50),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
         },
       ),
     );

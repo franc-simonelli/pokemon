@@ -67,21 +67,95 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
 
   initialize() async {
     if (gen == EnumGen.none) return;
-    emit(state.copyWith(pokemonStatus: Status.loading));
-    logicDetailPokemon();
+
+    final pokemonsList = await pokemonRepository.fetchPokemonGen(gen);
+    final indexInitial = pokemonsList.indexWhere(
+      (element) {
+        if (element.id == pokemonSelected.id) {
+          print(element);
+        }
+        return element.id == pokemonSelected.id;
+      },
+    );
+
+    if (pokemonSelected.statsUpdate == true) {
+      emit(state.copyWith(
+        pokemonList: pokemonsList,
+        initialIndex: indexInitial,
+      ));
+      return;
+    }
+
+    final pokemonById =
+        await pokemonRepository.fetchPokemonById(pokemonSelected.id ?? '');
+    if (pokemonById.statsUpdate == true) {
+      emit(state.copyWith(
+        pokemonList: pokemonsList,
+        initialIndex: indexInitial,
+        pokemonSelected: pokemonById,
+      ));
+    } else {
+      emit(state.copyWith(
+        pokemonList: pokemonsList,
+        initialIndex: indexInitial,
+      ));
+
+      await Future.delayed(Duration(milliseconds: 3000));
+      final pokemonUpdate = await updateStats(pokemonById);
+      final updateList = await updateLocalList(pokemonUpdate);
+      emit(state.copyWith(
+        pokemonList: updateList,
+        initialIndex: indexInitial,
+        pokemonSelected: pokemonUpdate,
+      ));
+    }
+  }
+
+  changePokemon(PokemonModel pokemon) async {
+    if (pokemon.id == state.pokemonSelected.id) return;
+    emit(state.copyWith(
+      pokemonSelected: pokemon,
+    ));
+    if (pokemon.statsUpdate != true) {
+      await Future.delayed(Duration(milliseconds: 3000));
+      final pokemonUpdate = await updateStats(pokemon);
+      final updateList = await updateLocalList(pokemonUpdate);
+      emit(state.copyWith(
+        pokemonList: updateList,
+        pokemonSelected: pokemonUpdate,
+      ));
+    }
+  }
+
+  updateLocalList(PokemonModel pokemon) async {
+    final currentList = state.pokemonList.toList();
+    final index = currentList.indexWhere(
+      (element) {
+        return element.id == pokemon.id;
+      },
+    );
+    currentList.removeAt(index);
+    currentList.insert(index, pokemon);
+    return currentList;
+  }
+
+  updateStats(PokemonModel pokemon) async {
+    final pokemonUpdate = await fetchStatsPokemon(
+      int.parse(pokemon.id!.replaceAll("#", "")),
+      pokemon,
+    );
+    await savePokemonUpdate(pokemonUpdate);
+    return pokemonUpdate;
   }
 
   logicDetailPokemon() async {
     late PokemonModel pokemonUpdate;
-    // prendo il pokemon aggiornato nello sharedP.
     final pokemon = await pokemonRepository
         .fetchPokemonById(state.pokemonSelected.id ?? '');
 
-    // controllo se le stats sono gia state aggiornate
     final isUpdate = await checkStatsUpdate(pokemon);
 
     if (!isUpdate) {
-      // se ancora non è stato aggiornato lo aggiorno
       pokemonUpdate = await fetchStatsPokemon(
         int.parse(pokemon.id!.replaceAll("#", "")),
         pokemon,
@@ -91,7 +165,6 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       pokemonUpdate = pokemon;
     }
 
-    // prendo la lista aggiornata e l'index del pokemon scelto
     final result = await pokemonRepository.fetchPokemonGen(gen);
     final indexInitial = result.indexWhere(
       (element) {
@@ -150,7 +223,6 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     pokemons.removeAt(index);
     pokemons.insert(index, pokemonUpdate);
     final String encodedata = PokemonModel.encode(pokemons);
-    print(encodedata);
     await sharedPrefsService.removeValue(key);
     await sharedPrefsService.setValue<String>(key, encodedata);
   }
@@ -160,11 +232,5 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     final pokemon =
         pokemons.firstWhere((element) => element.id == checkPokemon.id);
     return pokemon.statsUpdate ?? false;
-  }
-
-  changePokemon(PokemonModel pokemon) {
-    if (pokemon.id == state.pokemonSelected.id) return;
-    emit(state.copyWith(pokemonSelected: pokemon));
-    logicDetailPokemon();
   }
 }

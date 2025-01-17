@@ -19,19 +19,18 @@ class HeaderSection extends StatefulWidget {
 
 class _HeaderSectionState extends State<HeaderSection> {
   late PageController controller;
-  int _currentIndex = 0;
+  // int _currentIndex = 0;
 
   @override
   void initState() {
-    initalize();
+    // initalize();
     super.initState();
   }
 
   initalize() {
     final initialIndex = context.read<PokemonDetailCubit>().state.initialIndex;
-    _currentIndex = initialIndex ?? 0;
+    // _currentIndex = initialIndex ?? 0;
     controller = PageController(initialPage: initialIndex ?? 0);
-    // currentiIndex = initialIndex ?? 0;
   }
 
   void _goToNextPage(List<PokemonModel> pokemonList) {
@@ -66,80 +65,107 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget build(BuildContext context) {
     return BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
       builder: (context, state) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildInfo(context, state.pokemonSelected),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 10,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: state.pokemonList.isNotEmpty && !state.firstPokemon
-                        ? GestureDetector(
-                            onTap: () {
-                              _goToPreviousPage(state.pokemonList);
-                            },
-                            child: Icon(Icons.arrow_back_ios_new_rounded),
-                          )
-                        : Container(),
-                  ),
-                  Expanded(
-                    flex: 7,
-                    child: SizedBox(
-                      height: 180,
-                      child: PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        controller: controller,
-                        itemCount: state.pokemonList.length,
-                        itemBuilder: (context, index) {
-                          final item = state.pokemonList[index];
-                          return AnimatedOpacity(
-                            duration: Duration(milliseconds: 300),
-                            opacity: _currentIndex == index ? 1 : 0,
-                            child: ImagePokemon(
-                              pokemon: item,
-                            ),
-                          );
-                        },
-                        onPageChanged: (value) {
-                          controller.animateToPage(
-                            value,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                          context
-                              .read<PokemonDetailCubit>()
-                              .changePokemon(state.pokemonList[value]);
-                          setState(() {
-                            _currentIndex = value;
-                          });
-                        },
-                      ),
+        if (state.initialIndex != null) {
+          controller = PageController(initialPage: state.initialIndex ?? 0);
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfo(context, state.pokemonSelected),
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              _buildSectionImage(state, context),
+            ],
+          );
+        } else {
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _buildInfo(context, state.pokemonSelected),
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              Expanded(
+                flex: 10,
+                child: Center(
+                  child: CircularProgressIndicator.adaptive(),
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+
+  Widget _buildSectionImage(PokemonDetailState state, BuildContext context) {
+    return Expanded(
+      flex: 10,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 1,
+            child: state.pokemonList.isNotEmpty && !state.firstPokemon
+                ? GestureDetector(
+                    onTap: () {
+                      _goToPreviousPage(state.pokemonList);
+                    },
+                    child: Icon(Icons.arrow_back_ios_new_rounded),
+                  )
+                : Container(),
+          ),
+          Expanded(
+            flex: 7,
+            child: SizedBox(
+              height: 180,
+              child: PageView.builder(
+                scrollDirection: Axis.horizontal,
+                controller: controller,
+                itemCount: state.pokemonList.length,
+                itemBuilder: (context, index) {
+                  final item = state.pokemonList[index];
+                  return AnimatedOpacity(
+                    duration: Duration(milliseconds: 300),
+                    opacity: 1,
+                    // opacity: index ? 1 : 0,
+                    child: ImagePokemon(
+                      pokemon: item,
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: state.pokemonList.isNotEmpty && !state.lastPokemon
-                        ? GestureDetector(
-                            onTap: () {
-                              _goToNextPage(state.pokemonList);
-                            },
-                            child: Icon(Icons.arrow_forward_ios_rounded))
-                        : Container(),
-                  ),
-                ],
+                  );
+                },
+                onPageChanged: (value) {
+                  controller.animateToPage(
+                    value,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                  context
+                      .read<PokemonDetailCubit>()
+                      .changePokemon(state.pokemonList[value]);
+                  // setState(() {
+                  //   _currentIndex = value;
+                  // });
+                },
               ),
             ),
-          ],
-        );
-      },
+          ),
+          Expanded(
+            flex: 1,
+            child: state.pokemonList.isNotEmpty && !state.lastPokemon
+                ? GestureDetector(
+                    onTap: () {
+                      _goToNextPage(state.pokemonList);
+                    },
+                    child: Icon(Icons.arrow_forward_ios_rounded))
+                : Container(),
+          ),
+        ],
+      ),
     );
   }
 

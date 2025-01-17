@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/shared/utils/mapping_type.dart';
+import 'package:pokedex/shared/widget/image_shadow.dart';
 
 class ImagePokemon extends StatelessWidget {
   const ImagePokemon({
@@ -37,9 +38,8 @@ class ImagePokemon extends StatelessWidget {
           child: AnimatedOpacity(
             opacity: opacity,
             duration: Duration(milliseconds: 1000),
-            child: Image.network(
-              pokemon.imageurl ?? '',
-              width: widthImage,
+            child: ImageShadow(
+              pokemon: pokemon,
             ),
           ),
         ),
