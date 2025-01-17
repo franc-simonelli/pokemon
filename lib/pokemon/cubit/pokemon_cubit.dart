@@ -37,12 +37,14 @@ class PokemonCubit extends Cubit<PokemonState> {
 
   Future<void> _onFiltersChanged(FiltersState filtersState) async {
     emit(state.copyWith(currentPage: 1));
-    if (filtersState.typesSelect.isEmpty) {
+    if (filtersState.paramsFilter != null && filtersState.paramsFilter != '') {}
+    if (filtersState.typesSelect.isEmpty && filtersState.paramsFilter == null) {
       init();
     } else {
       final result = await pokemonRepository.filtersPokemons(
-        filtersState.typesSelect,
-        state.currentPage,
+        typesfilter: filtersState.typesSelect,
+        paramsFilter: filtersState.paramsFilter,
+        page: state.currentPage,
       );
       emit(state.copyWith(
         listPokemons: result,
@@ -72,8 +74,9 @@ class PokemonCubit extends Cubit<PokemonState> {
         list = await pokemonRepository.fetchPokemons(state.currentPage + 1);
       } else {
         list = await pokemonRepository.filtersPokemons(
-          filtersCubit.state.typesSelect,
-          state.currentPage + 1,
+          typesfilter: filtersCubit.state.typesSelect,
+          paramsFilter: filtersCubit.state.paramsFilter,
+          page: state.currentPage + 1,
         );
       }
 

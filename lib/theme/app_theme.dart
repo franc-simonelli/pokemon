@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 class AppTheme {
   ThemeData toThemeData() {
     return ThemeData(
-      colorSchemeSeed: Colors.red,
+      colorSchemeSeed: Colors.blue,
       brightness: Brightness.dark,
       useMaterial3: true,
     ).copyWith(

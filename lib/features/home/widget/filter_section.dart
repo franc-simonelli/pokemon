@@ -38,9 +38,12 @@ class FilterSection extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          const Expanded(
+          Expanded(
             child: FilterSectionItem(
               text: 'Ordine',
+              onPress: () {
+                // context.read<FiltersCubit>().setParamsFilter('Spc.Atk');
+              },
             ),
           ),
         ],

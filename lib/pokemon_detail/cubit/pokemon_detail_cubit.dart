@@ -83,12 +83,12 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     if (!isUpdate) {
       // se ancora non è stato aggiornato lo aggiorno
       pokemonUpdate = await fetchStatsPokemon(
-        int.parse(state.pokemonSelected.id!.replaceAll("#", "")),
-        state.pokemonSelected,
+        int.parse(pokemon.id!.replaceAll("#", "")),
+        pokemon,
       );
       await savePokemonUpdate(pokemonUpdate);
     } else {
-      pokemonUpdate = state.pokemonSelected;
+      pokemonUpdate = pokemon;
     }
 
     // prendo la lista aggiornata e l'index del pokemon scelto

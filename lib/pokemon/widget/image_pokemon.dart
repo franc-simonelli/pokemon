@@ -5,29 +5,42 @@ import 'package:pokedex/shared/utils/mapping_type.dart';
 class ImagePokemon extends StatelessWidget {
   const ImagePokemon({
     required this.pokemon,
+    this.widthType = 180,
+    this.widthImage = 150,
+    this.showType = false,
+    this.opacity = 1,
     super.key,
   });
 
   final PokemonModel pokemon;
+  final double widthType;
+  final double widthImage;
+  final bool showType;
+  final double opacity;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Center(
-          child: Opacity(
-            opacity: 0.3,
-            child: Image.asset(
-              mappingType(pokemon.typeofpokemon?[0]),
-              fit: BoxFit.contain,
-              width: 190,
+        if (showType)
+          Center(
+            child: Opacity(
+              opacity: 0.3,
+              child: Image.asset(
+                mappingType(pokemon.typeofpokemon?[0]),
+                fit: BoxFit.contain,
+                width: widthType,
+              ),
             ),
           ),
-        ),
         Center(
-          child: Image.network(
-            pokemon.imageurl ?? '',
-            width: 150,
+          child: AnimatedOpacity(
+            opacity: opacity,
+            duration: Duration(milliseconds: 1000),
+            child: Image.network(
+              pokemon.imageurl ?? '',
+              width: widthImage,
+            ),
           ),
         ),
       ],

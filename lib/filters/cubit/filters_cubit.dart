@@ -38,4 +38,8 @@ class FiltersCubit extends Cubit<FiltersState> {
   setFilterText(String text) {
     emit(state.copyWith(textFilter: text));
   }
+
+  setParamsFilter(String params) {
+    emit(state.copyWith(paramsFilter: params));
+  }
 }

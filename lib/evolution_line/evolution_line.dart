@@ -77,16 +77,20 @@ class _EvolutionLinePageState extends State<EvolutionLinePage> {
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: ExpansionTile(
+                    initiallyExpanded: true,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.zero,
+                    ),
+                    collapsedBackgroundColor: Colors.grey.shade900,
                     backgroundColor: Colors.grey.shade900,
-                    title: const Text("Evolution line"),
+                    title: MyText.labelMedium(
+                        context: context, text: 'Evolution line'),
                     leading: Icon(Icons.info),
-                    trailing: const Icon(Icons.expand_more),
+                    iconColor: Colors.white,
                     children: [...widgets],
                   ),
                 );
-                // return Column(
-                //   children: [...widgets],
-                // );
               }
               return Container();
             },

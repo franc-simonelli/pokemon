@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
@@ -5,12 +6,14 @@ class CardInfoDetail extends StatelessWidget {
   const CardInfoDetail({
     required this.info,
     required this.value,
+    required this.icon,
     this.isLoading = false,
     super.key,
   });
 
   final String info;
   final String value;
+  final IconData icon;
   final bool isLoading;
 
   @override
@@ -21,7 +24,7 @@ class CardInfoDetail extends StatelessWidget {
         Row(
           children: [
             Icon(
-              Icons.access_alarm,
+              icon,
               size: 18,
             ),
             SizedBox(width: 10),
@@ -37,7 +40,7 @@ class CardInfoDetail extends StatelessWidget {
           ),
           child: Center(
             child: isLoading
-                ? CircularProgressIndicator.adaptive()
+                ? CupertinoActivityIndicator()
                 : MyText.labelMedium(
                     context: context,
                     text: value,
