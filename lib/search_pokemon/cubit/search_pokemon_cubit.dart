@@ -70,12 +70,14 @@ class SearchPokemonCubit extends Cubit<SearchPokemonState> {
 
     if (chronologyJson == '') {
       chronology.add(pokemon);
+      chronology.reversed.toList();
       saveChronology(chronology);
     } else {
       chronology = PokemonModel.decode(chronologyJson);
       bool isExist = chronology.any((element) => element.id == pokemon.id);
       if (!isExist) {
         chronology.add(pokemon);
+        chronology.reversed.toList();
         saveChronology(chronology);
       }
     }

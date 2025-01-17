@@ -19,6 +19,7 @@ mixin _$FiltersState {
   List<String> get allTypes => throw _privateConstructorUsedError;
   List<String> get typesSelect => throw _privateConstructorUsedError;
   String? get textFilter => throw _privateConstructorUsedError;
+  String? get paramsFilter => throw _privateConstructorUsedError;
 
   /// Create a copy of FiltersState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +35,10 @@ abstract class $FiltersStateCopyWith<$Res> {
       _$FiltersStateCopyWithImpl<$Res, FiltersState>;
   @useResult
   $Res call(
-      {List<String> allTypes, List<String> typesSelect, String? textFilter});
+      {List<String> allTypes,
+      List<String> typesSelect,
+      String? textFilter,
+      String? paramsFilter});
 }
 
 /// @nodoc
@@ -55,6 +59,7 @@ class _$FiltersStateCopyWithImpl<$Res, $Val extends FiltersState>
     Object? allTypes = null,
     Object? typesSelect = null,
     Object? textFilter = freezed,
+    Object? paramsFilter = freezed,
   }) {
     return _then(_value.copyWith(
       allTypes: null == allTypes
@@ -69,6 +74,10 @@ class _$FiltersStateCopyWithImpl<$Res, $Val extends FiltersState>
           ? _value.textFilter
           : textFilter // ignore: cast_nullable_to_non_nullable
               as String?,
+      paramsFilter: freezed == paramsFilter
+          ? _value.paramsFilter
+          : paramsFilter // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -82,7 +91,10 @@ abstract class _$$FiltersStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {List<String> allTypes, List<String> typesSelect, String? textFilter});
+      {List<String> allTypes,
+      List<String> typesSelect,
+      String? textFilter,
+      String? paramsFilter});
 }
 
 /// @nodoc
@@ -101,6 +113,7 @@ class __$$FiltersStateImplCopyWithImpl<$Res>
     Object? allTypes = null,
     Object? typesSelect = null,
     Object? textFilter = freezed,
+    Object? paramsFilter = freezed,
   }) {
     return _then(_$FiltersStateImpl(
       allTypes: null == allTypes
@@ -115,6 +128,10 @@ class __$$FiltersStateImplCopyWithImpl<$Res>
           ? _value.textFilter
           : textFilter // ignore: cast_nullable_to_non_nullable
               as String?,
+      paramsFilter: freezed == paramsFilter
+          ? _value.paramsFilter
+          : paramsFilter // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -125,7 +142,8 @@ class _$FiltersStateImpl implements _FiltersState {
   const _$FiltersStateImpl(
       {required final List<String> allTypes,
       required final List<String> typesSelect,
-      this.textFilter})
+      this.textFilter,
+      this.paramsFilter})
       : _allTypes = allTypes,
         _typesSelect = typesSelect;
 
@@ -147,10 +165,12 @@ class _$FiltersStateImpl implements _FiltersState {
 
   @override
   final String? textFilter;
+  @override
+  final String? paramsFilter;
 
   @override
   String toString() {
-    return 'FiltersState(allTypes: $allTypes, typesSelect: $typesSelect, textFilter: $textFilter)';
+    return 'FiltersState(allTypes: $allTypes, typesSelect: $typesSelect, textFilter: $textFilter, paramsFilter: $paramsFilter)';
   }
 
   @override
@@ -162,7 +182,9 @@ class _$FiltersStateImpl implements _FiltersState {
             const DeepCollectionEquality()
                 .equals(other._typesSelect, _typesSelect) &&
             (identical(other.textFilter, textFilter) ||
-                other.textFilter == textFilter));
+                other.textFilter == textFilter) &&
+            (identical(other.paramsFilter, paramsFilter) ||
+                other.paramsFilter == paramsFilter));
   }
 
   @override
@@ -170,7 +192,8 @@ class _$FiltersStateImpl implements _FiltersState {
       runtimeType,
       const DeepCollectionEquality().hash(_allTypes),
       const DeepCollectionEquality().hash(_typesSelect),
-      textFilter);
+      textFilter,
+      paramsFilter);
 
   /// Create a copy of FiltersState
   /// with the given fields replaced by the non-null parameter values.
@@ -185,7 +208,8 @@ abstract class _FiltersState implements FiltersState {
   const factory _FiltersState(
       {required final List<String> allTypes,
       required final List<String> typesSelect,
-      final String? textFilter}) = _$FiltersStateImpl;
+      final String? textFilter,
+      final String? paramsFilter}) = _$FiltersStateImpl;
 
   @override
   List<String> get allTypes;
@@ -193,6 +217,8 @@ abstract class _FiltersState implements FiltersState {
   List<String> get typesSelect;
   @override
   String? get textFilter;
+  @override
+  String? get paramsFilter;
 
   /// Create a copy of FiltersState
   /// with the given fields replaced by the non-null parameter values.

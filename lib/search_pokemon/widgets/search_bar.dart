@@ -90,9 +90,7 @@ class _SearchBarPokemonState extends State<SearchBarPokemon> {
                 child: _searchController.text != ''
                     ? GestureDetector(
                         onTap: () {
-                          setState(() {
-                            _searchController = TextEditingController();
-                          });
+                          _searchController.text = '';
                           searchText();
                         },
                         child: const Icon(

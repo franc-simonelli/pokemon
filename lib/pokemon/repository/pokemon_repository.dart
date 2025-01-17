@@ -33,10 +33,17 @@ class PokemonRepository {
     return listPagination;
   }
 
-  Future<List<PokemonModel>> filtersPokemons(
-      List<String> filters, int page) async {
+  Future<List<PokemonModel>> filtersPokemons({
+    List<String>? typesfilter,
+    String? paramsFilter,
+    required int page,
+  }) async {
     final list = await generateAllDataPokemons();
-    final pokemonsFilter = fetchFiltersPokemons(filters, list);
+    final pokemonsFilter = fetchFiltersPokemons(
+      pokemons: list,
+      typesFilter: typesfilter ?? [],
+      paramsFilter: paramsFilter,
+    );
     final listPagination = await dataPagination(pokemonsFilter, page);
     return listPagination;
   }
@@ -57,10 +64,10 @@ class PokemonRepository {
         return [];
       case EnumGen.all:
         return await generateAllDataPokemons();
-      case EnumGen.one:
-        return await getPokemonByGen(gen.getKey);
+      // case EnumGen.one:
+      //   return await getPokemonByGen(gen.getKey);
       default:
-        return [];
+        return await getPokemonByGen(gen.getKey);
     }
   }
 

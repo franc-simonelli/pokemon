@@ -10,6 +10,7 @@ import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/card_info_detail.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
+import 'package:pokedex/shared/utils/mapping_type.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class PokemonDetailPage extends StatefulWidget {
@@ -55,57 +56,63 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
             return Scaffold(
               backgroundColor: Colors.grey.shade900,
               appBar: _buildAppBar(context, state.pokemonSelected),
-              body: Stack(
-                children: [
-                  // Positioned(
-                  //   top: -30,
-                  //   right: -80,
-                  //   child: SizedBox(
-                  //     width: 400,
-                  //     child: Opacity(
-                  //       opacity: 0.1,
-                  //       child: Image.asset(
-                  //         mappingType(
-                  //           widget.pokemon.typeofpokemon?[0],
-                  //         ),
-                  //         fit: BoxFit.cover,
-                  //         // fit: BoxFit.contain,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: HeaderSection(),
+              body: GestureDetector(
+                // onPanEnd: (details) {
+                //   print('onPanEnd');
+                // },
+                // onHorizontalDragEnd: (details) {
+                //   print('onHorizontalDragEnd');
+                // },
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: -30,
+                      right: -80,
+                      child: SizedBox(
+                        width: 400,
+                        child: Opacity(
+                          opacity: 0.1,
+                          child: Image.asset(
+                            mappingType(
+                              state.pokemonSelected.typeofpokemon?[0],
+                            ),
+                            fit: BoxFit.cover,
+                            // fit: BoxFit.contain,
                           ),
-                          SizedBox(height: 20),
-                          _buildDescription(context, state.pokemonSelected),
-                          SizedBox(height: 30),
-                          _buildStats(state.pokemonSelected),
-                          SizedBox(height: 50),
-                          _buildInfo(state.pokemonSelected),
-                          SizedBox(height: 50),
-                          // MyText.labelLarge(
-                          //     context: context, text: 'Debolezze'),
-                          // SizedBox(height: 10),
-                          // _buildDebolezze(state.pokemonSelected),
-                          // SizedBox(height: 50),
-                          EvolutionLinePage(
-                            pokemon: state.pokemonSelected,
-                            key: UniqueKey(),
-                          ),
-                          SizedBox(height: 50),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                    SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: HeaderSection(),
+                            ),
+                            SizedBox(height: 20),
+                            _buildDescription(context, state.pokemonSelected),
+                            SizedBox(height: 30),
+                            _buildStats(state.pokemonSelected),
+                            SizedBox(height: 50),
+                            _buildInfo(state.pokemonSelected),
+                            SizedBox(height: 50),
+                            _buildDebolezze(state.pokemonSelected),
+                            SizedBox(height: 50),
+                            EvolutionLinePage(
+                              pokemon: state.pokemonSelected,
+                              key: UniqueKey(),
+                            ),
+                            SizedBox(height: 50),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -116,24 +123,31 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   }
 
   Widget _buildDebolezze(PokemonModel pokemon) {
-    return SizedBox(
-      height: 35,
-      child: ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: pokemon.weaknesses?.length,
-        itemBuilder: (context, index) {
-          final item = pokemon.weaknesses?[index];
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: InfoSection(
-              pokemon: pokemon,
-              element: item ?? '',
-            ),
-          );
-        },
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MyText.labelLarge(context: context, text: 'Weaknesses'),
+        SizedBox(height: 10),
+        SizedBox(
+          height: 35,
+          child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: pokemon.weaknesses?.length,
+            itemBuilder: (context, index) {
+              final item = pokemon.weaknesses?[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: InfoSection(
+                  pokemon: pokemon,
+                  element: item ?? '',
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -186,6 +200,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
           children: [
             Expanded(
               child: CardInfoDetail(
+                icon: Icons.line_weight_outlined,
                 isLoading: pokemon.statsUpdate == null,
                 info: 'Weight',
                 value: pokemon.statsUpdate != null && pokemon.statsUpdate!
@@ -196,6 +211,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
             SizedBox(width: 20),
             Expanded(
               child: CardInfoDetail(
+                icon: Icons.height_outlined,
                 isLoading: pokemon.statsUpdate == null,
                 info: 'Height',
                 value: pokemon.statsUpdate != null && pokemon.statsUpdate!
@@ -210,6 +226,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
           children: [
             Expanded(
               child: CardInfoDetail(
+                icon: Icons.category_outlined,
                 info: 'Category',
                 value: pokemon.category ?? '',
               ),
@@ -217,6 +234,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
             SizedBox(width: 20),
             Expanded(
               child: CardInfoDetail(
+                icon: Icons.auto_awesome_outlined,
                 info: 'Ability',
                 value: pokemon.abilities!.first,
               ),

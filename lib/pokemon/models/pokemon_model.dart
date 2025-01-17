@@ -187,16 +187,16 @@ class PokemonModel {
 
   String get heightMap {
     if (height == null) return '';
-    return convertToMeters(int.parse(height!)).toStringAsFixed(1);
+    return "${convert(int.parse(height!)).toStringAsFixed(1)} m";
   }
 
   String get weightMap {
     if (weight == null) return '';
-    return '$weight Kg';
+    return "${convert(int.parse(weight!)).toStringAsFixed(1)} kg";
   }
 
-  double convertToMeters(int height) {
-    return height / 10;
+  double convert(int value) {
+    return value / 10;
   }
 
   PokemonModel copyWith({

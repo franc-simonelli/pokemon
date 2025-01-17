@@ -19,6 +19,7 @@ class HeaderSection extends StatefulWidget {
 
 class _HeaderSectionState extends State<HeaderSection> {
   late PageController controller;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -28,7 +29,9 @@ class _HeaderSectionState extends State<HeaderSection> {
 
   initalize() {
     final initialIndex = context.read<PokemonDetailCubit>().state.initialIndex;
+    _currentIndex = initialIndex ?? 0;
     controller = PageController(initialPage: initialIndex ?? 0);
+    // currentiIndex = initialIndex ?? 0;
   }
 
   void _goToNextPage(List<PokemonModel> pokemonList) {
@@ -67,6 +70,11 @@ class _HeaderSectionState extends State<HeaderSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _buildInfo(context, state.pokemonSelected),
+            Expanded(
+              flex: 1,
+              child: Container(),
+            ),
             Expanded(
               flex: 10,
               child: Row(
@@ -86,14 +94,19 @@ class _HeaderSectionState extends State<HeaderSection> {
                     flex: 7,
                     child: SizedBox(
                       height: 180,
-                      width: 180,
                       child: PageView.builder(
                         scrollDirection: Axis.horizontal,
                         controller: controller,
                         itemCount: state.pokemonList.length,
                         itemBuilder: (context, index) {
                           final item = state.pokemonList[index];
-                          return ImagePokemon(pokemon: item);
+                          return AnimatedOpacity(
+                            duration: Duration(milliseconds: 300),
+                            opacity: _currentIndex == index ? 1 : 0,
+                            child: ImagePokemon(
+                              pokemon: item,
+                            ),
+                          );
                         },
                         onPageChanged: (value) {
                           controller.animateToPage(
@@ -104,6 +117,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                           context
                               .read<PokemonDetailCubit>()
                               .changePokemon(state.pokemonList[value]);
+                          setState(() {
+                            _currentIndex = value;
+                          });
                         },
                       ),
                     ),
@@ -121,11 +137,6 @@ class _HeaderSectionState extends State<HeaderSection> {
                 ],
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-            _buildInfo(context, state.pokemonSelected),
           ],
         );
       },

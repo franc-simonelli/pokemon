@@ -45,21 +45,33 @@ Future<List<PokemonModel>> dataPagination(
   return paginationList;
 }
 
-List<PokemonModel> fetchFiltersPokemons(
-  List<String> filters,
-  List<PokemonModel> list,
-) {
-  List<PokemonModel> filterList = [];
-  for (var item in list) {
-    filters.forEach((filter) {
-      if (item.typeofpokemon!.contains(filter)) {
-        if (!filterList.contains(item)) {
-          filterList.add(item);
+List<PokemonModel> fetchFiltersPokemons({
+  required List<String> typesFilter,
+  required List<PokemonModel> pokemons,
+  String? paramsFilter,
+}) {
+  List<PokemonModel> pokemonsFiltered = [];
+
+  if (typesFilter.isEmpty) {
+    pokemonsFiltered = pokemons;
+  } else {
+    for (var item in pokemons) {
+      typesFilter.forEach((filter) {
+        if (item.typeofpokemon!.contains(filter)) {
+          if (!pokemonsFiltered.contains(item)) {
+            pokemonsFiltered.add(item);
+          }
         }
-      }
-    });
+      });
+    }
   }
-  return filterList;
+
+  if (paramsFilter != null && paramsFilter != '') {
+    pokemonsFiltered
+        .sort((a, b) => b.specialAttack!.compareTo(a.specialAttack!));
+  }
+
+  return pokemonsFiltered;
 }
 
 fetchFiltersPokemonsByText(
