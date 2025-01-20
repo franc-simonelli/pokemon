@@ -100,7 +100,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
         initialIndex: indexInitial,
       ));
 
-      await Future.delayed(Duration(milliseconds: 3000));
+      // await Future.delayed(Duration(milliseconds: 3000));
       final pokemonUpdate = await updateStats(pokemonById);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
@@ -117,7 +117,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       pokemonSelected: pokemon,
     ));
     if (pokemon.statsUpdate != true) {
-      await Future.delayed(Duration(milliseconds: 3000));
+      // await Future.delayed(Duration(milliseconds: 3000));
       final pokemonUpdate = await updateStats(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(

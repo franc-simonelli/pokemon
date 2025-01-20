@@ -78,14 +78,19 @@ class CardItem extends StatelessWidget {
           ),
           // image pokemon
           Positioned(
-            top: 65,
-            right: 5,
+            top: 50,
+            right: 0,
             child: SizedBox(
-              height: 70,
-              width: 70,
+              height: 90,
+              width: 90,
+              // child: Image.network(
+              //   'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif',
+              // ),
+
               child: ImageShadow(
                 pokemon: pokemon,
-                // image: pokemon.imageurl ?? '',
+                imageGif:
+                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
               ),
             ),
           ),

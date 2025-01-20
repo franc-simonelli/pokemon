@@ -33,6 +33,12 @@ class _EvolutionLinePageState extends State<EvolutionLinePage> {
   }
 
   @override
+  void didChangeDependencies() {
+    print('didChangeDependencies');
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     _evolutionLineCubit.close();
     super.dispose();

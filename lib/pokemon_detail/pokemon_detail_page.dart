@@ -11,6 +11,7 @@ import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/card_info_detail.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
 import 'package:pokedex/shared/utils/mapping_type.dart';
+import 'package:pokedex/shared/widget/my_button.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class PokemonDetailPage extends StatefulWidget {
@@ -47,12 +48,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       value: _pokemonDetailCubit,
       child: BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
         builder: (context, state) {
-          // if (state.pokemonStatus == Status.loading) {
-          //   return Center(
-          //     child: CircularProgressIndicator.adaptive(),
-          //   );
-          // }
-          // if (state.pokemonStatus == Status.success) {
           return Scaffold(
             backgroundColor: Colors.grey.shade900,
             appBar: _buildAppBar(context, state.pokemonSelected),
@@ -85,20 +80,25 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: HeaderSection(),
                         ),
+                        // SizedBox(height: 0),
+                        // _buildInfo(state.pokemonSelected),
                         SizedBox(height: 20),
                         _buildDescription(context, state.pokemonSelected),
+                        SizedBox(height: 20),
+                        _buildDebolezze(state.pokemonSelected),
                         SizedBox(height: 30),
                         _buildStats(state.pokemonSelected),
-                        SizedBox(height: 50),
-                        _buildInfo(state.pokemonSelected),
-                        SizedBox(height: 50),
-                        _buildDebolezze(state.pokemonSelected),
-                        SizedBox(height: 50),
-                        EvolutionLinePage(
-                          pokemon: state.pokemonSelected,
-                          key: UniqueKey(),
-                        ),
-                        SizedBox(height: 50),
+                        SizedBox(height: 30),
+                        _buildOtherButton(),
+                        SizedBox(height: 30),
+                        // _buildInfo(state.pokemonSelected),
+                        // SizedBox(height: 50),
+                        // _buildDebolezze(state.pokemonSelected),
+                        // SizedBox(height: 50),
+                        // EvolutionLinePage(
+                        //   pokemon: state.pokemonSelected,
+                        // ),
+                        // SizedBox(height: 50),
                       ],
                     ),
                   ),
@@ -111,6 +111,26 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
     );
   }
 
+  Row _buildOtherButton() {
+    return Row(
+      children: [
+        Expanded(
+          child: MyButton(
+            text: 'Evo line',
+            onPress: () {},
+          ),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: MyButton(
+            text: 'Moveset',
+            onPress: () {},
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _buildDebolezze(PokemonModel pokemon) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,7 +140,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
         SizedBox(
           height: 35,
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemCount: pokemon.weaknesses?.length,
@@ -169,9 +188,20 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   AppBar _buildAppBar(BuildContext context, PokemonModel pokemon) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      title: MyText.labelLarge(
-        context: context,
-        text: pokemon.name ?? '',
+      title: Row(
+        children: [
+          MyText.labelLarge(
+            context: context,
+            text: pokemon.name ?? '',
+          ),
+          // SizedBox(
+          //   width: 60,
+          //   height: 60,
+          //   child: Image.network(
+          //     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif',
+          //   ),
+          // ),
+        ],
       ),
       actions: [
         Padding(
@@ -183,55 +213,142 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   }
 
   Widget _buildInfo(PokemonModel pokemon) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: CardInfoDetail(
-                icon: Icons.line_weight_outlined,
-                isLoading: pokemon.statsUpdate == null,
-                info: 'Weight',
-                value: pokemon.statsUpdate != null && pokemon.statsUpdate!
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.line_weight_outlined,
+                size: 18,
+              ),
+              SizedBox(width: 5),
+              MyText.labelMedium(
+                context: context,
+                text: pokemon.statsUpdate != null && pokemon.statsUpdate!
                     ? pokemon.weightMap
                     : '0',
               ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: CardInfoDetail(
-                icon: Icons.height_outlined,
-                isLoading: pokemon.statsUpdate == null,
-                info: 'Height',
-                value: pokemon.statsUpdate != null && pokemon.statsUpdate!
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.height_outlined,
+                size: 18,
+              ),
+              SizedBox(width: 5),
+              MyText.labelMedium(
+                context: context,
+                text: pokemon.statsUpdate != null && pokemon.statsUpdate!
                     ? pokemon.heightMap
                     : '0',
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: CardInfoDetail(
-                icon: Icons.category_outlined,
-                info: 'Category',
-                value: pokemon.category ?? '',
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.male_outlined,
+                size: 18,
               ),
-            ),
-            SizedBox(width: 20),
-            Expanded(
-              child: CardInfoDetail(
-                icon: Icons.auto_awesome_outlined,
-                info: 'Ability',
-                value: pokemon.abilities!.first,
+              SizedBox(width: 5),
+              MyText.labelMedium(
+                context: context,
+                text: pokemon.malePercentage ?? '',
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.female_outlined,
+                size: 18,
+              ),
+              SizedBox(width: 5),
+              MyText.labelMedium(
+                context: context,
+                text: pokemon.femalePercentage ?? '',
+              ),
+            ],
+          ),
         ),
       ],
     );
+    // return Column(
+    //   children: [
+    //     Row(
+    //       children: [
+    //         Expanded(
+    //           child: CardInfoDetail(
+    //             icon: Icons.line_weight_outlined,
+    //             isLoading: pokemon.statsUpdate == null,
+    //             info: 'Weight',
+    //             value: pokemon.statsUpdate != null && pokemon.statsUpdate!
+    //                 ? pokemon.weightMap
+    //                 : '0',
+    //           ),
+    //         ),
+    //         Expanded(
+    //           child: CardInfoDetail(
+    //             icon: Icons.height_outlined,
+    //             isLoading: pokemon.statsUpdate == null,
+    //             info: 'Height',
+    //             value: pokemon.statsUpdate != null && pokemon.statsUpdate!
+    //                 ? pokemon.heightMap
+    //                 : '0',
+    //           ),
+    //         ),
+    //         Expanded(
+    //           child: CardInfoDetail(
+    //             icon: Icons.male_outlined,
+    //             isLoading: pokemon.statsUpdate == null,
+    //             info: 'Male',
+    //             value: pokemon.malePercentage ?? '',
+    //           ),
+    //         ),
+    //         Expanded(
+    //           child: CardInfoDetail(
+    //             icon: Icons.female_outlined,
+    //             isLoading: pokemon.statsUpdate == null,
+    //             info: 'Male',
+    //             value: pokemon.femalePercentage ?? '',
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    // SizedBox(height: 20),
+    // Row(
+    //   children: [
+    //     Expanded(
+    //       child: CardInfoDetail(
+    //         icon: Icons.category_outlined,
+    //         info: 'Category',
+    //         value: pokemon.category ?? '',
+    //       ),
+    //     ),
+    //     SizedBox(width: 20),
+    //     Expanded(
+    //       child: CardInfoDetail(
+    //         icon: Icons.auto_awesome_outlined,
+    //         info: 'Ability',
+    //         value: pokemon.abilities!.first,
+    //       ),
+    //     ),
+    //   ],
+    // ),
+    //   ],
+    // );
   }
 
   Widget _buildStats(PokemonModel pokemon) {

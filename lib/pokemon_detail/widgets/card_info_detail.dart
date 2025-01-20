@@ -19,7 +19,7 @@ class CardInfoDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Row(
           children: [
@@ -33,20 +33,18 @@ class CardInfoDetail extends StatelessWidget {
         ),
         SizedBox(height: 5),
         Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Center(
-            child: isLoading
-                ? CupertinoActivityIndicator()
-                : MyText.labelMedium(
-                    context: context,
-                    text: value,
-                    isFontBold: true,
-                  ),
-          ),
+          // padding: EdgeInsets.symmetric(horizontal: 10),
+          // decoration: BoxDecoration(
+          //   border: Border.all(color: Colors.grey),
+          //   borderRadius: BorderRadius.circular(16),
+          // ),
+          child: isLoading
+              ? CupertinoActivityIndicator()
+              : MyText.labelMedium(
+                  context: context,
+                  text: value,
+                  isFontBold: true,
+                ),
         )
       ],
     );

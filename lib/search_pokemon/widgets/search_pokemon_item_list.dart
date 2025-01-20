@@ -24,8 +24,13 @@ class SearchPokemonItemList extends StatelessWidget {
           child: SizedBox(
             width: 40,
             height: 40,
+            // child: Image.network(
+            //   'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif',
+            // ),
             child: ImageShadow(
               pokemon: pokemon,
+              imageGif:
+                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
             ),
           ),
         ),

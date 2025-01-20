@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/features/home/widget/filter_section.dart';
@@ -52,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (state.statusPagination == Status.loading &&
                         state.listPokemons.isEmpty) {
                       return const Center(
-                        child: CircularProgressIndicator.adaptive(),
+                        child: CupertinoActivityIndicator(),
                       );
                     }
                     if (state.statusPagination == Status.error) {
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return const Column(
                         children: [
                           SizedBox(height: 30),
-                          CircularProgressIndicator.adaptive(),
+                          CupertinoActivityIndicator(),
                           SizedBox(height: 30),
                         ],
                       );
@@ -91,12 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSliverAppBar() {
     return SliverAppBar(
       backgroundColor: Colors.grey.shade900,
-      pinned: false,
+      pinned: true,
       floating: true,
-      expandedHeight: 80.0,
+      expandedHeight: 120.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
           child: Align(
             alignment: Alignment.center,
             child: _buildSearchBar(),
@@ -104,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
+        preferredSize: Size.fromHeight(70.0),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: FilterSection(),

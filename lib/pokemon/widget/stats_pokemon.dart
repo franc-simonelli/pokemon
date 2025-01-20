@@ -43,14 +43,13 @@ class StatsPokemon extends StatelessWidget {
               final widthStats = int.parse(value) * widthExpanded / widthMax;
               return Stack(
                 children: [
-                  AnimatedContainer(
-                    duration: Duration(milliseconds: 200),
+                  Container(
                     width: widthExpanded,
                     color: color.withOpacity(0.3),
                     height: 10,
                   ),
                   AnimatedContainer(
-                    duration: Duration(milliseconds: 200),
+                    duration: Duration(milliseconds: 300),
                     width: widthStats,
                     color: color,
                     height: 10,

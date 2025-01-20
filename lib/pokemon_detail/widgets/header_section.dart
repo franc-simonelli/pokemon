@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon/utils/dialog_view_image.dart';
 import 'package:pokedex/pokemon/widget/image_pokemon.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
-import 'package:pokedex/shared/utils/mapping_type.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class HeaderSection extends StatefulWidget {
@@ -93,7 +94,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               Expanded(
                 flex: 10,
                 child: Center(
-                  child: CircularProgressIndicator.adaptive(),
+                  child: CupertinoActivityIndicator(),
                 ),
               ),
             ],
@@ -120,7 +121,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                 : Container(),
           ),
           Expanded(
-            flex: 7,
+            flex: 6,
             child: SizedBox(
               height: 180,
               child: PageView.builder(
@@ -132,9 +133,20 @@ class _HeaderSectionState extends State<HeaderSection> {
                   return AnimatedOpacity(
                     duration: Duration(milliseconds: 300),
                     opacity: 1,
-                    // opacity: index ? 1 : 0,
-                    child: ImagePokemon(
-                      pokemon: item,
+                    child: GestureDetector(
+                      onDoubleTap: () async {
+                        await showDialogImageView(context, item);
+                      },
+                      child: ImagePokemon(
+                        pokemon: item,
+                      ),
+                      // child: SizedBox(
+                      //   child: Image.network(
+                      //     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${index + 1}.gif',
+                      //     filterQuality: FilterQuality.high,
+                      //     fit: BoxFit.contain,
+                      //   ),
+                      // ),
                     ),
                   );
                 },
@@ -196,27 +208,86 @@ class _HeaderSectionState extends State<HeaderSection> {
               Icon(
                 Icons.male_outlined,
                 color: Colors.blue,
+                size: 18,
               ),
               SizedBox(width: 5),
               MyText.labelMedium(
                 context: context,
                 text: pokemon.malePercentage ?? '',
-                isFontBold: true,
+                isFontBold: false,
               )
             ],
           ),
+          SizedBox(height: 5),
           Row(
             children: [
               Icon(
                 Icons.female_outlined,
                 color: Colors.pink,
+                size: 18,
               ),
               SizedBox(width: 5),
               MyText.labelMedium(
                 context: context,
                 text: pokemon.femalePercentage ?? '',
-                isFontBold: true,
+                isFontBold: false,
               )
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(
+                Icons.line_weight_outlined,
+                color: Colors.brown,
+                size: 18,
+              ),
+              if (pokemon.statsUpdate == null) ...[
+                SizedBox(width: 15),
+                SizedBox(
+                  width: 5,
+                  height: 5,
+                  child: CupertinoActivityIndicator(),
+                ),
+              ],
+              if (pokemon.statsUpdate != null) ...[
+                SizedBox(width: 5),
+                MyText.labelMedium(
+                  context: context,
+                  text: pokemon.statsUpdate != null && pokemon.statsUpdate!
+                      ? pokemon.weightMap
+                      : '0',
+                  isFontBold: false,
+                )
+              ]
+            ],
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Icon(
+                Icons.height_outlined,
+                color: Colors.orange,
+                size: 18,
+              ),
+              if (pokemon.statsUpdate == null) ...[
+                SizedBox(width: 15),
+                SizedBox(
+                  width: 5,
+                  height: 5,
+                  child: CupertinoActivityIndicator(),
+                ),
+              ],
+              if (pokemon.statsUpdate != null) ...[
+                SizedBox(width: 5),
+                MyText.labelMedium(
+                  context: context,
+                  text: pokemon.statsUpdate != null && pokemon.statsUpdate!
+                      ? pokemon.heightMap
+                      : '0',
+                  isFontBold: false,
+                )
+              ]
             ],
           )
         ],

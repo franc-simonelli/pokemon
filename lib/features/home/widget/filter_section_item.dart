@@ -19,7 +19,7 @@ class FilterSectionItem extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        height: 50,
+        height: 40,
         decoration: BoxDecoration(
           color: Colors.grey.shade900,
           borderRadius: BorderRadius.circular(30),

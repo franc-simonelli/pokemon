@@ -122,14 +122,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       builder: (context, orientation, deviceType) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme().toThemeData().copyWith(
-              // pageTransitionsTheme: const PageTransitionsTheme(
-              //   builders: {
-              //     TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-              //     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-              //   },
-              // ),
-              ),
+          theme: AppTheme().toThemeData(),
           // theme: ThemeData.light(),
           routerConfig: goRouter,
           builder: (context, child) {

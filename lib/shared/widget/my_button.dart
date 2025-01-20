@@ -15,11 +15,16 @@ class MyButton extends StatelessWidget {
     final appTextTheme = Theme.of(context).textTheme;
 
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black,
+        shadowColor: Colors.grey.shade700,
+        elevation: 3,
+      ),
       onPressed: onPress,
       child: Text(
         text,
         style: appTextTheme.labelMedium?.copyWith(
-          color: Colors.deepPurple.shade100,
+          color: Colors.grey.shade100,
           fontWeight: FontWeight.bold,
         ),
       ),

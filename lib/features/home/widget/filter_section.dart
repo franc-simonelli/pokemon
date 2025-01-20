@@ -37,7 +37,7 @@ class FilterSection extends StatelessWidget {
               },
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 40),
           Expanded(
             child: FilterSectionItem(
               text: 'Ordine',
