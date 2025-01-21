@@ -16,31 +16,28 @@ class ViewImagesPokemon extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.5,
-      child: Container(
-        // color: Colors.green,
-        child: Stack(
-          children: [
-            ImagePokemon(
-              pokemon: pokemon,
-              widthImage: 250,
-              widthType: 300,
-              showType: true,
-            ),
-            Positioned(
-              top: 10,
-              right: 10,
-              child: GestureDetector(
-                onTap: () {
-                  context.pop();
-                },
-                child: Icon(
-                  Icons.close,
-                  size: 28,
-                ),
+      child: Stack(
+        children: [
+          ImagePokemon(
+            pokemon: pokemon,
+            widthImage: 250,
+            widthType: 300,
+            showType: true,
+          ),
+          Positioned(
+            top: 10,
+            right: 10,
+            child: GestureDetector(
+              onTap: () {
+                context.pop();
+              },
+              child: Icon(
+                Icons.close,
+                size: 28,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

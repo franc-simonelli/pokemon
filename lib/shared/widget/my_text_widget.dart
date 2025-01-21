@@ -24,7 +24,7 @@ class MyText extends StatelessWidget {
     return MyText(
       text: text,
       style: appTextTheme.labelSmall!.copyWith(
-        color: color ?? appColors.onBackground,
+        color: color ?? appColors.onSurface,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
@@ -63,13 +63,14 @@ class MyText extends StatelessWidget {
     required String text,
     bool isFontBold = false,
     bool isBorderText = false,
+    Color? color,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
       style: appTextTheme.labelMedium!.copyWith(
-        color: appColors.onBackground,
+        color: color ?? appColors.onSurface,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
@@ -113,40 +114,45 @@ class MyText extends StatelessWidget {
     bool isFontBold = false,
     bool isBorderText = false,
     Color? color,
+    Color? colorBorder,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
       style: appTextTheme.labelLarge!.copyWith(
-        color: color ?? appColors.onBackground,
+        color: color ?? appColors.onSurface,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
                 BoxShadow(
-                    // bottomLeft
-                    offset: const Offset(-1.0, -1.0),
-                    blurRadius: 3,
-                    spreadRadius: 3,
-                    color: Colors.black),
+                  // bottomLeft
+                  offset: const Offset(-1.0, -1.0),
+                  blurRadius: 3,
+                  spreadRadius: 3,
+                  color: colorBorder ?? Colors.black,
+                ),
                 BoxShadow(
-                    // bottomRight
-                    offset: const Offset(1.5, -1.5),
-                    blurRadius: 3,
-                    spreadRadius: 5,
-                    color: Colors.black),
+                  // bottomRight
+                  offset: const Offset(1.5, -1.5),
+                  blurRadius: 3,
+                  spreadRadius: 5,
+                  color: colorBorder ?? Colors.black,
+                ),
                 BoxShadow(
-                    // topRight
-                    offset: const Offset(1.5, 1.5),
-                    blurRadius: 3,
-                    spreadRadius: 5,
-                    color: Colors.black),
+                  // topRight
+                  offset: const Offset(1.5, 1.5),
+                  blurRadius: 3,
+                  spreadRadius: 5,
+                  color: colorBorder ?? Colors.black,
+                ),
                 BoxShadow(
-                    // topLeft
-                    offset: const Offset(-1.5, 1.5),
-                    blurRadius: 0,
-                    spreadRadius: 5,
-                    color: Colors.black)
+                  // topLeft
+                  offset: const Offset(-1.5, 1.5),
+                  blurRadius: 0,
+                  spreadRadius: 5,
+                  color: colorBorder ?? Colors.black,
+                )
               ]
             : [],
       ),

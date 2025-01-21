@@ -1,42 +1,43 @@
 import 'package:pokedex/constants/image_constants.dart';
 
-mappingType(type) {
-  switch (type) {
-    case 'Grass':
+mappingType(String type) {
+  final typeLower = type.toLowerCase();
+  switch (typeLower) {
+    case 'grass':
       return kTypeGrass;
-    case 'Poison':
+    case 'poison':
       return kTypePoison;
-    case 'Fire':
+    case 'fire':
       return kTypeFire;
-    case 'Flying':
+    case 'flying':
       return kTypeFlying;
-    case 'Water':
+    case 'water':
       return kTypeWater;
-    case 'Bug':
+    case 'bug':
       return kTypeBug;
-    case 'Normal':
+    case 'normal':
       return kTypeNormal;
-    case 'Electric':
+    case 'electric':
       return kTypeEletric;
-    case 'Ground':
+    case 'ground':
       return kTypeGround;
-    case 'Fairy':
+    case 'fairy':
       return kTypefairy;
-    case 'Fighting':
+    case 'fighting':
       return kTypeFighting;
-    case 'Psychic':
+    case 'psychic':
       return kTypePsychic;
-    case 'Rock':
+    case 'rock':
       return kTypeRock;
-    case 'Ghost':
+    case 'ghost':
       return kTypeGhost;
-    case 'Ice':
+    case 'ice':
       return kTypeIce;
-    case 'Dragon':
+    case 'dragon':
       return kTypeDragon;
-    case 'Dark':
+    case 'dark':
       return kTypeDark;
-    case 'Steel':
+    case 'steel':
       return kTypeSteel;
   }
 }

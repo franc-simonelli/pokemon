@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ContentModalWidget extends StatelessWidget {
-  ContentModalWidget({super.key, this.title, required this.child});
+  const ContentModalWidget({super.key, this.title, required this.child});
 
   final Widget? title;
   final Widget child;

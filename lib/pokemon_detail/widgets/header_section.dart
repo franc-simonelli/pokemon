@@ -7,6 +7,7 @@ import 'package:pokedex/pokemon/utils/dialog_view_image.dart';
 import 'package:pokedex/pokemon/widget/image_pokemon.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
+import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class HeaderSection extends StatefulWidget {
@@ -112,11 +113,11 @@ class _HeaderSectionState extends State<HeaderSection> {
           Expanded(
             flex: 1,
             child: state.pokemonList.isNotEmpty && !state.firstPokemon
-                ? GestureDetector(
-                    onTap: () {
+                ? IconButton(
+                    onPressed: () {
                       _goToPreviousPage(state.pokemonList);
                     },
-                    child: Icon(Icons.arrow_back_ios_new_rounded),
+                    icon: Icon(Icons.arrow_back_ios_new_rounded),
                   )
                 : Container(),
           ),
@@ -169,11 +170,12 @@ class _HeaderSectionState extends State<HeaderSection> {
           Expanded(
             flex: 1,
             child: state.pokemonList.isNotEmpty && !state.lastPokemon
-                ? GestureDetector(
-                    onTap: () {
+                ? IconButton(
+                    onPressed: () {
                       _goToNextPage(state.pokemonList);
                     },
-                    child: Icon(Icons.arrow_forward_ios_rounded))
+                    icon: Icon(Icons.arrow_forward_ios_rounded),
+                  )
                 : Container(),
           ),
         ],
@@ -183,7 +185,7 @@ class _HeaderSectionState extends State<HeaderSection> {
 
   Widget _buildInfo(BuildContext context, PokemonModel pokemon) {
     return Expanded(
-      flex: 5,
+      flex: 6,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -197,101 +199,102 @@ class _HeaderSectionState extends State<HeaderSection> {
             (index, element) => Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: InfoSection(
-                pokemon: pokemon,
                 element: element,
               ),
             ),
           ),
           SizedBox(height: 10),
-          Row(
-            children: [
-              Icon(
-                Icons.male_outlined,
-                color: Colors.blue,
-                size: 18,
-              ),
-              SizedBox(width: 5),
-              MyText.labelMedium(
-                context: context,
-                text: pokemon.malePercentage ?? '',
-                isFontBold: false,
-              )
-            ],
+          _buildInfoItem(
+            context: context,
+            icon: Icon(
+              Icons.catching_pokemon,
+              color: mappingColors(pokemon.typeofpokemon![0]),
+              size: 18,
+            ),
+            statUpdate: true,
+            value: pokemon.category ?? '',
+          ),
+          SizedBox(height: 16),
+          _buildInfoItem(
+            context: context,
+            icon: Icon(
+              Icons.male_outlined,
+              color: Colors.blue,
+              size: 18,
+            ),
+            statUpdate: true,
+            value: pokemon.malePercentage ?? '',
           ),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(
-                Icons.female_outlined,
-                color: Colors.pink,
-                size: 18,
-              ),
-              SizedBox(width: 5),
-              MyText.labelMedium(
-                context: context,
-                text: pokemon.femalePercentage ?? '',
-                isFontBold: false,
-              )
-            ],
+          _buildInfoItem(
+            context: context,
+            icon: Icon(
+              Icons.female_outlined,
+              color: Colors.pink,
+              size: 18,
+            ),
+            statUpdate: true,
+            value: pokemon.femalePercentage ?? '',
           ),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(
-                Icons.line_weight_outlined,
-                color: Colors.brown,
-                size: 18,
-              ),
-              if (pokemon.statsUpdate == null) ...[
-                SizedBox(width: 15),
-                SizedBox(
-                  width: 5,
-                  height: 5,
-                  child: CupertinoActivityIndicator(),
-                ),
-              ],
-              if (pokemon.statsUpdate != null) ...[
-                SizedBox(width: 5),
-                MyText.labelMedium(
-                  context: context,
-                  text: pokemon.statsUpdate != null && pokemon.statsUpdate!
-                      ? pokemon.weightMap
-                      : '0',
-                  isFontBold: false,
-                )
-              ]
-            ],
+          _buildInfoItem(
+            context: context,
+            icon: Icon(
+              Icons.scale_outlined,
+              color: Colors.brown,
+              size: 18,
+            ),
+            statUpdate: pokemon.statsUpdate ?? false,
+            value: pokemon.statsUpdate != null ? pokemon.weightMap : '',
           ),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Icon(
-                Icons.height_outlined,
-                color: Colors.orange,
-                size: 18,
-              ),
-              if (pokemon.statsUpdate == null) ...[
-                SizedBox(width: 15),
-                SizedBox(
-                  width: 5,
-                  height: 5,
-                  child: CupertinoActivityIndicator(),
-                ),
-              ],
-              if (pokemon.statsUpdate != null) ...[
-                SizedBox(width: 5),
-                MyText.labelMedium(
-                  context: context,
-                  text: pokemon.statsUpdate != null && pokemon.statsUpdate!
-                      ? pokemon.heightMap
-                      : '0',
-                  isFontBold: false,
-                )
-              ]
-            ],
-          )
+          _buildInfoItem(
+            context: context,
+            icon: Icon(
+              Icons.straight_outlined,
+              color: Colors.orange,
+              size: 18,
+            ),
+            statUpdate: pokemon.statsUpdate ?? false,
+            value: pokemon.statsUpdate != null ? pokemon.heightMap : '',
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildInfoItem({
+    required BuildContext context,
+    required Icon icon,
+    required String value,
+    bool? statUpdate = false,
+  }) {
+    return Row(
+      children: [
+        icon,
+        if (statUpdate == false) ...[
+          SizedBox(width: 15),
+          SizedBox(
+            width: 5,
+            height: 5,
+            child: CupertinoActivityIndicator(),
+          ),
+        ],
+        if (statUpdate!) ...[
+          SizedBox(width: 5),
+          MyText.labelMedium(
+            context: context,
+            text: value,
+            isFontBold: false,
+          )
+        ]
+        // SizedBox(width: 5),
+        // MyText.labelMedium(
+        //   context: context,
+        //   text: value,
+        //   isFontBold: false,
+        // )
+      ],
     );
   }
 }

@@ -1,12 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/constants/image_constants.dart';
-import 'package:pokedex/constants/shared_preferences_constants.dart';
-import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_button.dart';

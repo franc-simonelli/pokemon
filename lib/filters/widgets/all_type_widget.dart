@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/shared/widget/content_modal_widget.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';

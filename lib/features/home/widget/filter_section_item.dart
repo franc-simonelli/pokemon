@@ -30,7 +30,7 @@ class FilterSectionItem extends StatelessWidget {
             ),
             const BoxShadow(
               color: Colors.black,
-              offset: Offset(3, 3),
+              offset: Offset(2, 2),
             )
           ],
         ),

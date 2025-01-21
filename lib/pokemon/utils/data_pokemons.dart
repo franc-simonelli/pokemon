@@ -1,7 +1,6 @@
 import 'package:pokedex/constants/shared_preferences_constants.dart';
 import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 
 Future<List<PokemonModel>> generateAllDataPokemons() async {
   final gen1 = await sharedPrefsService.getValue<String>(kGen1);
@@ -56,13 +55,13 @@ List<PokemonModel> fetchFiltersPokemons({
     pokemonsFiltered = pokemons;
   } else {
     for (var item in pokemons) {
-      typesFilter.forEach((filter) {
+      for (var filter in typesFilter) {
         if (item.typeofpokemon!.contains(filter)) {
           if (!pokemonsFiltered.contains(item)) {
             pokemonsFiltered.add(item);
           }
         }
-      });
+      }
     }
   }
 

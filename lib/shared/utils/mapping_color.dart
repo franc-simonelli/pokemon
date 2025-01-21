@@ -1,43 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/theme/app_colors.dart';
 
-mappingColors(type) {
-  switch (type) {
-    case 'Grass':
+mappingColors(String type) {
+  final typeLowerCase = type.toLowerCase();
+  switch (typeLowerCase) {
+    case 'grass':
       return AppColors.lightGreen;
-    case 'Poison':
+    case 'poison':
       return AppColors.lightPurple;
-    case 'Fire':
+    case 'fire':
       return AppColors.red;
-    case 'Flying':
+    case 'flying':
       return AppColors.lightBlue;
-    case 'Water':
+    case 'water':
       return AppColors.blue;
-    case 'Bug':
+    case 'bug':
       return AppColors.bug;
-    case 'Normal':
+    case 'normal':
       return AppColors.beige;
-    case 'Electric':
+    case 'electric':
       return AppColors.yellow;
-    case 'Ground':
+    case 'ground':
       return AppColors.darkBrown;
-    case 'Fairy':
+    case 'fairy':
       return AppColors.pink;
-    case 'Fighting':
+    case 'fighting':
       return AppColors.orange;
-    case 'Psychic':
+    case 'psychic':
       return AppColors.lightPink;
-    case 'Rock':
+    case 'rock':
       return const Color(0xFFb8a038);
-    case 'Ghost':
+    case 'ghost':
       return AppColors.violet;
-    case 'Ice':
+    case 'ice':
       return AppColors.indigo;
-    case 'Dragon':
+    case 'dragon':
       return Colors.blue.shade900;
-    case 'Dark':
+    case 'dark':
       return Colors.black87;
-    case 'Steel':
-      return AppColors.grey;
+    case 'steel':
+      return Colors.grey;
   }
 }

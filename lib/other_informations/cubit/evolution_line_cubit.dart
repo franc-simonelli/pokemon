@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';

@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/application/repositories/application_repository.dart';
+import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/route/go_router_config.dart';
@@ -29,6 +28,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late ApplicationRepository applicationRepository;
   late PokemonRepository pokemonRepository;
   late FiltersRepository filtersRepository;
+  late MovesetRepository movesetRepository;
   Timer? _inactivityTimer;
 
   @override
@@ -38,6 +38,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     applicationRepository = ApplicationRepository();
     pokemonRepository = PokemonRepository();
     filtersRepository = FiltersRepository();
+    movesetRepository = MovesetRepository();
     filtersCubit = FiltersCubit(
       filtersRepository: filtersRepository,
     );
@@ -93,6 +94,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         ),
         RepositoryProvider<FiltersRepository>.value(
           value: filtersRepository,
+        ),
+        RepositoryProvider<MovesetRepository>.value(
+          value: movesetRepository,
         ),
       ],
       child: child ?? Container(),

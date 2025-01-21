@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/info_type_section.dart';
 
 class InfoSection extends StatelessWidget {
   const InfoSection({
     super.key,
-    required this.pokemon,
     required this.element,
+    this.isBorder = true,
   });
 
-  final PokemonModel pokemon;
   final String element;
+  final bool isBorder;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.black54,
-          border: Border.all(color: Colors.white)),
+      decoration: isBorder
+          ? BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.black54,
+              border: Border.all(color: Colors.white),
+            )
+          : null,
       child: Padding(
         padding: const EdgeInsets.only(
           left: 5,

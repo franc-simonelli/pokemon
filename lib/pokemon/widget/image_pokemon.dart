@@ -28,7 +28,7 @@ class ImagePokemon extends StatelessWidget {
             child: Opacity(
               opacity: 0.3,
               child: Image.asset(
-                mappingType(pokemon.typeofpokemon?[0]),
+                mappingType(pokemon.typeofpokemon?[0] ?? ''),
                 fit: BoxFit.contain,
                 width: widthType,
               ),

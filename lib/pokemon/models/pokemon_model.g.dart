@@ -43,6 +43,10 @@ PokemonModel _$PokemonModelFromJson(Map<String, dynamic> json) => PokemonModel(
       reason: json['reason'] as String?,
       baseExp: json['base_exp'] as String?,
       statsUpdate: json['statsUpdate'] as bool?,
+      moveset: json['moveset'] == null
+          ? null
+          : MovesetModel.fromJson(json['moveset'] as Map<String, dynamic>),
+      movesetUpdate: json['movesetUpdate'] as bool?,
     );
 
 Map<String, dynamic> _$PokemonModelToJson(PokemonModel instance) =>
@@ -74,5 +78,7 @@ Map<String, dynamic> _$PokemonModelToJson(PokemonModel instance) =>
       'evolvedfrom': instance.evolvedfrom,
       'reason': instance.reason,
       'base_exp': instance.baseExp,
+      'moveset': instance.moveset,
       'statsUpdate': instance.statsUpdate,
+      'movesetUpdate': instance.movesetUpdate,
     };

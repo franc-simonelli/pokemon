@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade900,
+      // backgroundColor: Colors.grey.shade900,
       body: CustomScrollView(
         controller: _scrollController,
         physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
@@ -91,10 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildSliverAppBar() {
     return SliverAppBar(
-      backgroundColor: Colors.grey.shade900,
+      // backgroundColor: Colors.black,
       pinned: true,
       floating: true,
-      expandedHeight: 120.0,
+      expandedHeight: 130.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const BoxShadow(
               color: Colors.black,
-              offset: Offset(3, 3),
+              offset: Offset(2, 2),
             )
           ],
           borderRadius: BorderRadius.circular(20),

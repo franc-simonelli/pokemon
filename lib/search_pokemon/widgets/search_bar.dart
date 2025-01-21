@@ -13,7 +13,7 @@ class SearchBarPokemon extends StatefulWidget {
 }
 
 class _SearchBarPokemonState extends State<SearchBarPokemon> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   late FocusNode _focusNode;
   Timer? _debounce;
 
@@ -50,7 +50,6 @@ class _SearchBarPokemonState extends State<SearchBarPokemon> {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-    Brightness brightness = Theme.of(context).brightness;
 
     return Opacity(
       opacity: 1,

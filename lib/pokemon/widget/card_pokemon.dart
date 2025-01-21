@@ -1,10 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/image_type.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
-import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/image_shadow.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
@@ -78,19 +76,14 @@ class CardItem extends StatelessWidget {
           ),
           // image pokemon
           Positioned(
-            top: 50,
+            top: 60,
             right: 0,
             child: SizedBox(
-              height: 90,
-              width: 90,
-              // child: Image.network(
-              //   'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif',
-              // ),
-
+              height: 80,
+              width: 80,
               child: ImageShadow(
                 pokemon: pokemon,
-                imageGif:
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
+                // imageGif: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
               ),
             ),
           ),
@@ -105,7 +98,6 @@ class CardItem extends StatelessWidget {
                   (index, element) => Padding(
                     padding: const EdgeInsets.only(bottom: 4),
                     child: InfoSection(
-                      pokemon: pokemon,
                       element: element,
                     ),
                   ),

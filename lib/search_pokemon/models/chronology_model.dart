@@ -1,9 +1,6 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:uuid/uuid.dart';
 part 'chronology_model.g.dart';
 
 @JsonSerializable()

@@ -37,6 +37,7 @@ dependencies:
   equatable: ^2.0.7
   flutter_phoenix: ^1.1.1
   auto_size_text: ^3.0.0
+  contentsize_tabbarview: ^0.0.2
 
 dev_dependencies:
   flutter_test:

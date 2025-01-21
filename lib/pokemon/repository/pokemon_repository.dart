@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
@@ -83,8 +85,7 @@ class PokemonRepository {
           },
         ),
       );
-      // await Future.delayed(Duration(milliseconds: 1000));
-      InformationUpdateModel informationUpdate;
+
       List<StatsModel> stats = [];
       final response = await dio.get('');
       final data = response.data;
@@ -129,9 +130,7 @@ class PokemonRepository {
             defSpcStat.baseStat! +
             speedStat.baseStat!,
       );
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
     return null;
   }
 }

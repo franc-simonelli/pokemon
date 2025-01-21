@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/constants/shared_preferences_constants.dart';
-import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-
+import 'package:pokedex/pokemon/utils/save_pokemon_storage.dart';
 part 'pokemon_detail_state.dart';
 part 'pokemon_detail_cubit.freezed.dart';
 
@@ -71,9 +70,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     final pokemonsList = await pokemonRepository.fetchPokemonGen(gen);
     final indexInitial = pokemonsList.indexWhere(
       (element) {
-        if (element.id == pokemonSelected.id) {
-          print(element);
-        }
+        if (element.id == pokemonSelected.id) {}
         return element.id == pokemonSelected.id;
       },
     );
@@ -144,7 +141,10 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       int.parse(pokemon.id!.replaceAll("#", "")),
       pokemon,
     );
-    await savePokemonUpdate(pokemonUpdate);
+    await savePokemonUpdate(
+      pokemon: pokemonUpdate,
+      pokemonRepository: pokemonRepository,
+    );
     return pokemonUpdate;
   }
 
@@ -160,7 +160,10 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
         int.parse(pokemon.id!.replaceAll("#", "")),
         pokemon,
       );
-      await savePokemonUpdate(pokemonUpdate);
+      await savePokemonUpdate(
+        pokemon: pokemonUpdate,
+        pokemonRepository: pokemonRepository,
+      );
     } else {
       pokemonUpdate = pokemon;
     }
@@ -168,9 +171,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     final result = await pokemonRepository.fetchPokemonGen(gen);
     final indexInitial = result.indexWhere(
       (element) {
-        if (element.id == pokemonSelected.id) {
-          print(element);
-        }
+        if (element.id == pokemonSelected.id) {}
         return element.id == pokemonSelected.id;
       },
     );
@@ -188,43 +189,6 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       id,
       pokemon,
     );
-  }
-
-  savePokemonUpdate(PokemonModel pokemonUpdate) async {
-    final id = int.parse(pokemonUpdate.id!.replaceAll("#", ""));
-    List<PokemonModel> pokemons = [];
-    String key = '';
-
-    if (id > 0 && id <= 151) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.one);
-      key = kGen1;
-    } else if (id > 151 && id <= 251) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.two);
-      key = kGen2;
-    } else if (id > 251 && id <= 386) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.three);
-      key = kGen3;
-    } else if (id > 386 && id <= 493) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.four);
-      key = kGen4;
-    } else if (id > 493 && id <= 649) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.five);
-      key = kGen5;
-    } else if (id > 649 && id <= 721) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.six);
-      key = kGen6;
-    } else if (id > 721 && id <= 809) {
-      pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.seven);
-      key = kGen7;
-    }
-
-    final index =
-        pokemons.indexWhere((element) => element.id == pokemonUpdate.id);
-    pokemons.removeAt(index);
-    pokemons.insert(index, pokemonUpdate);
-    final String encodedata = PokemonModel.encode(pokemons);
-    await sharedPrefsService.removeValue(key);
-    await sharedPrefsService.setValue<String>(key, encodedata);
   }
 
   checkStatsUpdate(PokemonModel checkPokemon) async {

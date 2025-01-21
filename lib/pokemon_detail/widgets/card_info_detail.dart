@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class CardInfoDetail extends StatelessWidget {

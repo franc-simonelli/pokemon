@@ -6,6 +6,8 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'dart:convert';
+
+import 'package:pokedex/other_informations/models/moveset_model.dart';
 part 'pokemon_model.g.dart';
 
 // @freezed
@@ -138,7 +140,11 @@ class PokemonModel {
   @JsonKey(name: "base_exp")
   String? baseExp;
 
+  MovesetModel? moveset;
+
   bool? statsUpdate;
+
+  bool? movesetUpdate;
 
   PokemonModel({
     this.name,
@@ -169,6 +175,8 @@ class PokemonModel {
     this.reason,
     this.baseExp,
     this.statsUpdate,
+    this.moveset,
+    this.movesetUpdate,
   });
 
   factory PokemonModel.fromJson(Map<String, dynamic> json) =>
@@ -197,6 +205,10 @@ class PokemonModel {
 
   double convert(int value) {
     return value / 10;
+  }
+
+  int get generateId {
+    return int.parse(id!.replaceAll("#", ""));
   }
 
   PokemonModel copyWith({
@@ -228,6 +240,8 @@ class PokemonModel {
     String? reason,
     String? baseExp,
     bool? statsUpdate,
+    bool? movesetUpdate,
+    MovesetModel? moveset,
   }) {
     return PokemonModel(
       id: id ?? this.id,
@@ -258,6 +272,8 @@ class PokemonModel {
       reason: reason ?? this.reason,
       baseExp: baseExp ?? this.baseExp,
       statsUpdate: statsUpdate ?? this.statsUpdate,
+      movesetUpdate: movesetUpdate ?? this.movesetUpdate,
+      moveset: moveset ?? this.moveset,
     );
   }
 }

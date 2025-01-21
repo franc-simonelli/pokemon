@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_overrides, unused_element
+
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:pokedex/application/repositories/application_repository.dart';

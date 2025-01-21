@@ -7,10 +7,10 @@ import 'package:pokedex/features/bottom_navigation_bar.dart';
 import 'package:pokedex/features/favorite/favorite_screen.dart';
 import 'package:pokedex/features/home/home_page.dart';
 import 'package:pokedex/features/regioni/regioni_screen.dart';
+import 'package:pokedex/other_informations/pages/other_information_page.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon_detail/pokemon_detail_page.dart';
 import 'package:pokedex/search_pokemon/search_pokemon_page.dart';
-import 'package:pokedex/search_pokemon/widgets/search_bar.dart';
 
 abstract final class ScreenPaths {
   static const application = '/';
@@ -19,6 +19,7 @@ abstract final class ScreenPaths {
   static const favorite = '/favorite';
   static const searchPokemon = '/search-pokemon';
   static const detailPokemon = '/detail-pokemon';
+  static const otherInformationPokemon = '/other-info-pokemon';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -47,6 +48,15 @@ final goRouter = GoRouter(
         return PokemonDetailPage(
           pokemonSelected: map['pokemonSelected'],
           gen: map['gen'],
+        );
+      },
+    ),
+    GoRoute(
+      path: ScreenPaths.otherInformationPokemon,
+      builder: (context, state) {
+        PokemonModel pokemon = state.extra as PokemonModel;
+        return OtherInformation(
+          pokemon: pokemon,
         );
       },
     ),
