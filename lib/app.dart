@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/application/repositories/application_repository.dart';
+import 'package:pokedex/counties/repositories/countries_repository.dart';
+import 'package:pokedex/counties/cubit/countries_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
@@ -22,13 +24,15 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
-  late PokemonCubit pokemonCubit;
-  late FiltersCubit filtersCubit;
+  // late PokemonCubit pokemonCubit;
+  // late FiltersCubit filtersCubit;
+  late CountriesCubit countriesCubit;
   ApplicationBloc? applicationBloc;
   late ApplicationRepository applicationRepository;
   late PokemonRepository pokemonRepository;
   late FiltersRepository filtersRepository;
   late MovesetRepository movesetRepository;
+  late CountriesRepository countriesRepository;
   Timer? _inactivityTimer;
 
   @override
@@ -39,12 +43,16 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     pokemonRepository = PokemonRepository();
     filtersRepository = FiltersRepository();
     movesetRepository = MovesetRepository();
-    filtersCubit = FiltersCubit(
-      filtersRepository: filtersRepository,
-    );
-    pokemonCubit = PokemonCubit(
-      pokemonRepository: pokemonRepository,
-      filtersCubit: filtersCubit,
+    countriesRepository = CountriesRepository();
+    // filtersCubit = FiltersCubit(
+    //   filtersRepository: filtersRepository,
+    // );
+    // pokemonCubit = PokemonCubit(
+    //   pokemonRepository: pokemonRepository,
+    //   filtersCubit: filtersCubit,
+    // );
+    countriesCubit = CountriesCubit(
+      countriesRepository: countriesRepository,
     );
   }
 
@@ -98,6 +106,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         RepositoryProvider<MovesetRepository>.value(
           value: movesetRepository,
         ),
+        RepositoryProvider<CountriesRepository>.value(
+          value: countriesRepository,
+        ),
       ],
       child: child ?? Container(),
     );
@@ -106,8 +117,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   Widget _buildProviders({required Widget child}) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<PokemonCubit>.value(value: pokemonCubit),
-        BlocProvider<FiltersCubit>.value(value: filtersCubit),
+        // BlocProvider<PokemonCubit>.value(value: pokemonCubit),
+        // BlocProvider<FiltersCubit>.value(value: filtersCubit),
+        BlocProvider<CountriesCubit>.value(value: countriesCubit),
         BlocProvider<ApplicationBloc>(
           create: (context) {
             applicationBloc = ApplicationBloc(

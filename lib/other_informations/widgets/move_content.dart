@@ -108,7 +108,6 @@ class _MoveContentState extends State<MoveContent> {
     required String value,
   }) {
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MyText.labelSmall(
           context: context,
@@ -139,38 +138,44 @@ class _MoveContentState extends State<MoveContent> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.black54,
-            border: Border.all(color: Colors.white),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 5,
-              right: 10,
-              top: 5,
-              bottom: 5,
+        Transform(
+          transform: Matrix4.identity()
+            ..setEntry(3, 1, 0.004)
+            ..rotateX(0.0)
+            ..rotateY(0.0),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.black54,
+              border: Border.all(color: Colors.white),
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: widget.move.generateColorCategory,
-                    shape: BoxShape.circle,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 5,
+                right: 10,
+                top: 5,
+                bottom: 5,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: widget.move.generateColorCategory,
+                      shape: BoxShape.circle,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  widget.move.damageClass ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                  const SizedBox(width: 8),
+                  Text(
+                    widget.move.damageClass ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

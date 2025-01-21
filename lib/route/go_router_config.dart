@@ -3,23 +3,26 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/views/application_page.dart';
+import 'package:pokedex/counties/country_pokemon_list_page.dart';
 import 'package:pokedex/features/bottom_navigation_bar.dart';
+import 'package:pokedex/counties/countries_page.dart';
 import 'package:pokedex/features/favorite/favorite_screen.dart';
 import 'package:pokedex/features/home/home_page.dart';
-import 'package:pokedex/features/regioni/regioni_screen.dart';
 import 'package:pokedex/other_informations/pages/other_information_page.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/pokemon_detail_page.dart';
 import 'package:pokedex/search_pokemon/search_pokemon_page.dart';
 
 abstract final class ScreenPaths {
   static const application = '/';
   static const home = '/home';
-  static const regioni = '/regioni';
+  static const countries = '/countries';
   static const favorite = '/favorite';
   static const searchPokemon = '/search-pokemon';
   static const detailPokemon = '/detail-pokemon';
   static const otherInformationPokemon = '/other-info-pokemon';
+  static const pokemonCountries = '/pokemonCountries';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -60,6 +63,15 @@ final goRouter = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: ScreenPaths.pokemonCountries,
+      builder: (context, state) {
+        EnumGen gen = state.extra as EnumGen;
+        return CountryPokemonListPage(
+          gen: gen,
+        );
+      },
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => BottomNavigationScreen(
         navigationShell: navigationShell,
@@ -78,11 +90,20 @@ final goRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: ScreenPaths.regioni,
+              path: ScreenPaths.countries,
               builder: (context, state) {
-                return const RegioniScreen();
+                return const CountryPage();
               },
             ),
+            // GoRoute(
+            //   path: ScreenPaths.pokemonCountries,
+            //   builder: (context, state) {
+            //     EnumGen gen = state.extra as EnumGen;
+            //     return CountryPokemonListPage(
+            //       gen: gen,
+            //     );
+            //   },
+            // ),
           ],
         ),
         StatefulShellBranch(

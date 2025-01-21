@@ -27,6 +27,7 @@ class BottomNavigationScreen extends StatelessWidget {
             height: 70,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             elevation: 3,
+            indicatorColor: appColors.inversePrimary,
             destinations: [
               NavigationDestination(
                 icon: Icon(
@@ -34,7 +35,7 @@ class BottomNavigationScreen extends StatelessWidget {
                       ? Icons.home
                       : Icons.home_outlined,
                   color: navigationShell.currentIndex == 0
-                      ? appColors.secondary
+                      ? appColors.primary
                       : appColors.onPrimaryContainer,
                 ),
                 label: 'Home',
@@ -45,18 +46,18 @@ class BottomNavigationScreen extends StatelessWidget {
                       ? Icons.language_sharp
                       : Icons.language_sharp,
                   color: navigationShell.currentIndex == 1
-                      ? appColors.secondary
+                      ? appColors.primary
                       : appColors.onPrimaryContainer,
                 ),
-                label: 'Regioni',
+                label: 'Country',
               ),
               NavigationDestination(
                 icon: Icon(
                   navigationShell.currentIndex == 2
                       ? Icons.favorite
                       : Icons.favorite_outline,
-                  color: navigationShell.currentIndex == 2
-                      ? appColors.secondary
+                  color: navigationShell.currentIndex == 3
+                      ? appColors.primary
                       : appColors.onPrimaryContainer,
                 ),
                 label: 'Favorite',

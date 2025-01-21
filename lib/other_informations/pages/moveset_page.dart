@@ -37,7 +37,6 @@ class _MovesetPageState extends State<MovesetPage> {
               children: [
                 SizedBox(height: 30),
                 _buildAbilities(state, context),
-                Divider(),
                 SizedBox(height: 20),
                 _buildMoveset(state, context)
               ],
@@ -59,7 +58,7 @@ class _MovesetPageState extends State<MovesetPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MyText.labelLarge(
+              MyText.labelMedium(
                 context: context,
                 text: 'Moves',
                 color: appTheme.colorScheme.primary,
@@ -76,22 +75,29 @@ class _MovesetPageState extends State<MovesetPage> {
           itemCount: state.moveset?.moves?.length,
           itemBuilder: (context, index) {
             final item = state.moveset?.moves?[index];
-            return ExpansionTile(
-              initiallyExpanded: item?.isDownloaded ?? false,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.zero,
-              ),
-              title: MyText.labelMedium(
-                context: context,
-                text: item?.move?.name?.toUpperCase() ?? '',
-                // color: appTheme.colorScheme.primary,
-                isFontBold: true,
-              ),
+            return Column(
               children: [
-                MoveContent(
-                  move: item!,
-                  onlyStats: onlyStats,
+                ExpansionTile(
+                  // initiallyExpanded: item?.isDownloaded ?? false,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  title: MyText.labelMedium(
+                    context: context,
+                    text: item?.move?.name?.toUpperCase() ?? '',
+                    isFontBold: true,
+                  ),
+                  children: [
+                    MoveContent(
+                      move: item!,
+                      onlyStats: onlyStats,
+                    ),
+                  ],
+                ),
+                Divider(
+                  endIndent: 20,
+                  indent: 20,
                 ),
               ],
             );
@@ -102,11 +108,13 @@ class _MovesetPageState extends State<MovesetPage> {
   }
 
   Widget _buildSwitchMoves() {
+    final appTheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         MyText.labelSmall(context: context, text: 'Show  effect desc.'),
         SizedBox(width: 10),
         CupertinoSwitch(
+          activeColor: appTheme.primaryContainer,
           value: onlyStats,
           onChanged: (value) {
             setState(() {
@@ -125,7 +133,7 @@ class _MovesetPageState extends State<MovesetPage> {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: MyText.labelLarge(
+          child: MyText.labelMedium(
             context: context,
             text: 'Abilities',
             color: appTheme.colorScheme.primary,
@@ -139,22 +147,26 @@ class _MovesetPageState extends State<MovesetPage> {
           itemCount: state.moveset?.abilities?.length,
           itemBuilder: (context, index) {
             final item = state.moveset?.abilities?[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: ExpansionTile(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
+            return Column(
+              children: [
+                ExpansionTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  title: MyText.labelMedium(
+                    context: context,
+                    text: item?.ability?.name?.toUpperCase() ?? '',
+                    isFontBold: true,
+                  ),
+                  children: [
+                    AbilityContent(ability: item!),
+                  ],
                 ),
-                title: MyText.labelMedium(
-                  context: context,
-                  text: item?.ability?.name?.toUpperCase() ?? '',
-                  // color: appTheme.colorScheme.primary,
-                  isFontBold: true,
+                Divider(
+                  endIndent: 20,
+                  indent: 20,
                 ),
-                children: [
-                  AbilityContent(ability: item!),
-                ],
-              ),
+              ],
             );
           },
         ),

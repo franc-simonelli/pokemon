@@ -22,16 +22,18 @@ class FilterSectionItem extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(
           color: Colors.grey.shade900,
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(32),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade800,
-              offset: const Offset(-1, -1),
+              color: Colors.grey.shade700,
+              offset: Offset(0, -1),
+              blurRadius: 1,
             ),
-            const BoxShadow(
+            BoxShadow(
               color: Colors.black,
-              offset: Offset(2, 2),
-            )
+              offset: Offset(0, 3),
+              blurRadius: 5,
+            ),
           ],
         ),
         child: typesSelect != null && typesSelect!.isNotEmpty

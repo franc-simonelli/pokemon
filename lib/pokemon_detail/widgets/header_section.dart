@@ -74,10 +74,6 @@ class _HeaderSectionState extends State<HeaderSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildInfo(context, state.pokemonSelected),
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
               _buildSectionImage(state, context),
             ],
           );
@@ -88,10 +84,6 @@ class _HeaderSectionState extends State<HeaderSection> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildInfo(context, state.pokemonSelected),
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
               Expanded(
                 flex: 10,
                 child: Center(
@@ -196,11 +188,12 @@ class _HeaderSectionState extends State<HeaderSection> {
           ),
           SizedBox(height: 10),
           ...pokemon.typeofpokemon!.mapIndexed(
-            (index, element) => Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: InfoSection(
-                element: element,
-              ),
+            (index, element) => Row(
+              children: [
+                InfoSection(
+                  element: element,
+                ),
+              ],
             ),
           ),
           SizedBox(height: 10),

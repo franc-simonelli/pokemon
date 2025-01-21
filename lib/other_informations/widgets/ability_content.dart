@@ -37,16 +37,21 @@ class _AbilityContentState extends State<AbilityContent> {
           )
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
               children: [
-                Expanded(
-                  child: MyText.labelSmall(
-                    context: context,
-                    text: widget.ability.effectEntries?.effect ?? '',
-                    color: Colors.grey.shade300,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: MyText.labelSmall(
+                        context: context,
+                        text: widget.ability.effectEntries?.effect ?? '',
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 20),
               ],
             ),
           );

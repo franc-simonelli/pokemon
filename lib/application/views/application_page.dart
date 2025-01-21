@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/constants/image_constants.dart';
+import 'package:pokedex/counties/cubit/countries_cubit.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_button.dart';
@@ -206,8 +207,9 @@ class _ApplicationPageState extends State<ApplicationPage>
       // },
       listener: (context, state) async {
         if (_previousState is! ApplicationReady && state is ApplicationReady) {
-          context.read<PokemonCubit>().init();
-          context.read<FiltersCubit>().fetchFilters();
+          // context.read<PokemonCubit>().init();
+          // context.read<FiltersCubit>().fetchFilters();
+          context.read<CountriesCubit>().fetchCountries();
           context.go(ScreenPaths.home);
         }
 

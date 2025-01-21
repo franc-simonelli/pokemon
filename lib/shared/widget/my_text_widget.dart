@@ -63,6 +63,7 @@ class MyText extends StatelessWidget {
     required String text,
     bool isFontBold = false,
     bool isBorderText = false,
+    bool isUnderLine = false,
     Color? color,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
@@ -71,6 +72,7 @@ class MyText extends StatelessWidget {
       text: text,
       style: appTextTheme.labelMedium!.copyWith(
         color: color ?? appColors.onSurface,
+        decoration: isUnderLine ? TextDecoration.underline : null,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [
@@ -113,6 +115,7 @@ class MyText extends StatelessWidget {
     required String text,
     bool isFontBold = false,
     bool isBorderText = false,
+    bool isUnderLine = false,
     Color? color,
     Color? colorBorder,
   }) {
@@ -121,7 +124,9 @@ class MyText extends StatelessWidget {
     return MyText(
       text: text,
       style: appTextTheme.labelLarge!.copyWith(
+        fontSize: 22,
         color: color ?? appColors.onSurface,
+        decoration: isUnderLine ? TextDecoration.underline : null,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
         shadows: isBorderText
             ? [

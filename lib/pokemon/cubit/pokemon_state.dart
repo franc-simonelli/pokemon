@@ -6,6 +6,7 @@ class PokemonState with _$PokemonState {
     required Status statusPagination,
     required List<PokemonModel> listPokemons,
     required int currentPage,
+    required EnumGen gen,
     bool? isLastPage,
   }) = _PokemonState;
 }

@@ -29,7 +29,6 @@ class SearchPokemonsList extends StatelessWidget {
           final pokemon = pokemons[index];
           return Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
               vertical: 10,
             ),
             child: GestureDetector(

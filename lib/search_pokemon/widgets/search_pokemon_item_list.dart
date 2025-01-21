@@ -48,11 +48,14 @@ class SearchPokemonItemList extends StatelessWidget {
         showDelete != null && showDelete!
             ? Expanded(
                 flex: 1,
-                child: GestureDetector(
-                  onTap: () {
+                child: IconButton(
+                  onPressed: () {
                     pressDelete!(pokemon);
                   },
-                  child: Icon(Icons.close),
+                  icon: Icon(
+                    Icons.remove,
+                    color: Colors.grey,
+                  ),
                 ),
               )
             : Expanded(

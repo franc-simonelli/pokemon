@@ -7,6 +7,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
+import 'package:pokedex/pokemon/utils/data_pokemons.dart';
+import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 part 'pokemon_state.dart';
 part 'pokemon_cubit.freezed.dart';
 
@@ -16,17 +18,20 @@ class PokemonCubit extends Cubit<PokemonState> {
   PokemonCubit({
     required this.pokemonRepository,
     required this.filtersCubit,
+    required this.gen,
   }) : super(
-          const PokemonState(
+          PokemonState(
             listPokemons: [],
             statusPagination: Status.initial,
             currentPage: 1,
+            gen: gen,
           ),
         ) {
     _filterSubscription = filtersCubit.stream.listen(_onFiltersChanged);
   }
-  PokemonRepository pokemonRepository;
+  final PokemonRepository pokemonRepository;
   final FiltersCubit filtersCubit;
+  final EnumGen gen;
   late final StreamSubscription<FiltersState> _filterSubscription;
 
   @override
@@ -55,7 +60,14 @@ class PokemonCubit extends Cubit<PokemonState> {
   Future<void> init() async {
     emit(state.copyWith(statusPagination: Status.loading));
     try {
-      final list = await pokemonRepository.fetchPokemons(state.currentPage);
+      List<PokemonModel> list = [];
+      if (gen == EnumGen.all) {
+        list = await pokemonRepository.fetchPokemons(state.currentPage);
+      } else {
+        list = await pokemonRepository.fetchPokemonGen(gen);
+        list = await dataPagination(list, state.currentPage);
+      }
+
       emit(state.copyWith(
         listPokemons: list,
         statusPagination: Status.success,
@@ -65,13 +77,32 @@ class PokemonCubit extends Cubit<PokemonState> {
     }
   }
 
+  checkOtherPageExist() async {
+    int startIndex = ((state.currentPage - 1) * 20);
+    int endIndex = startIndex + 20;
+
+    List<PokemonModel> list = [];
+    list = await pokemonRepository.fetchPokemonGen(state.gen);
+
+    endIndex = endIndex > list.length ? list.length : endIndex;
+
+    return !(startIndex < endIndex);
+  }
+
   Future<void> loadMore() async {
+    if (await checkOtherPageExist()) return;
+
     if (state.statusPagination == Status.loading) return;
     emit(state.copyWith(statusPagination: Status.loading));
     try {
       List<PokemonModel> list = [];
       if (filtersCubit.state.typesSelect.isEmpty) {
-        list = await pokemonRepository.fetchPokemons(state.currentPage + 1);
+        if (state.gen == EnumGen.all) {
+          list = await pokemonRepository.fetchPokemons(state.currentPage + 1);
+        } else {
+          list = await pokemonRepository.fetchPokemonGen(state.gen);
+          list = await dataPagination(list, state.currentPage + 1);
+        }
       } else {
         list = await pokemonRepository.filtersPokemons(
           typesfilter: filtersCubit.state.typesSelect,

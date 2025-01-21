@@ -7,6 +7,7 @@ import 'package:pokedex/other_informations/pages/moveset_page.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
+import 'package:pokedex/shared/utils/mapping_type.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class OtherInformation extends StatefulWidget {
@@ -54,23 +55,45 @@ class _OtherInformationState extends State<OtherInformation>
       ],
       child: Scaffold(
         appBar: _buildAppBar(widget.pokemon.name ?? ''),
-        body: Column(
-          children: [
-            TabBar(
-              controller: _tabController,
-              tabs: [
-                Tab(text: 'Moveset'),
-                Tab(text: 'Evolution'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [MovesetPage(), EvolutionLinePage()],
+        body: Stack(children: [
+          Positioned(
+            top: -30,
+            right: -80,
+            child: SizedBox(
+              width: 400,
+              child: Opacity(
+                opacity: 0.1,
+                child: Image.asset(
+                  mappingType(
+                    widget.pokemon.typeofpokemon?[0] ?? '',
+                  ),
+                  fit: BoxFit.cover,
+                  // fit: BoxFit.contain,
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+          Column(
+            children: [
+              TabBar(
+                controller: _tabController,
+                tabs: [
+                  Tab(text: 'Moveset'),
+                  Tab(text: 'Evolution'),
+                ],
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    MovesetPage(),
+                    EvolutionLinePage(),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ]),
       ),
     );
   }

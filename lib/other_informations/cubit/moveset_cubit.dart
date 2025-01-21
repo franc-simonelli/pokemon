@@ -143,8 +143,11 @@ class MovesetCubit extends Cubit<MovesetState> {
   }
 
   updatePokemonMoveSP(MoveModel move) async {
-    final index = pokemon.moveset?.moves?.indexWhere(
+    final index = await pokemon.moveset?.moves?.indexWhere(
       (element) {
+        if (element.move?.name == move.move?.name) {
+          print('ecco');
+        }
         return element.move?.name == move.move?.name;
       },
     );

@@ -21,31 +21,29 @@ class SearchPokemonContent extends StatelessWidget {
               },
               child: Icon(Icons.arrow_back_ios),
             ),
-            title: MyText.labelMedium(context: context, text: 'Cerca pokemon'),
-            centerTitle: false,
+            title: SearchBarPokemon(),
           ),
-          body: Column(
-            children: [
-              SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: SearchBarPokemon(),
-              ),
-              SizedBox(height: 30),
-              if (state.pokemons.isNotEmpty)
-                SearchPokemonsList(
-                  pokemons: state.pokemons,
-                ),
-              if (state.pokemons.isEmpty && state.chronology.isNotEmpty) ...[
-                MyText.labelSmall(context: context, text: 'Cronologia'),
-                SearchPokemonsList(
-                  pokemons: state.chronology,
-                  showDelete: true,
-                  pressDelete:
-                      context.read<SearchPokemonCubit>().deleteItemChronology,
-                ),
-              ]
-            ],
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30),
+                if (state.pokemons.isNotEmpty)
+                  SearchPokemonsList(
+                    pokemons: state.pokemons,
+                  ),
+                if (state.pokemons.isEmpty && state.chronology.isNotEmpty) ...[
+                  MyText.labelSmall(context: context, text: 'Cronologia'),
+                  SearchPokemonsList(
+                    pokemons: state.chronology,
+                    showDelete: true,
+                    pressDelete:
+                        context.read<SearchPokemonCubit>().deleteItemChronology,
+                  ),
+                ]
+              ],
+            ),
           ),
         );
       },

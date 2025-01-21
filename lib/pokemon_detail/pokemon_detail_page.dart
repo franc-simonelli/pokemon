@@ -160,17 +160,17 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   Widget _buildDescription(BuildContext context, PokemonModel pokemon) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade800,
-            offset: const Offset(-1, -1),
-          ),
-          const BoxShadow(
-            color: Colors.black,
-            offset: Offset(2, 2),
-          )
+          // BoxShadow(
+          //   color: Colors.grey.shade900,
+          //   offset: const Offset(-1, -1),
+          // ),
+          // const BoxShadow(
+          //   color: Colors.black,
+          //   offset: Offset(2, 2),
+          // )
         ],
       ),
       child: Padding(
@@ -191,7 +191,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
           MyText.labelLarge(
             context: context,
             text: pokemon.name ?? '',
-            isFontBold: true,
           ),
         ],
       ),

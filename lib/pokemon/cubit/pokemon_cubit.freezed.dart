@@ -19,6 +19,7 @@ mixin _$PokemonState {
   Status get statusPagination => throw _privateConstructorUsedError;
   List<PokemonModel> get listPokemons => throw _privateConstructorUsedError;
   int get currentPage => throw _privateConstructorUsedError;
+  EnumGen get gen => throw _privateConstructorUsedError;
   bool? get isLastPage => throw _privateConstructorUsedError;
 
   /// Create a copy of PokemonState
@@ -38,6 +39,7 @@ abstract class $PokemonStateCopyWith<$Res> {
       {Status statusPagination,
       List<PokemonModel> listPokemons,
       int currentPage,
+      EnumGen gen,
       bool? isLastPage});
 }
 
@@ -59,6 +61,7 @@ class _$PokemonStateCopyWithImpl<$Res, $Val extends PokemonState>
     Object? statusPagination = null,
     Object? listPokemons = null,
     Object? currentPage = null,
+    Object? gen = null,
     Object? isLastPage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -74,6 +77,10 @@ class _$PokemonStateCopyWithImpl<$Res, $Val extends PokemonState>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
+      gen: null == gen
+          ? _value.gen
+          : gen // ignore: cast_nullable_to_non_nullable
+              as EnumGen,
       isLastPage: freezed == isLastPage
           ? _value.isLastPage
           : isLastPage // ignore: cast_nullable_to_non_nullable
@@ -94,6 +101,7 @@ abstract class _$$PokemonStateImplCopyWith<$Res>
       {Status statusPagination,
       List<PokemonModel> listPokemons,
       int currentPage,
+      EnumGen gen,
       bool? isLastPage});
 }
 
@@ -113,6 +121,7 @@ class __$$PokemonStateImplCopyWithImpl<$Res>
     Object? statusPagination = null,
     Object? listPokemons = null,
     Object? currentPage = null,
+    Object? gen = null,
     Object? isLastPage = freezed,
   }) {
     return _then(_$PokemonStateImpl(
@@ -128,6 +137,10 @@ class __$$PokemonStateImplCopyWithImpl<$Res>
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
               as int,
+      gen: null == gen
+          ? _value.gen
+          : gen // ignore: cast_nullable_to_non_nullable
+              as EnumGen,
       isLastPage: freezed == isLastPage
           ? _value.isLastPage
           : isLastPage // ignore: cast_nullable_to_non_nullable
@@ -143,6 +156,7 @@ class _$PokemonStateImpl implements _PokemonState {
       {required this.statusPagination,
       required final List<PokemonModel> listPokemons,
       required this.currentPage,
+      required this.gen,
       this.isLastPage})
       : _listPokemons = listPokemons;
 
@@ -159,11 +173,13 @@ class _$PokemonStateImpl implements _PokemonState {
   @override
   final int currentPage;
   @override
+  final EnumGen gen;
+  @override
   final bool? isLastPage;
 
   @override
   String toString() {
-    return 'PokemonState(statusPagination: $statusPagination, listPokemons: $listPokemons, currentPage: $currentPage, isLastPage: $isLastPage)';
+    return 'PokemonState(statusPagination: $statusPagination, listPokemons: $listPokemons, currentPage: $currentPage, gen: $gen, isLastPage: $isLastPage)';
   }
 
   @override
@@ -177,6 +193,7 @@ class _$PokemonStateImpl implements _PokemonState {
                 .equals(other._listPokemons, _listPokemons) &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
+            (identical(other.gen, gen) || other.gen == gen) &&
             (identical(other.isLastPage, isLastPage) ||
                 other.isLastPage == isLastPage));
   }
@@ -187,6 +204,7 @@ class _$PokemonStateImpl implements _PokemonState {
       statusPagination,
       const DeepCollectionEquality().hash(_listPokemons),
       currentPage,
+      gen,
       isLastPage);
 
   /// Create a copy of PokemonState
@@ -203,6 +221,7 @@ abstract class _PokemonState implements PokemonState {
       {required final Status statusPagination,
       required final List<PokemonModel> listPokemons,
       required final int currentPage,
+      required final EnumGen gen,
       final bool? isLastPage}) = _$PokemonStateImpl;
 
   @override
@@ -211,6 +230,8 @@ abstract class _PokemonState implements PokemonState {
   List<PokemonModel> get listPokemons;
   @override
   int get currentPage;
+  @override
+  EnumGen get gen;
   @override
   bool? get isLastPage;
 

@@ -12,14 +12,26 @@ class SearchBarPokemon extends StatefulWidget {
   State<SearchBarPokemon> createState() => _SearchBarPokemonState();
 }
 
-class _SearchBarPokemonState extends State<SearchBarPokemon> {
+class _SearchBarPokemonState extends State<SearchBarPokemon>
+    with SingleTickerProviderStateMixin {
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _focusNode;
   Timer? _debounce;
+  late AnimationController _controller;
+  late Animation<double> _rotationAnimation;
 
   @override
   void initState() {
     super.initState();
+    // _controller = AnimationController(
+    //   vsync: this,
+    //   duration: Duration(milliseconds: 600),
+    // )..repeat(reverse: true);
+
+    // _rotationAnimation = Tween<double>(begin: -0.05, end: 0.05).animate(
+    //   CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    // );
+
     _focusNode = FocusNode();
     _searchController.addListener(_onSearchWithDebounce);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -45,6 +57,7 @@ class _SearchBarPokemonState extends State<SearchBarPokemon> {
     _debounce?.cancel();
     _searchController.dispose();
     _focusNode.dispose();
+    // _controller.dispose();
   }
 
   @override
@@ -77,8 +90,15 @@ class _SearchBarPokemonState extends State<SearchBarPokemon> {
             cursorColor: appColors.primaryContainer,
             style: const TextStyle(fontSize: 18),
             decoration: InputDecoration(
-              prefixIcon: const Padding(
+              prefixIcon: Padding(
                 padding: EdgeInsets.only(top: 10),
+                // child: RotationTransition(
+                //   turns: _rotationAnimation,
+                //   child: Icon(
+                //     Icons.search,
+                //     color: Colors.grey,
+                //   ),
+                // ),
                 child: Icon(
                   Icons.search,
                   color: Colors.grey,
@@ -100,8 +120,12 @@ class _SearchBarPokemonState extends State<SearchBarPokemon> {
                     : const SizedBox.shrink(),
               ),
               contentPadding: const EdgeInsets.only(bottom: 3, left: 10),
-              hintText: 'Cerca',
-              hintStyle: const TextStyle(color: Colors.grey, fontSize: 17),
+              hintText: 'Cerca un pokemon . . .',
+              hintStyle: const TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+                fontStyle: FontStyle.italic,
+              ),
               border: const OutlineInputBorder(),
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
