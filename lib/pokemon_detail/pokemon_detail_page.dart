@@ -78,8 +78,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: HeaderSection(),
                         ),
-                        // SizedBox(height: 0),
-                        // _buildInfo(state.pokemonSelected),
                         SizedBox(height: 20),
                         _buildDescription(context, state.pokemonSelected),
                         SizedBox(height: 20),
@@ -87,8 +85,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                         SizedBox(height: 30),
                         _buildStats(state.pokemonSelected),
                         SizedBox(height: 30),
-                        _buildOtherButton(state.pokemonSelected),
-                        SizedBox(height: 30),
+                        // _buildOtherButton(state.pokemonSelected),
+                        // SizedBox(height: 30),
                       ],
                     ),
                   ),
@@ -253,7 +251,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
           value: pokemon.statsUpdate != null && pokemon.statsUpdate!
               ? pokemon.total.toString()
               : '0',
-          widthMax: 700,
+          widthMax: 720,
           color: Colors.grey,
         )
       ],

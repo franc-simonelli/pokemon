@@ -2,11 +2,14 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/utils/dialog_view_image.dart';
 import 'package:pokedex/pokemon/widget/image_pokemon.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
+import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
@@ -100,77 +103,119 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget _buildSectionImage(PokemonDetailState state, BuildContext context) {
     return Expanded(
       flex: 10,
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: state.pokemonList.isNotEmpty && !state.firstPokemon
-                ? IconButton(
-                    onPressed: () {
-                      _goToPreviousPage(state.pokemonList);
-                    },
-                    icon: Icon(Icons.arrow_back_ios_new_rounded),
-                  )
-                : Container(),
-          ),
-          Expanded(
-            flex: 6,
-            child: SizedBox(
-              height: 180,
-              child: PageView.builder(
-                scrollDirection: Axis.horizontal,
-                controller: controller,
-                itemCount: state.pokemonList.length,
-                itemBuilder: (context, index) {
-                  final item = state.pokemonList[index];
-                  return AnimatedOpacity(
-                    duration: Duration(milliseconds: 300),
-                    opacity: 1,
-                    child: GestureDetector(
-                      onDoubleTap: () async {
-                        await showDialogImageView(context, item);
-                      },
-                      child: ImagePokemon(
-                        pokemon: item,
+      child: Container(
+        // color: Colors.red,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              // color: Colors.red,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: state.pokemonList.isNotEmpty && !state.firstPokemon
+                        ? IconButton(
+                            onPressed: () {
+                              _goToPreviousPage(state.pokemonList);
+                            },
+                            icon: Icon(Icons.arrow_back_ios_new_rounded),
+                          )
+                        : Container(),
+                  ),
+                  Expanded(
+                    flex: 6,
+                    child: SizedBox(
+                      height: 180,
+                      child: PageView.builder(
+                        scrollDirection: Axis.horizontal,
+                        controller: controller,
+                        itemCount: state.pokemonList.length,
+                        itemBuilder: (context, index) {
+                          final item = state.pokemonList[index];
+                          return GestureDetector(
+                            onDoubleTap: () async {
+                              await showDialogImageView(context, item);
+                            },
+                            child: Stack(
+                              children: [
+                                ImagePokemon(
+                                  pokemon: item,
+                                ),
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     color:
+                                //         Colors.black.withOpacity(0.5),
+                                //     borderRadius: BorderRadius.circular(8),
+                                //   ),
+                                //   child: Center(
+                                //     child: Text(
+                                //       'Tocca per mosse ed evoluzioni',
+                                //       style: TextStyle(
+                                //         color: Colors.white,
+                                //         fontSize: 18,
+                                //         fontWeight: FontWeight.bold,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+                          );
+                        },
+                        onPageChanged: (value) {
+                          controller.animateToPage(
+                            value,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                          context
+                              .read<PokemonDetailCubit>()
+                              .changePokemon(state.pokemonList[value]);
+                          // setState(() {
+                          //   _currentIndex = value;
+                          // });
+                        },
                       ),
-                      // child: SizedBox(
-                      //   child: Image.network(
-                      //     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${index + 1}.gif',
-                      //     filterQuality: FilterQuality.high,
-                      //     fit: BoxFit.contain,
-                      //   ),
-                      // ),
                     ),
-                  );
-                },
-                onPageChanged: (value) {
-                  controller.animateToPage(
-                    value,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                  );
-                  context
-                      .read<PokemonDetailCubit>()
-                      .changePokemon(state.pokemonList[value]);
-                  // setState(() {
-                  //   _currentIndex = value;
-                  // });
-                },
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: state.pokemonList.isNotEmpty && !state.lastPokemon
+                        ? IconButton(
+                            onPressed: () {
+                              _goToNextPage(state.pokemonList);
+                            },
+                            icon: Icon(Icons.arrow_forward_ios_rounded),
+                          )
+                        : Container(),
+                  ),
+                ],
               ),
             ),
-          ),
-          Expanded(
-            flex: 1,
-            child: state.pokemonList.isNotEmpty && !state.lastPokemon
-                ? IconButton(
-                    onPressed: () {
-                      _goToNextPage(state.pokemonList);
-                    },
-                    icon: Icon(Icons.arrow_forward_ios_rounded),
-                  )
-                : Container(),
-          ),
-        ],
+            SizedBox(height: 10),
+            ButtonScaled(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  MyText.labelMedium(
+                    context: context,
+                    text: 'Moves/Evo',
+                    isFontBold: true,
+                  ),
+                  Icon(Icons.keyboard_arrow_right)
+                ],
+              ),
+              onPress: () {
+                context.push(
+                  ScreenPaths.otherInformationPokemon,
+                  extra: state.pokemonSelected,
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
@@ -205,6 +250,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               size: 18,
             ),
             statUpdate: true,
+            showContainer: true,
             value: pokemon.category ?? '',
           ),
           SizedBox(height: 16),
@@ -261,10 +307,19 @@ class _HeaderSectionState extends State<HeaderSection> {
     required Icon icon,
     required String value,
     bool? statUpdate = false,
+    bool showContainer = false,
   }) {
     return Row(
       children: [
-        icon,
+        showContainer
+            ? Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                ),
+                child: icon,
+              )
+            : icon,
         if (statUpdate == false) ...[
           SizedBox(width: 15),
           SizedBox(
@@ -281,12 +336,6 @@ class _HeaderSectionState extends State<HeaderSection> {
             isFontBold: false,
           )
         ]
-        // SizedBox(width: 5),
-        // MyText.labelMedium(
-        //   context: context,
-        //   text: value,
-        //   isFontBold: false,
-        // )
       ],
     );
   }

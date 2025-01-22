@@ -7,6 +7,7 @@ class StatsPokemon extends StatelessWidget {
     required this.value,
     required this.color,
     this.widthMax = 250,
+    this.smallStats = false,
     super.key,
   });
 
@@ -14,29 +15,38 @@ class StatsPokemon extends StatelessWidget {
   final String value;
   final Color color;
   final int widthMax;
+  final bool smallStats;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          flex: 1,
-          child: MyText.labelMedium(
-            context: context,
-            text: stats,
-          ),
+          flex: smallStats ? 2 : 3,
+          child: smallStats
+              ? MyText.labelSmall(context: context, text: stats)
+              : MyText.labelMedium(context: context, text: stats),
+        ),
+        Expanded(
+          flex: smallStats ? 2 : 2,
+          child: smallStats
+              ? MyText.labelSmall(
+                  context: context,
+                  text: value,
+                  textAlign: TextAlign.end,
+                )
+              : MyText.labelMedium(
+                  context: context,
+                  text: value,
+                  textAlign: TextAlign.end,
+                ),
         ),
         Expanded(
           flex: 1,
-          child: Center(
-            child: MyText.labelMedium(
-              context: context,
-              text: value,
-            ),
-          ),
+          child: Container(),
         ),
         Expanded(
-          flex: 3,
+          flex: smallStats ? 6 : 8,
           child: LayoutBuilder(
             builder: (context, constraints) {
               final widthExpanded = constraints.maxWidth;
@@ -46,13 +56,13 @@ class StatsPokemon extends StatelessWidget {
                   Container(
                     width: widthExpanded,
                     color: color.withOpacity(0.3),
-                    height: 10,
+                    height: smallStats ? 5 : 10,
                   ),
                   AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     width: widthStats,
                     color: color,
-                    height: 10,
+                    height: smallStats ? 5 : 10,
                   ),
                 ],
               );

@@ -75,6 +75,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       },
     );
 
+    // se il pokemon selezionato ha gia le statistiche aggiornate
     if (pokemonSelected.statsUpdate == true) {
       emit(state.copyWith(
         pokemonList: pokemonsList,
@@ -83,6 +84,8 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       return;
     }
 
+    // se il pokemon selecionato non ha le statistiche aggiornate
+    // faccio prima una verifica nell SP
     final pokemonById =
         await pokemonRepository.fetchPokemonById(pokemonSelected.id ?? '');
     if (pokemonById.statsUpdate == true) {
@@ -97,7 +100,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
         initialIndex: indexInitial,
       ));
 
-      // await Future.delayed(Duration(milliseconds: 3000));
+      // aggiorno il pokemon con le statistiche
       final pokemonUpdate = await updateStats(pokemonById);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(

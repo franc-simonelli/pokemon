@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$MovesetState {
   Status get status => throw _privateConstructorUsedError;
   MovesetModel? get moveset => throw _privateConstructorUsedError;
+  PokemonModel? get pokemon => throw _privateConstructorUsedError;
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.
@@ -32,7 +33,7 @@ abstract class $MovesetStateCopyWith<$Res> {
           MovesetState value, $Res Function(MovesetState) then) =
       _$MovesetStateCopyWithImpl<$Res, MovesetState>;
   @useResult
-  $Res call({Status status, MovesetModel? moveset});
+  $Res call({Status status, MovesetModel? moveset, PokemonModel? pokemon});
 }
 
 /// @nodoc
@@ -52,6 +53,7 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
   $Res call({
     Object? status = null,
     Object? moveset = freezed,
+    Object? pokemon = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -62,6 +64,10 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
           ? _value.moveset
           : moveset // ignore: cast_nullable_to_non_nullable
               as MovesetModel?,
+      pokemon: freezed == pokemon
+          ? _value.pokemon
+          : pokemon // ignore: cast_nullable_to_non_nullable
+              as PokemonModel?,
     ) as $Val);
   }
 }
@@ -74,7 +80,7 @@ abstract class _$$MovesetStateImplCopyWith<$Res>
       __$$MovesetStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, MovesetModel? moveset});
+  $Res call({Status status, MovesetModel? moveset, PokemonModel? pokemon});
 }
 
 /// @nodoc
@@ -92,6 +98,7 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? moveset = freezed,
+    Object? pokemon = freezed,
   }) {
     return _then(_$MovesetStateImpl(
       status: null == status
@@ -102,6 +109,10 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
           ? _value.moveset
           : moveset // ignore: cast_nullable_to_non_nullable
               as MovesetModel?,
+      pokemon: freezed == pokemon
+          ? _value.pokemon
+          : pokemon // ignore: cast_nullable_to_non_nullable
+              as PokemonModel?,
     ));
   }
 }
@@ -109,16 +120,18 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MovesetStateImpl implements _MovesetState {
-  const _$MovesetStateImpl({required this.status, this.moveset});
+  const _$MovesetStateImpl({required this.status, this.moveset, this.pokemon});
 
   @override
   final Status status;
   @override
   final MovesetModel? moveset;
+  @override
+  final PokemonModel? pokemon;
 
   @override
   String toString() {
-    return 'MovesetState(status: $status, moveset: $moveset)';
+    return 'MovesetState(status: $status, moveset: $moveset, pokemon: $pokemon)';
   }
 
   @override
@@ -127,11 +140,12 @@ class _$MovesetStateImpl implements _MovesetState {
         (other.runtimeType == runtimeType &&
             other is _$MovesetStateImpl &&
             (identical(other.status, status) || other.status == status) &&
-            (identical(other.moveset, moveset) || other.moveset == moveset));
+            (identical(other.moveset, moveset) || other.moveset == moveset) &&
+            (identical(other.pokemon, pokemon) || other.pokemon == pokemon));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, moveset);
+  int get hashCode => Object.hash(runtimeType, status, moveset, pokemon);
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.
@@ -145,12 +159,15 @@ class _$MovesetStateImpl implements _MovesetState {
 abstract class _MovesetState implements MovesetState {
   const factory _MovesetState(
       {required final Status status,
-      final MovesetModel? moveset}) = _$MovesetStateImpl;
+      final MovesetModel? moveset,
+      final PokemonModel? pokemon}) = _$MovesetStateImpl;
 
   @override
   Status get status;
   @override
   MovesetModel? get moveset;
+  @override
+  PokemonModel? get pokemon;
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.

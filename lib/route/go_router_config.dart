@@ -92,7 +92,7 @@ final goRouter = GoRouter(
             GoRoute(
               path: ScreenPaths.countries,
               builder: (context, state) {
-                return const CountryPage();
+                return const CountriesPage();
               },
             ),
             // GoRoute(

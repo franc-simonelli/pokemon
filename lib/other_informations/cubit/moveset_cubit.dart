@@ -17,6 +17,7 @@ class MovesetCubit extends Cubit<MovesetState> {
     required this.pokemonRepository,
   }) : super(MovesetState(
           status: Status.initial,
+          pokemon: pokemon,
         )) {
     initialize();
   }
@@ -86,6 +87,42 @@ class MovesetCubit extends Cubit<MovesetState> {
     }
   }
 
+  Future<List<MoveModel>> updateLocalMoves(
+    MoveModel move,
+  ) async {
+    final currentMoves = state.moveset?.moves?.toList();
+
+    final index = currentMoves?.indexWhere(
+      (element) {
+        return element.move?.name == move.move?.name;
+      },
+    );
+    currentMoves?.removeAt(index!);
+    currentMoves?.insert(index!, move);
+    return currentMoves ?? [];
+  }
+
+  updatePokemonMoveSP(MoveModel move) async {
+    final pokemonBySP = await pokemonRepository.fetchPokemonById(
+      state.pokemon?.id ?? '',
+    );
+    final index = pokemonBySP.moveset?.moves?.indexWhere(
+      (element) {
+        if (element.move?.name == move.move?.name) {
+          print('ecco');
+        }
+        return element.move?.name == move.move?.name;
+      },
+    );
+
+    pokemonBySP.moveset?.moves?.removeAt(index!);
+    pokemonBySP.moveset?.moves?.insert(index!, move);
+    await savePokemonUpdate(
+      pokemon: pokemonBySP,
+      pokemonRepository: pokemonRepository,
+    );
+  }
+
   checkAbilityById(AbilitiesModel ability) async {
     if (ability.isDownloaded == null) {
       final abilityUpdate =
@@ -113,48 +150,19 @@ class MovesetCubit extends Cubit<MovesetState> {
     return currentAbilities ?? [];
   }
 
-  Future<List<MoveModel>> updateLocalMoves(
-    MoveModel move,
-  ) async {
-    final currentMoves = state.moveset?.moves?.toList();
-
-    final index = currentMoves?.indexWhere(
-      (element) {
-        return element.move?.name == move.move?.name;
-      },
-    );
-    currentMoves?.removeAt(index!);
-    currentMoves?.insert(index!, move);
-    return currentMoves ?? [];
-  }
-
   updatePokemonAbilitySP(AbilitiesModel ability) async {
-    final index = pokemon.moveset?.abilities?.indexWhere(
+    final pokemonBySP = await pokemonRepository.fetchPokemonById(
+      state.pokemon?.id ?? '',
+    );
+    final index = pokemonBySP.moveset?.abilities?.indexWhere(
       (element) {
         return element.ability?.name == ability.ability?.name;
       },
     );
-    pokemon.moveset?.abilities?.removeAt(index!);
-    pokemon.moveset?.abilities?.insert(index!, ability);
+    pokemonBySP.moveset?.abilities?.removeAt(index!);
+    pokemonBySP.moveset?.abilities?.insert(index!, ability);
     await savePokemonUpdate(
-      pokemon: pokemon,
-      pokemonRepository: pokemonRepository,
-    );
-  }
-
-  updatePokemonMoveSP(MoveModel move) async {
-    final index = await pokemon.moveset?.moves?.indexWhere(
-      (element) {
-        if (element.move?.name == move.move?.name) {
-          print('ecco');
-        }
-        return element.move?.name == move.move?.name;
-      },
-    );
-    pokemon.moveset?.moves?.removeAt(index!);
-    pokemon.moveset?.moves?.insert(index!, move);
-    await savePokemonUpdate(
-      pokemon: pokemon,
+      pokemon: pokemonBySP,
       pokemonRepository: pokemonRepository,
     );
   }

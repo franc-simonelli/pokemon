@@ -12,10 +12,7 @@ class BottomNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-
     return Scaffold(
-      // backgroundColor: Colors.transparent,
-
       body: navigationShell,
       bottomNavigationBar: Builder(builder: (context) {
         return ClipRRect(
@@ -24,6 +21,7 @@ class BottomNavigationScreen extends StatelessWidget {
           //   topLeft: Radius.circular(30),
           // ),
           child: NavigationBar(
+            // backgroundColor: Colors.red,
             height: 70,
             labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
             elevation: 3,

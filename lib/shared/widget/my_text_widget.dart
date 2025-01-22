@@ -5,12 +5,14 @@ class MyText extends StatelessWidget {
     required this.text,
     required this.style,
     this.isFontBold = false,
+    this.textAlign,
     super.key,
   });
 
   final String text;
   final TextStyle style;
   final bool isFontBold;
+  final TextAlign? textAlign;
 
   factory MyText.labelSmall({
     required BuildContext context,
@@ -18,11 +20,13 @@ class MyText extends StatelessWidget {
     bool isFontBold = false,
     bool isBorderText = false,
     Color? color,
+    TextAlign? textAlign,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
+      textAlign: textAlign,
       style: appTextTheme.labelSmall!.copyWith(
         color: color ?? appColors.onSurface,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
@@ -65,11 +69,13 @@ class MyText extends StatelessWidget {
     bool isBorderText = false,
     bool isUnderLine = false,
     Color? color,
+    TextAlign? textAlign,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
     return MyText(
       text: text,
+      textAlign: textAlign,
       style: appTextTheme.labelMedium!.copyWith(
         color: color ?? appColors.onSurface,
         decoration: isUnderLine ? TextDecoration.underline : null,
@@ -169,6 +175,7 @@ class MyText extends StatelessWidget {
     return Text(
       text,
       style: style,
+      textAlign: textAlign,
     );
   }
 }

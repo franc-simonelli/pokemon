@@ -36,7 +36,7 @@ class ImagePokemon extends StatelessWidget {
           ),
         Center(
           child: AnimatedOpacity(
-            opacity: opacity,
+            opacity: 1,
             duration: Duration(milliseconds: 1000),
             child: ImageShadow(
               pokemon: pokemon,

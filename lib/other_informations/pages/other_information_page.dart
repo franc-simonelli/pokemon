@@ -27,11 +27,13 @@ class _OtherInformationState extends State<OtherInformation>
   late TabController _tabController;
   late MovesetCubit _movesetCubit;
   late EvolutionLineCubit _evolutionLineCubit;
-  // late EvolutionLineCubit _evolutionLineCubit;
+  late List<bool> _visitedTabs;
 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    _visitedTabs = List<bool>.filled(2, false);
+
     final movesetRepository = context.read<MovesetRepository>();
     final pokemonRepository = context.read<PokemonRepository>();
     _movesetCubit = MovesetCubit(
@@ -43,6 +45,21 @@ class _OtherInformationState extends State<OtherInformation>
       evolutionLine: widget.pokemon.evolutions ?? [],
       pokemonRepository: pokemonRepository,
     );
+
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) return;
+
+      final currentIndex = _tabController.index;
+      if (!_visitedTabs[currentIndex]) {
+        if (currentIndex == 0) {
+          // _movesetCubit.initialize();
+        } else if (currentIndex == 1) {
+          _evolutionLineCubit.fetchEvolutionLine();
+        }
+
+        _visitedTabs[currentIndex] = true; // Segna il tab come visitato
+      }
+    });
     super.initState();
   }
 
