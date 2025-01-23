@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/other_informations/cubit/evolution_line_cubit.dart';
+import 'package:pokedex/other_informations/utils/build_difference_text.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/image_pokemon.dart';
 import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
@@ -23,78 +22,74 @@ class EvolutionLineContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Container(
-        // color: Colors.red,
-        // height: 80,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: Column(
-                    children: [
-                      _buildImage(context: context, pokemon: pokemonFrom),
-                    ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    _buildImage(context: context, pokemon: pokemonFrom),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              Expanded(
+                flex: 4,
+                child: Center(
+                  child: MyText.labelMedium(
+                    context: context,
+                    text: pokemon.reason ?? '',
+                    isFontBold: true,
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
+              ),
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  children: [
+                    _buildImage(context: context, pokemon: pokemon),
+                  ],
                 ),
-                Expanded(
-                  flex: 4,
-                  child: Center(
-                    child: MyText.labelMedium(
-                      context: context,
-                      text: pokemon.reason ?? '',
-                      isFontBold: true,
-                    ),
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                flex: 6,
+                child: _buildStats(pokemonFrom, null),
+              ),
+              Expanded(
+                flex: 3,
+                child: Container(
+                  // color: Colors.green,
+                  child: _buildDifferences(
+                    context: context,
+                    pokemon1: pokemonFrom,
+                    pokemon2: pokemon,
                   ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Column(
-                    children: [
-                      _buildImage(context: context, pokemon: pokemon),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: _buildStats(pokemonFrom, null),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    // color: Colors.green,
-                    child: _buildDifferences(
-                      context: context,
-                      pokemon1: pokemonFrom,
-                      pokemon2: pokemon,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 6,
-                  child: _buildStats(pokemon, pokemonFrom),
-                ),
-              ],
-            )
-          ],
-        ),
+              ),
+              Expanded(
+                flex: 6,
+                child: _buildStats(pokemon, pokemonFrom),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
@@ -194,50 +189,17 @@ class EvolutionLineContent extends StatelessWidget {
     required PokemonModel pokemon1,
     required PokemonModel pokemon2,
   }) {
-    return Container(
-      // decoration: BoxDecoration(border: Border.all(color: Colors.white)),
-      child: Column(
-        children: [
-          _buildDifferenceText(context, pokemon2.hp! - pokemon1.hp!),
-          _buildDifferenceText(context, pokemon2.attack! - pokemon1.attack!),
-          _buildDifferenceText(context, pokemon2.defense! - pokemon1.defense!),
-          _buildDifferenceText(
-              context, pokemon2.specialAttack! - pokemon1.specialAttack!),
-          _buildDifferenceText(
-              context, pokemon2.specialDefense! - pokemon1.specialDefense!),
-          _buildDifferenceText(context, pokemon2.speed! - pokemon1.speed!),
-          _buildDifferenceText(context, pokemon2.total! - pokemon1.total!),
-        ],
-      ),
-    );
-  }
-
-  _buildDifferenceText(BuildContext context, int value) {
-    String text = '';
-    Color? color;
-    if (value < 0) {
-      color = Colors.red;
-    }
-    if (value > 0) {
-      text += '+';
-      color = Colors.green;
-    }
-    return Row(
+    return Column(
       children: [
-        Expanded(child: Container()),
-        Expanded(
-          flex: 3,
-          child: Container(
-            // color: Colors.blue.withOpacity(0.4),
-            child: MyText.labelSmall(
-              context: context,
-              text: '$text ${value.toString()}',
-              color: color,
-              textAlign: TextAlign.end,
-            ),
-          ),
-        ),
-        Expanded(child: Container()),
+        buildDifferenceText(context, pokemon2.hp! - pokemon1.hp!),
+        buildDifferenceText(context, pokemon2.attack! - pokemon1.attack!),
+        buildDifferenceText(context, pokemon2.defense! - pokemon1.defense!),
+        buildDifferenceText(
+            context, pokemon2.specialAttack! - pokemon1.specialAttack!),
+        buildDifferenceText(
+            context, pokemon2.specialDefense! - pokemon1.specialDefense!),
+        buildDifferenceText(context, pokemon2.speed! - pokemon1.speed!),
+        buildDifferenceText(context, pokemon2.total! - pokemon1.total!),
       ],
     );
   }

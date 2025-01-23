@@ -3,10 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/views/application_page.dart';
+import 'package:pokedex/compares/pages/compare_page.dart';
 import 'package:pokedex/counties/country_pokemon_list_page.dart';
 import 'package:pokedex/features/bottom_navigation_bar.dart';
 import 'package:pokedex/counties/countries_page.dart';
-import 'package:pokedex/features/favorite/favorite_screen.dart';
+import 'package:pokedex/features/favorite/favorite_page.dart';
 import 'package:pokedex/features/home/home_page.dart';
 import 'package:pokedex/other_informations/pages/other_information_page.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
@@ -18,6 +19,7 @@ abstract final class ScreenPaths {
   static const application = '/';
   static const home = '/home';
   static const countries = '/countries';
+  static const compare = '/compare';
   static const favorite = '/favorite';
   static const searchPokemon = '/search-pokemon';
   static const detailPokemon = '/detail-pokemon';
@@ -41,7 +43,10 @@ final goRouter = GoRouter(
     GoRoute(
       path: ScreenPaths.searchPokemon,
       builder: (context, state) {
-        return const SearchPokemonPage();
+        bool searchCompare = state.extra as bool;
+        return SearchPokemonPage(
+          searchCompare: searchCompare,
+        );
       },
     ),
     GoRoute(
@@ -104,6 +109,16 @@ final goRouter = GoRouter(
             //     );
             //   },
             // ),
+          ],
+        ),
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: ScreenPaths.compare,
+              builder: (context, state) {
+                return const ComparesPage();
+              },
+            ),
           ],
         ),
         StatefulShellBranch(

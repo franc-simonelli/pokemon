@@ -83,12 +83,13 @@ class PokemonsPage extends StatelessWidget {
 
     return SliverAppBar(
       // backgroundColor: Colors.transparent,
+      shadowColor: Colors.black,
       pinned: true,
       floating: true,
       expandedHeight: 130.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 30),
+          padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
           child: Align(
             alignment: Alignment.center,
             child: Padding(
@@ -101,7 +102,7 @@ class PokemonsPage extends StatelessWidget {
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(70.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: BlocBuilder<FiltersCubit, FiltersState>(
             builder: (context, state) {
               return FilterSection(
@@ -115,20 +116,22 @@ class PokemonsPage extends StatelessWidget {
   }
 
   Widget _buildSearchBar(BuildContext context) {
+    final color = Theme.of(context).scaffoldBackgroundColor;
     return GestureDetector(
       onTap: () {
-        context.push(ScreenPaths.searchPokemon);
+        context.push(ScreenPaths.searchPokemon, extra: false);
       },
       child: Container(
         height: 44,
         decoration: BoxDecoration(
-          color: Colors.grey.shade900,
+          // color: Colors.grey.shade900,
+          color: color,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade800,
-              offset: const Offset(-1, -1),
+              color: Colors.grey.shade700,
+              offset: const Offset(0, -1),
             ),
-            const BoxShadow(
+            BoxShadow(
               color: Colors.black,
               offset: Offset(2, 2),
             )
@@ -141,13 +144,13 @@ class PokemonsPage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Icon(
                 Icons.search,
-                color: Colors.grey,
+                color: Colors.grey.shade400,
               ),
             ),
             Text(
               'Cerca un pokemon . . .',
               style: TextStyle(
-                color: Colors.grey,
+                color: Colors.grey.shade400,
                 fontSize: 16,
                 fontStyle: FontStyle.italic,
               ),

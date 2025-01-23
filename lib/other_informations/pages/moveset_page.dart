@@ -83,6 +83,11 @@ class _MovesetPageState extends State<MovesetPage> {
                     side: BorderSide(color: Colors.transparent),
                     borderRadius: BorderRadius.zero,
                   ),
+                  // title: MyTextTranslateMedium(
+                  //   key: UniqueKey(),
+                  //   text: item?.move?.name?.toUpperCase() ?? '',
+                  //   isFontBold: true,
+                  // ),
                   title: MyText.labelMedium(
                     context: context,
                     text: item?.move?.name?.toUpperCase() ?? '',
@@ -153,6 +158,10 @@ class _MovesetPageState extends State<MovesetPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.zero,
                   ),
+                  // title: MyTextTranslateMedium(
+                  //   text: item?.ability?.name?.toUpperCase() ?? '',
+                  //   isFontBold: true,
+                  // ),
                   title: MyText.labelMedium(
                     context: context,
                     text: item?.ability?.name?.toUpperCase() ?? '',

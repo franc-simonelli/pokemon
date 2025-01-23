@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/features/home/widget/filter_section_item.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
+import 'package:pokedex/filters/widgets/all_type_widget.dart';
 
 class FilterSection extends StatelessWidget {
   const FilterSection({
@@ -14,26 +15,30 @@ class FilterSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Row(
         children: [
           Expanded(
             child: BlocBuilder<FiltersCubit, FiltersState>(
               builder: (context, state) {
                 return FilterSectionItem(
-                  text: 'Tipo',
+                  text: state.typesSelect.isEmpty
+                      ? 'Type '
+                      : 'Type (${state.typesSelect.length})',
                   typesSelect: typesSelect.toList(),
                   onPress: () async {
-                    // await showModalBottomSheet(
-                    //   context: context,
-                    //   isScrollControlled: true,
-                    //   backgroundColor: Colors.transparent,
-                    //   builder: (context) => SizedBox(
-                    //     height: MediaQuery.of(context).size.height *
-                    //         0.7, // Altezza desiderata
-                    //     child: const AllTypeModalWidget(),
-                    //   ),
-                    // );
+                    final filtersCubit = context.read<FiltersCubit>();
+                    await showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: AllTypeModalWidget(
+                          filtersCubit: filtersCubit,
+                        ),
+                      ),
+                    );
                   },
                 );
               },
@@ -42,7 +47,7 @@ class FilterSection extends StatelessWidget {
           const SizedBox(width: 40),
           Expanded(
             child: FilterSectionItem(
-              text: 'Ordine',
+              text: 'Order',
               onPress: () {
                 // context.read<FiltersCubit>().setParamsFilter('Spc.Atk');
               },

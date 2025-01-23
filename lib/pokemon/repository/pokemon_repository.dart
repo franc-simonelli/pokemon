@@ -36,11 +36,12 @@ class PokemonRepository {
   }
 
   Future<List<PokemonModel>> filtersPokemons({
+    required int page,
+    required EnumGen gen,
     List<String>? typesfilter,
     String? paramsFilter,
-    required int page,
   }) async {
-    final list = await generateAllDataPokemons();
+    final list = await fetchPokemonGen(gen);
     final pokemonsFilter = fetchFiltersPokemons(
       pokemons: list,
       typesFilter: typesfilter ?? [],

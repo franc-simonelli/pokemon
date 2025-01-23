@@ -117,7 +117,6 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       pokemonSelected: pokemon,
     ));
     if (pokemon.statsUpdate != true) {
-      // await Future.delayed(Duration(milliseconds: 3000));
       final pokemonUpdate = await updateStats(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
@@ -151,41 +150,37 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     return pokemonUpdate;
   }
 
-  logicDetailPokemon() async {
-    late PokemonModel pokemonUpdate;
-    final pokemon = await pokemonRepository
-        .fetchPokemonById(state.pokemonSelected.id ?? '');
-
-    final isUpdate = await checkStatsUpdate(pokemon);
-
-    if (!isUpdate) {
-      pokemonUpdate = await fetchStatsPokemon(
-        int.parse(pokemon.id!.replaceAll("#", "")),
-        pokemon,
-      );
-      await savePokemonUpdate(
-        pokemon: pokemonUpdate,
-        pokemonRepository: pokemonRepository,
-      );
-    } else {
-      pokemonUpdate = pokemon;
-    }
-
-    final result = await pokemonRepository.fetchPokemonGen(gen);
-    final indexInitial = result.indexWhere(
-      (element) {
-        if (element.id == pokemonSelected.id) {}
-        return element.id == pokemonSelected.id;
-      },
-    );
-
-    emit(state.copyWith(
-      pokemonList: result,
-      pokemonStatus: Status.success,
-      initialIndex: indexInitial,
-      pokemonSelected: pokemonUpdate,
-    ));
-  }
+  // logicDetailPokemon() async {
+  //   late PokemonModel pokemonUpdate;
+  //   final pokemon = await pokemonRepository
+  //       .fetchPokemonById(state.pokemonSelected.id ?? '');
+  //   final isUpdate = await checkStatsUpdate(pokemon);
+  //   if (!isUpdate) {
+  //     pokemonUpdate = await fetchStatsPokemon(
+  //       int.parse(pokemon.id!.replaceAll("#", "")),
+  //       pokemon,
+  //     );
+  //     await savePokemonUpdate(
+  //       pokemon: pokemonUpdate,
+  //       pokemonRepository: pokemonRepository,
+  //     );
+  //   } else {
+  //     pokemonUpdate = pokemon;
+  //   }
+  //   final result = await pokemonRepository.fetchPokemonGen(gen);
+  //   final indexInitial = result.indexWhere(
+  //     (element) {
+  //       if (element.id == pokemonSelected.id) {}
+  //       return element.id == pokemonSelected.id;
+  //     },
+  //   );
+  //   emit(state.copyWith(
+  //     pokemonList: result,
+  //     pokemonStatus: Status.success,
+  //     initialIndex: indexInitial,
+  //     pokemonSelected: pokemonUpdate,
+  //   ));
+  // }
 
   fetchStatsPokemon(int id, PokemonModel pokemon) async {
     return await pokemonRepository.fetchPokemonStatsById(
@@ -194,10 +189,10 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     );
   }
 
-  checkStatsUpdate(PokemonModel checkPokemon) async {
-    final pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.all);
-    final pokemon =
-        pokemons.firstWhere((element) => element.id == checkPokemon.id);
-    return pokemon.statsUpdate ?? false;
-  }
+  // checkStatsUpdate(PokemonModel checkPokemon) async {
+  //   final pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.all);
+  //   final pokemon =
+  //       pokemons.firstWhere((element) => element.id == checkPokemon.id);
+  //   return pokemon.statsUpdate ?? false;
+  // }
 }

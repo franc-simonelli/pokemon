@@ -14,6 +14,7 @@ class CountriesPage extends StatelessWidget {
           text: 'Countries',
           isFontBold: true,
         ),
+        centerTitle: false,
       ),
       body: CountriesContent(),
     );

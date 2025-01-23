@@ -47,6 +47,7 @@ class PokemonCubit extends Cubit<PokemonState> {
       init();
     } else {
       final result = await pokemonRepository.filtersPokemons(
+        gen: state.gen,
         typesfilter: filtersState.typesSelect,
         paramsFilter: filtersState.paramsFilter,
         page: state.currentPage,
@@ -105,6 +106,7 @@ class PokemonCubit extends Cubit<PokemonState> {
         }
       } else {
         list = await pokemonRepository.filtersPokemons(
+          gen: state.gen,
           typesfilter: filtersCubit.state.typesSelect,
           paramsFilter: filtersCubit.state.paramsFilter,
           page: state.currentPage + 1,

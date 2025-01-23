@@ -8,11 +8,9 @@ import 'package:pokedex/application/repositories/application_repository.dart';
 import 'package:pokedex/counties/repositories/countries_repository.dart';
 import 'package:pokedex/counties/cubit/countries_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
-import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/theme/app_theme.dart';
-import 'package:pokedex/filters/cubit/filters_cubit.dart';
 import 'package:pokedex/filters/repository/type_repository.dart';
 import 'package:sizer/sizer.dart';
 
@@ -44,13 +42,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     filtersRepository = FiltersRepository();
     movesetRepository = MovesetRepository();
     countriesRepository = CountriesRepository();
-    // filtersCubit = FiltersCubit(
-    //   filtersRepository: filtersRepository,
-    // );
-    // pokemonCubit = PokemonCubit(
-    //   pokemonRepository: pokemonRepository,
-    //   filtersCubit: filtersCubit,
-    // );
     countriesCubit = CountriesCubit(
       countriesRepository: countriesRepository,
     );
@@ -138,7 +129,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       builder: (context, orientation, deviceType) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: AppTheme().toThemeData(),
+          theme: AppTheme().toThemeDataDark(),
           // theme: ThemeData.light(),
           routerConfig: goRouter,
           builder: (context, child) {

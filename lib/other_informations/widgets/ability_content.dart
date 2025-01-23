@@ -48,6 +48,10 @@ class _AbilityContentState extends State<AbilityContent> {
                         text: widget.ability.effectEntries?.effect ?? '',
                         color: Colors.grey.shade300,
                       ),
+                      // child: MyTextTranslateSmall(
+                      //   text: widget.ability.effectEntries?.effect ?? '',
+                      //   color: Colors.grey.shade300,
+                      // ),
                     ),
                   ],
                 ),

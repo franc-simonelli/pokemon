@@ -21,12 +21,16 @@ class CountriesContent extends StatelessWidget {
         }
         if (state.countriesState == Status.success) {
           return ListView.builder(
+            physics: BouncingScrollPhysics(),
             shrinkWrap: true,
             itemCount: state.countries.length,
             itemBuilder: (context, index) {
               final item = state.countries[index];
               return Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
                 child: CardCountry(
                   item: item,
                 ),

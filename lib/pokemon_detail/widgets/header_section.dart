@@ -142,23 +142,6 @@ class _HeaderSectionState extends State<HeaderSection> {
                                 ImagePokemon(
                                   pokemon: item,
                                 ),
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     color:
-                                //         Colors.black.withOpacity(0.5),
-                                //     borderRadius: BorderRadius.circular(8),
-                                //   ),
-                                //   child: Center(
-                                //     child: Text(
-                                //       'Tocca per mosse ed evoluzioni',
-                                //       style: TextStyle(
-                                //         color: Colors.white,
-                                //         fontSize: 18,
-                                //         fontWeight: FontWeight.bold,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
                           );
@@ -172,9 +155,6 @@ class _HeaderSectionState extends State<HeaderSection> {
                           context
                               .read<PokemonDetailCubit>()
                               .changePokemon(state.pokemonList[value]);
-                          // setState(() {
-                          //   _currentIndex = value;
-                          // });
                         },
                       ),
                     ),
@@ -222,7 +202,7 @@ class _HeaderSectionState extends State<HeaderSection> {
 
   Widget _buildInfo(BuildContext context, PokemonModel pokemon) {
     return Expanded(
-      flex: 6,
+      flex: 7,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

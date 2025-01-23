@@ -1,17 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pokedex/features/home/widget/filter_section.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
 import 'package:pokedex/filters/repository/type_repository.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/pages/pokemons_page.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/pokemon/widget/grid_pokemon.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
-import 'package:pokedex/route/go_router_config.dart';
-import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -41,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final pokemonRepository = context.read<PokemonRepository>();
     _filtersCubit = FiltersCubit(
       filtersRepository: filtersRepository,
-    );
+    )..fetchFilters();
     _pokemonCubit = PokemonCubit(
       pokemonRepository: pokemonRepository,
       filtersCubit: _filtersCubit,

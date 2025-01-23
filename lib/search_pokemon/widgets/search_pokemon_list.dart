@@ -10,6 +10,7 @@ import 'package:pokedex/search_pokemon/widgets/search_pokemon_item_list.dart';
 class SearchPokemonsList extends StatelessWidget {
   const SearchPokemonsList({
     required this.pokemons,
+    required this.pressItem,
     this.showDelete,
     this.pressDelete,
     super.key,
@@ -17,6 +18,7 @@ class SearchPokemonsList extends StatelessWidget {
 
   final List<PokemonModel> pokemons;
   final bool? showDelete;
+  final Function pressItem;
   final Function? pressDelete;
 
   @override
@@ -33,11 +35,7 @@ class SearchPokemonsList extends StatelessWidget {
             ),
             child: GestureDetector(
               onTap: () {
-                context.read<SearchPokemonCubit>().manageChronology(pokemon);
-                context.push(ScreenPaths.detailPokemon, extra: {
-                  'pokemonSelected': pokemon,
-                  'gen': EnumGen.all,
-                });
+                return pressItem(pokemon);
               },
               child: SearchPokemonItemList(
                 pokemon: pokemon,

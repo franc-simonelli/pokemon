@@ -97,8 +97,23 @@ class CardItem extends StatelessWidget {
             Positioned(
               top: 20,
               right: -20,
-              child: ImageType(
-                typeImg: pokemon.typeofpokemon![0],
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return LinearGradient(
+                    colors: [
+                      mappingColors(
+                        pokemon.typeofpokemon![0],
+                      ),
+                      Colors.black54,
+                    ],
+                    begin: Alignment.bottomLeft,
+                    end: Alignment.topRight,
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.srcATop,
+                child: ImageType(
+                  typeImg: pokemon.typeofpokemon![0],
+                ),
               ),
             ),
             // image pokemon

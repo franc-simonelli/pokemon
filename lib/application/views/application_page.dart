@@ -5,11 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/constants/image_constants.dart';
 import 'package:pokedex/counties/cubit/countries_cubit.dart';
-import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_button.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
-import 'package:pokedex/filters/cubit/filters_cubit.dart';
 
 class ApplicationPage extends StatefulWidget {
   const ApplicationPage({super.key});

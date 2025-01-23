@@ -5,7 +5,12 @@ import 'package:pokedex/search_pokemon/cubit/search_pokemon_cubit.dart';
 import 'package:pokedex/search_pokemon/widgets/search_pokemon_content.dart';
 
 class SearchPokemonPage extends StatefulWidget {
-  const SearchPokemonPage({super.key});
+  const SearchPokemonPage({
+    required this.searchCompare,
+    super.key,
+  });
+
+  final bool searchCompare;
 
   @override
   State<SearchPokemonPage> createState() => _SearchPokemonPageState();
@@ -27,7 +32,9 @@ class _SearchPokemonPageState extends State<SearchPokemonPage> {
   Widget build(BuildContext context) {
     return BlocProvider<SearchPokemonCubit>.value(
       value: _searchPokemonCubit,
-      child: SearchPokemonContent(),
+      child: SearchPokemonContent(
+        searchCompare: widget.searchCompare,
+      ),
     );
   }
 }

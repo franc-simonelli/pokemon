@@ -27,14 +27,12 @@ class CardCountry extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade500,
-              offset: const Offset(-1, -1),
-              blurRadius: 1,
-            ),
-            const BoxShadow(
               color: Colors.black,
               offset: Offset(2, 2),
-              blurRadius: 2,
+            ),
+            BoxShadow(
+              color: Colors.grey.shade500,
+              offset: Offset(-2, -2),
             )
           ],
         ),
@@ -60,6 +58,11 @@ class CardCountry extends StatelessWidget {
                         child: CupertinoActivityIndicator(),
                       ),
                     ),
+                  ),
+                ),
+                Positioned.fill(
+                  child: CustomPaint(
+                    painter: MetallicEffectPainter(),
                   ),
                 ),
                 Align(
@@ -95,12 +98,59 @@ class CardCountry extends StatelessWidget {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class MetallicEffectPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    // Crea un gradiente iridescente
+    final gradient = LinearGradient(
+      colors: [
+        // Colors.black26,
+        // Colors.black.withOpacity(0.3),
+        // Colors.black54,
+        // Colors.black26,
+        Colors.grey.shade300,
+        Colors.white.withOpacity(0.6),
+        Colors.grey.shade500,
+        Colors.grey.shade300,
+      ],
+      stops: [0.0, 0.5, 0.8, 1.0],
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+    );
+
+    final paint = Paint()
+      ..shader = gradient.createShader(Offset.zero & size)
+      ..blendMode = BlendMode.darken;
+
+    // Aggiungi un livello di blur per la superficie lucida
+    final blurPaint = Paint()
+      ..color = Colors.white.withOpacity(0.2)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 8);
+
+    // Disegna i vari strati
+    canvas.drawRect(Offset.zero & size, blurPaint);
+    canvas.drawRect(Offset.zero & size, paint);
+
+    // Aggiungi riflessi casuali
+    final lightPaint = Paint()..color = Colors.white.withOpacity(0.1);
+    canvas.drawCircle(
+        Offset(size.width * 0.3, size.height * 0.2), 20, lightPaint);
+    canvas.drawCircle(
+        Offset(size.width * 0.7, size.height * 0.8), 15, lightPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
   }
 }

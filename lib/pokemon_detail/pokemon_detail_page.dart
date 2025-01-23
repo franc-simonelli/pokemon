@@ -8,6 +8,7 @@ import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
 import 'package:pokedex/route/go_router_config.dart';
+import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/utils/mapping_type.dart';
 import 'package:pokedex/shared/widget/my_button.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
@@ -57,13 +58,29 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                   child: SizedBox(
                     width: 400,
                     child: Opacity(
-                      opacity: 0.1,
-                      child: Image.asset(
-                        mappingType(
-                          state.pokemonSelected.typeofpokemon?[0] ?? '',
+                      opacity: 0.5,
+                      child: ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                            colors: [
+                              mappingColors(
+                                state.pokemonSelected.typeofpokemon![0],
+                              ),
+                              Colors.black87,
+                              Colors.black87,
+                            ],
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                          ).createShader(bounds);
+                        },
+                        blendMode: BlendMode.srcATop,
+                        child: Image.asset(
+                          mappingType(
+                            state.pokemonSelected.typeofpokemon?[0] ?? '',
+                          ),
+                          fit: BoxFit.cover,
+                          // fit: BoxFit.contain,
                         ),
-                        fit: BoxFit.cover,
-                        // fit: BoxFit.contain,
                       ),
                     ),
                   ),
@@ -133,6 +150,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MyText.labelLarge(context: context, text: 'Weaknesses'),
+        // MyTextTranslateLarge(text: 'Weaknesses'),
         SizedBox(height: 10),
         SizedBox(
           height: 35,
@@ -160,19 +178,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          // BoxShadow(
-          //   color: Colors.grey.shade900,
-          //   offset: const Offset(-1, -1),
-          // ),
-          // const BoxShadow(
-          //   color: Colors.black,
-          //   offset: Offset(2, 2),
-          // )
-        ],
+        boxShadow: [],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10),
+        // child: MyTextTranslateMedium(
+        //   text: pokemon.xdescription ?? '',
+        // )
         child: MyText.labelMedium(
           context: context,
           text: pokemon.xdescription ?? '',

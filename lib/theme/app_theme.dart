@@ -3,14 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 class AppTheme {
-  ThemeData toThemeData() {
+  ThemeData toThemeDataDark() {
     return ThemeData(
       colorSchemeSeed: Colors.blue,
       brightness: Brightness.dark,
       useMaterial3: true,
     ).copyWith(
-      // splashColor: Colors.transparent,
-      // highlightColor: Colors.transparent,
       textTheme: GoogleFonts.poppinsTextTheme(
         ThemeData(
           brightness: Brightness.dark,
@@ -47,11 +45,9 @@ class AppTheme {
           ),
         ),
       ),
-
       navigationBarTheme: const NavigationBarThemeData(
         elevation: 0,
       ),
-
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),

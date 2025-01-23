@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:translator/translator.dart';
 
-class MyText extends StatelessWidget {
+class MyText extends StatefulWidget {
   const MyText({
     required this.text,
     required this.style,
@@ -127,6 +128,7 @@ class MyText extends StatelessWidget {
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
+
     return MyText(
       text: text,
       style: appTextTheme.labelLarge!.copyWith(
@@ -171,11 +173,16 @@ class MyText extends StatelessWidget {
   }
 
   @override
+  State<MyText> createState() => _MyTextState();
+}
+
+class _MyTextState extends State<MyText> {
+  @override
   Widget build(BuildContext context) {
     return Text(
-      text,
-      style: style,
-      textAlign: textAlign,
+      widget.text,
+      style: widget.style,
+      textAlign: widget.textAlign,
     );
   }
 }
