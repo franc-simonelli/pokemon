@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/views/application_page.dart';
 import 'package:pokedex/compares/pages/compare_page.dart';
-import 'package:pokedex/counties/country_pokemon_list_page.dart';
-import 'package:pokedex/features/bottom_navigation_bar.dart';
-import 'package:pokedex/counties/countries_page.dart';
-import 'package:pokedex/features/favorite/favorite_page.dart';
-import 'package:pokedex/features/home/home_page.dart';
+import 'package:pokedex/countries/widgets/country_pokemon_list_page.dart';
+import 'package:pokedex/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:pokedex/countries/pages/countries_page.dart';
+import 'package:pokedex/favorite/favorite_page.dart';
+import 'package:pokedex/home/home_page.dart';
 import 'package:pokedex/other_informations/pages/other_information_page.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
@@ -20,6 +20,7 @@ abstract final class ScreenPaths {
   static const home = '/home';
   static const countries = '/countries';
   static const compare = '/compare';
+  static const compareInit = '/compareInit';
   static const favorite = '/favorite';
   static const searchPokemon = '/search-pokemon';
   static const detailPokemon = '/detail-pokemon';
@@ -77,6 +78,15 @@ final goRouter = GoRouter(
         );
       },
     ),
+    GoRoute(
+      path: ScreenPaths.compareInit,
+      builder: (context, state) {
+        int index = state.extra as int;
+        return ComparesPage(
+          initialIndex: index,
+        );
+      },
+    ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) => BottomNavigationScreen(
         navigationShell: navigationShell,
@@ -116,7 +126,7 @@ final goRouter = GoRouter(
             GoRoute(
               path: ScreenPaths.compare,
               builder: (context, state) {
-                return const ComparesPage();
+                return ComparesPage();
               },
             ),
           ],

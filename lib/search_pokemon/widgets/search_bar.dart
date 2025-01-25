@@ -17,8 +17,8 @@ class _SearchBarPokemonState extends State<SearchBarPokemon>
   final TextEditingController _searchController = TextEditingController();
   late FocusNode _focusNode;
   Timer? _debounce;
-  late AnimationController _controller;
-  late Animation<double> _rotationAnimation;
+  // late AnimationController _controller;
+  // late Animation<double> _rotationAnimation;
 
   @override
   void initState() {

@@ -5,11 +5,11 @@ buildDifferenceText(BuildContext context, int value) {
   String text = '';
   Color? color;
   if (value < 0) {
-    color = Colors.red;
+    color = Colors.red.shade400;
   }
   if (value > 0) {
     text += '+';
-    color = Colors.green;
+    color = Colors.green.shade400;
   }
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -18,6 +18,7 @@ buildDifferenceText(BuildContext context, int value) {
         context: context,
         text: '$text ${value.toString()}',
         color: color,
+        isFontBold: true,
       ),
     ],
   );

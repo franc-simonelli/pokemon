@@ -55,23 +55,16 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ) async {
     try {
       emit(ApplicationBooting());
-
+      await Future.delayed(Duration(milliseconds: 500));
       // Download required
       final downloadRequired = await _isDownloadRequired();
       if (downloadRequired) {
-        emit(ApplicationDownloadRequired());
-        return;
+        // emit(ApplicationDownloadRequired());
+        // return;
+        _mapApplicationDownload(emit);
       } else {
         emit(const ApplicationReady());
       }
-      // Boot tasks
-      // await _executeBootTasks(tasks);
-      // emit(
-      // ApplicationReady(
-      //   initialLink: initialLink,
-      //   linkSubscription: linkSubscription,
-      // ),
-      // );
     } catch (e, s) {
       emit(ApplicationError(message: e.toString()));
       addError(e, s);

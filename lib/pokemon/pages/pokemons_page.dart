@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/features/home/widget/filter_section.dart';
+import 'package:pokedex/home/widget/filter_section.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/widget/grid_pokemon.dart';
@@ -82,20 +82,41 @@ class PokemonsPage extends StatelessWidget {
     final isFirstPage = Navigator.of(context).widget.pages.length == 1;
 
     return SliverAppBar(
-      // backgroundColor: Colors.transparent,
       shadowColor: Colors.black,
       pinned: true,
       floating: true,
+      automaticallyImplyLeading: false,
       expandedHeight: 130.0,
       flexibleSpace: FlexibleSpaceBar(
         background: Padding(
           padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
-          child: Align(
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.only(left: !isFirstPage ? 40 : 0),
-              child: _buildSearchBar(context),
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 44,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (!isFirstPage) ...[
+                      GestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios_new_outlined,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                    ],
+                    Expanded(
+                      child: _buildSearchBar(context),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -122,9 +143,7 @@ class PokemonsPage extends StatelessWidget {
         context.push(ScreenPaths.searchPokemon, extra: false);
       },
       child: Container(
-        height: 44,
         decoration: BoxDecoration(
-          // color: Colors.grey.shade900,
           color: color,
           boxShadow: [
             BoxShadow(
@@ -155,7 +174,6 @@ class PokemonsPage extends StatelessWidget {
                 fontStyle: FontStyle.italic,
               ),
             )
-            // MyText.labelMedium(context: context, text: 'Cerca')
           ],
         ),
       ),

@@ -1,49 +1,50 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedex/compares/cubit/compares_cubit.dart';
-import 'package:pokedex/compares/pages/compare_page.dart';
+import 'package:pokedex/compares/utils/generate_ticks.dart';
+import 'package:pokedex/compares/widgets/table_stats.dart';
 import 'package:pokedex/components/widgets/button_scaled.dart';
-import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
+import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon/widget/page_view_pokemon_list.dart';
 import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
-import 'package:pokedex/search_pokemon/search_pokemon_page.dart';
-import 'package:pokedex/search_pokemon/widgets/search_bar.dart';
-import 'package:pokedex/shared/widget/content_modal_widget.dart';
+import 'package:pokedex/route/go_router_config.dart';
+import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
+import 'package:flutter_radar_chart/flutter_radar_chart.dart';
 
 class CompareContent extends StatefulWidget {
-  const CompareContent({super.key});
+  const CompareContent({
+    required this.controller1,
+    required this.controller2,
+    this.initialPokemon,
+    super.key,
+  });
+
+  final PageController controller1;
+  final PageController controller2;
+  final PokemonModel? initialPokemon;
 
   @override
   State<CompareContent> createState() => _CompareContentState();
 }
 
 class _CompareContentState extends State<CompareContent> {
-  late PageController controller1;
-  late PageController controller2;
-
+  bool isStarted = false;
   @override
   void initState() {
-    controller1 = PageController(initialPage: 0);
-    controller2 = PageController(initialPage: 0);
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    controller1.dispose();
-    controller2.dispose();
-    super.dispose();
   }
 
   void _goToNextPageFirstList(
     BuildContext context,
     List<PokemonModel> pokemonList,
   ) {
-    final currentIndex = controller1.page?.toInt() ?? 0;
+    final currentIndex = widget.controller1.page?.toInt() ?? 0;
     if (currentIndex < pokemonList.length - 1) {
-      controller1.animateToPage(
+      widget.controller1.animateToPage(
         currentIndex + 1,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -51,16 +52,16 @@ class _CompareContentState extends State<CompareContent> {
     }
     context
         .read<ComparesCubit>()
-        .changeFirstPokemon(pokemonList[controller1.page!.toInt() + 1]);
+        .changeFirstPokemon(pokemonList[widget.controller1.page!.toInt() + 1]);
   }
 
   void _goToNextPageSecondList(
     BuildContext context,
     List<PokemonModel> pokemonList,
   ) {
-    final currentIndex = controller2.page?.toInt() ?? 0;
+    final currentIndex = widget.controller2.page?.toInt() ?? 0;
     if (currentIndex < pokemonList.length - 1) {
-      controller2.animateToPage(
+      widget.controller2.animateToPage(
         currentIndex + 1,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -68,16 +69,16 @@ class _CompareContentState extends State<CompareContent> {
     }
     context
         .read<ComparesCubit>()
-        .changeSecondPokemon(pokemonList[controller2.page!.toInt() + 1]);
+        .changeSecondPokemon(pokemonList[widget.controller2.page!.toInt() + 1]);
   }
 
   void _goToPreviousPageFirstList(
     BuildContext context,
     List<PokemonModel> pokemonList,
   ) {
-    final currentIndex = controller1.page?.toInt() ?? 0;
+    final currentIndex = widget.controller1.page?.toInt() ?? 0;
     if (currentIndex > 0) {
-      controller1.animateToPage(
+      widget.controller1.animateToPage(
         currentIndex - 1,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -85,16 +86,16 @@ class _CompareContentState extends State<CompareContent> {
     }
     context
         .read<ComparesCubit>()
-        .changeFirstPokemon(pokemonList[controller1.page!.toInt() - 1]);
+        .changeFirstPokemon(pokemonList[widget.controller1.page!.toInt() - 1]);
   }
 
   void _goToPreviousPageSecondList(
     BuildContext context,
     List<PokemonModel> pokemonList,
   ) {
-    final currentIndex = controller2.page?.toInt() ?? 0;
+    final currentIndex = widget.controller2.page?.toInt() ?? 0;
     if (currentIndex > 0) {
-      controller2.animateToPage(
+      widget.controller2.animateToPage(
         currentIndex - 1,
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
@@ -102,36 +103,52 @@ class _CompareContentState extends State<CompareContent> {
     }
     context
         .read<ComparesCubit>()
-        .changeSecondPokemon(pokemonList[controller2.page!.toInt() - 1]);
+        .changeSecondPokemon(pokemonList[widget.controller2.page!.toInt() - 1]);
   }
 
   @override
   Widget build(BuildContext context) {
-    // final indexFirstPokemon = context.watch<ComparesCubit>().state.
     return BlocBuilder<ComparesCubit, ComparesState>(
+      // listenWhen: (previous, current) {
+      //   return current.initialPokemon != null;
+      // },
+      // listener: (context, state) {
+      //   PokemonModel? initialPokemon = state.initialPokemon;
+      //   final pokemons = state.pokemons.toList();
+      //   final index = pokemons.indexWhere(
+      //     (element) {
+      //       return element.id == initialPokemon?.id;
+      //     },
+      //   );
+      //   if (initialPokemon != null) {
+      //     widget.controller1.jumpToPage(index);
+      //   }
+      // },
       builder: (context, state) {
         if (state.pokemons.isNotEmpty) {
-          return Column(
-            children: [
-              SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                _pokemonsSection(state, context),
+                Column(
                   children: [
-                    _buildFirstList(state, context),
-                    Expanded(
-                      flex: 1,
-                      child: Container(),
+                    _buildTable(state),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildStats(state),
+                        ),
+                        Expanded(
+                          child: _buildGraphic(state),
+                        ),
+                      ],
                     ),
-                    _buildSecondList(state, context),
+                    SizedBox(height: 20),
                   ],
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              _buildStats(state)
-            ],
+                )
+              ],
+            ),
           );
         }
         return Center(
@@ -141,12 +158,125 @@ class _CompareContentState extends State<CompareContent> {
     );
   }
 
+  Widget _buildTable(ComparesState state) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: TableStats(
+        firstName: state.firstPokemonSelected?.name ?? '',
+        secondName: state.secondPokemonSelected?.name ?? '',
+        statsFirst: [
+          state.firstPokemonSelected?.hp ?? 0,
+          state.firstPokemonSelected?.attack ?? 0,
+          state.firstPokemonSelected?.defense ?? 0,
+          state.firstPokemonSelected?.specialAttack ?? 0,
+          state.firstPokemonSelected?.specialDefense ?? 0,
+          state.firstPokemonSelected?.speed ?? 0,
+          state.firstPokemonSelected?.total ?? 0,
+        ],
+        statsSecond: [
+          state.secondPokemonSelected?.hp ?? 0,
+          state.secondPokemonSelected?.attack ?? 0,
+          state.secondPokemonSelected?.defense ?? 0,
+          state.secondPokemonSelected?.specialAttack ?? 0,
+          state.secondPokemonSelected?.specialDefense ?? 0,
+          state.secondPokemonSelected?.speed ?? 0,
+          state.secondPokemonSelected?.total ?? 0,
+        ],
+      ),
+    );
+  }
+
+  Widget _pokemonsSection(ComparesState state, BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: [
+              _buildFirstList(state, context),
+              _buildSecondList(state, context),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGraphic(ComparesState state) {
+    final ticks = generateTicks([
+      state.firstPokemonSelected?.hp ?? 0,
+      state.firstPokemonSelected?.attack ?? 0,
+      state.firstPokemonSelected?.defense ?? 0,
+      state.firstPokemonSelected?.specialAttack ?? 0,
+      state.firstPokemonSelected?.specialDefense ?? 0,
+      state.firstPokemonSelected?.speed ?? 0,
+      state.secondPokemonSelected?.hp ?? 0,
+      state.secondPokemonSelected?.attack ?? 0,
+      state.secondPokemonSelected?.defense ?? 0,
+      state.secondPokemonSelected?.specialAttack ?? 0,
+      state.secondPokemonSelected?.specialDefense ?? 0,
+      state.secondPokemonSelected?.speed ?? 0,
+    ]);
+    return SizedBox(
+      width: 200,
+      height: 200,
+      child: RadarChart(
+        outlineColor: Colors.grey.shade300,
+        sides: 6,
+        featuresTextStyle: TextStyle(
+          color: Colors.blue.shade300,
+          fontSize: 16,
+        ),
+        graphColors: [
+          Colors.blue,
+          Colors.red,
+        ],
+        ticksTextStyle: TextStyle(
+          color: Colors.transparent,
+          fontSize: 10,
+        ),
+        ticks: ticks,
+        features: [
+          "HP",
+          "Att",
+          "Def",
+          "S.Atk",
+          "S.Def",
+          "Spe",
+        ],
+        data: [
+          [
+            state.firstPokemonSelected?.hp ?? 0,
+            state.firstPokemonSelected?.attack ?? 0,
+            state.firstPokemonSelected?.defense ?? 0,
+            state.firstPokemonSelected?.specialAttack ?? 0,
+            state.firstPokemonSelected?.specialDefense ?? 0,
+            state.firstPokemonSelected?.speed ?? 0,
+          ],
+          [
+            state.secondPokemonSelected?.hp ?? 0,
+            state.secondPokemonSelected?.attack ?? 0,
+            state.secondPokemonSelected?.defense ?? 0,
+            state.secondPokemonSelected?.specialAttack ?? 0,
+            state.secondPokemonSelected?.specialDefense ?? 0,
+            state.secondPokemonSelected?.speed ?? 0,
+          ],
+        ],
+      ),
+    );
+  }
+
   Widget _buildStats(ComparesState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
           StatsPokemon(
+            onlyGraphic: true,
             stats: 'Hp',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
@@ -158,8 +288,10 @@ class _CompareContentState extends State<CompareContent> {
                 ? state.secondPokemonSelected!.hp.toString()
                 : '0',
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Attack',
+            onlyGraphic: true,
+            stats: 'Att',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.attack.toString()
@@ -170,8 +302,10 @@ class _CompareContentState extends State<CompareContent> {
                 ? state.secondPokemonSelected!.attack.toString()
                 : '0',
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Defense',
+            onlyGraphic: true,
+            stats: 'Def',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.defense.toString()
@@ -182,8 +316,10 @@ class _CompareContentState extends State<CompareContent> {
                 : '0',
             color: Colors.red,
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Sp. Atk',
+            onlyGraphic: true,
+            stats: 'Sp.A',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.specialAttack.toString()
@@ -194,8 +330,10 @@ class _CompareContentState extends State<CompareContent> {
                 : '0',
             color: Colors.blue,
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Sp. Def',
+            onlyGraphic: true,
+            stats: 'Sp.D',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.specialDefense.toString()
@@ -206,8 +344,10 @@ class _CompareContentState extends State<CompareContent> {
                 : '0',
             color: Colors.blueGrey,
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Speed',
+            onlyGraphic: true,
+            stats: 'Spe',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.speed.toString()
@@ -218,8 +358,10 @@ class _CompareContentState extends State<CompareContent> {
                 : '0',
             color: Colors.purple,
           ),
+          SizedBox(height: 5),
           StatsPokemon(
-            stats: 'Total',
+            onlyGraphic: true,
+            stats: 'Tot',
             value: state.firstPokemonSelected?.statsUpdate != null &&
                     state.firstPokemonSelected!.statsUpdate!
                 ? state.firstPokemonSelected!.total.toString()
@@ -230,7 +372,7 @@ class _CompareContentState extends State<CompareContent> {
                 : '0',
             widthMax: 720,
             color: Colors.grey,
-          )
+          ),
         ],
       ),
     );
@@ -240,14 +382,13 @@ class _CompareContentState extends State<CompareContent> {
     return Expanded(
       flex: 5,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildButtonSearch(context, false),
-          Container(
-            height: 200,
-            // color: Colors.blue,
+          SizedBox(
+            height: 100,
             child: PageViewPokemonList(
-              controller: controller2,
+              activeClickImg: true,
+              onlyPokemonImg: false,
+              controller: widget.controller2,
               list: state.pokemons,
               showBack:
                   state.pokemons.isNotEmpty && !state.secondListFirstPokemon,
@@ -268,8 +409,13 @@ class _CompareContentState extends State<CompareContent> {
               },
             ),
           ),
-          MyText.labelMedium(
-              context: context, text: state.secondPokemonSelected?.name ?? ''),
+          SizedBox(height: 10),
+          _buildName(
+            context: context,
+            pokemon: state.secondPokemonSelected!,
+            pokemons: state.pokemons.toList(),
+            isFirstPokemon: false,
+          ),
         ],
       ),
     );
@@ -279,14 +425,13 @@ class _CompareContentState extends State<CompareContent> {
     return Expanded(
       flex: 5,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildButtonSearch(context, true),
-          Container(
-            height: 200,
-            // color: Colors.red,
+          SizedBox(
+            height: 100,
             child: PageViewPokemonList(
-              controller: controller1,
+              onlyPokemonImg: false,
+              activeClickImg: true,
+              controller: widget.controller1,
               list: state.pokemons,
               showBack:
                   state.pokemons.isNotEmpty && !state.firstListFirstPokemon,
@@ -307,46 +452,63 @@ class _CompareContentState extends State<CompareContent> {
               },
             ),
           ),
-          MyText.labelMedium(
-              context: context, text: state.firstPokemonSelected?.name ?? ''),
+          SizedBox(height: 10),
+          _buildName(
+            context: context,
+            pokemon: state.firstPokemonSelected!,
+            pokemons: state.pokemons.toList(),
+            isFirstPokemon: true,
+          ),
         ],
       ),
     );
   }
 
-  Row _buildButtonSearch(BuildContext context, bool isFirstPokemon) {
+  Widget _buildName({
+    required BuildContext context,
+    required List<PokemonModel> pokemons,
+    required PokemonModel pokemon,
+    required bool isFirstPokemon,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ButtonScaled(
-          child: Row(
-            children: [
-              Icon(
-                Icons.search_outlined,
-                color: Colors.grey.shade400,
-              ),
-              SizedBox(width: 10),
-              MyText.labelMedium(context: context, text: 'Search ...'),
-            ],
+        ImgType(
+          typeImg: pokemon.typeofpokemon?[0] ?? '',
+          width: 20,
+          colorGradient: [
+            mappingColors(
+              pokemon.typeofpokemon?[0] ?? '',
+            ),
+            Colors.black,
+          ],
+        ),
+        SizedBox(width: 10),
+        MyText.labelMedium(
+          context: context,
+          text: pokemon.name ?? '',
+          isFontBold: true,
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.search_outlined,
+            color: isFirstPokemon ? Colors.blue : Colors.red,
           ),
-          onPress: () async {
-            final pokemon = await showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (context) => SizedBox(
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: ContentModalWidget(
-                  title: const Text(''),
-                  child: Expanded(
-                    child: SearchPokemonPage(
-                      searchCompare: true,
-                    ),
-                  ),
-                ),
-              ),
+          onPressed: () async {
+            PokemonModel? pokemon =
+                await context.push(ScreenPaths.searchPokemon, extra: true);
+            final index = pokemons.indexWhere(
+              (element) {
+                return element.id == pokemon?.id;
+              },
             );
-            print(pokemon);
+            if (pokemon != null) {
+              if (isFirstPokemon) {
+                widget.controller1.jumpToPage(index);
+              } else {
+                widget.controller2.jumpToPage(index);
+              }
+            }
           },
         )
       ],

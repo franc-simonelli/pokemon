@@ -1,32 +1,37 @@
+// ignore_for_file: empty_catches
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/utils/save_pokemon_storage.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
-
 part 'compares_state.dart';
 part 'compares_cubit.freezed.dart';
 
 class ComparesCubit extends Cubit<ComparesState> {
-  ComparesCubit({required this.pokemonRepository})
-      : super(
+  ComparesCubit({
+    required this.pokemonRepository,
+    this.initialIndex,
+  }) : super(
           ComparesState(
             pokemons: [],
+            initialIndex: initialIndex,
           ),
         ) {
     initialize();
   }
 
   final PokemonRepository pokemonRepository;
+  final int? initialIndex;
 
   initialize() async {
     try {
       final allPokemons = await pokemonRepository.fetchPokemonGen(EnumGen.all);
+      final pokemon = allPokemons[initialIndex ?? 0];
       emit(state.copyWith(
         pokemons: allPokemons,
-        firstPokemonSelected: allPokemons[0],
+        firstPokemonSelected: pokemon,
         secondPokemonSelected: allPokemons[0],
       ));
     } catch (e) {}

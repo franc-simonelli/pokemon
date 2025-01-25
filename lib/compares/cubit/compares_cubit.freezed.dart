@@ -19,6 +19,7 @@ mixin _$ComparesState {
   List<PokemonModel> get pokemons => throw _privateConstructorUsedError;
   PokemonModel? get firstPokemonSelected => throw _privateConstructorUsedError;
   PokemonModel? get secondPokemonSelected => throw _privateConstructorUsedError;
+  int? get initialIndex => throw _privateConstructorUsedError;
 
   /// Create a copy of ComparesState
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +37,8 @@ abstract class $ComparesStateCopyWith<$Res> {
   $Res call(
       {List<PokemonModel> pokemons,
       PokemonModel? firstPokemonSelected,
-      PokemonModel? secondPokemonSelected});
+      PokemonModel? secondPokemonSelected,
+      int? initialIndex});
 }
 
 /// @nodoc
@@ -57,6 +59,7 @@ class _$ComparesStateCopyWithImpl<$Res, $Val extends ComparesState>
     Object? pokemons = null,
     Object? firstPokemonSelected = freezed,
     Object? secondPokemonSelected = freezed,
+    Object? initialIndex = freezed,
   }) {
     return _then(_value.copyWith(
       pokemons: null == pokemons
@@ -71,6 +74,10 @@ class _$ComparesStateCopyWithImpl<$Res, $Val extends ComparesState>
           ? _value.secondPokemonSelected
           : secondPokemonSelected // ignore: cast_nullable_to_non_nullable
               as PokemonModel?,
+      initialIndex: freezed == initialIndex
+          ? _value.initialIndex
+          : initialIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -86,7 +93,8 @@ abstract class _$$ComparesStateImplCopyWith<$Res>
   $Res call(
       {List<PokemonModel> pokemons,
       PokemonModel? firstPokemonSelected,
-      PokemonModel? secondPokemonSelected});
+      PokemonModel? secondPokemonSelected,
+      int? initialIndex});
 }
 
 /// @nodoc
@@ -105,6 +113,7 @@ class __$$ComparesStateImplCopyWithImpl<$Res>
     Object? pokemons = null,
     Object? firstPokemonSelected = freezed,
     Object? secondPokemonSelected = freezed,
+    Object? initialIndex = freezed,
   }) {
     return _then(_$ComparesStateImpl(
       pokemons: null == pokemons
@@ -119,6 +128,10 @@ class __$$ComparesStateImplCopyWithImpl<$Res>
           ? _value.secondPokemonSelected
           : secondPokemonSelected // ignore: cast_nullable_to_non_nullable
               as PokemonModel?,
+      initialIndex: freezed == initialIndex
+          ? _value.initialIndex
+          : initialIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -129,7 +142,8 @@ class _$ComparesStateImpl extends _ComparesState {
   const _$ComparesStateImpl(
       {required final List<PokemonModel> pokemons,
       this.firstPokemonSelected,
-      this.secondPokemonSelected})
+      this.secondPokemonSelected,
+      this.initialIndex})
       : _pokemons = pokemons,
         super._();
 
@@ -145,10 +159,12 @@ class _$ComparesStateImpl extends _ComparesState {
   final PokemonModel? firstPokemonSelected;
   @override
   final PokemonModel? secondPokemonSelected;
+  @override
+  final int? initialIndex;
 
   @override
   String toString() {
-    return 'ComparesState(pokemons: $pokemons, firstPokemonSelected: $firstPokemonSelected, secondPokemonSelected: $secondPokemonSelected)';
+    return 'ComparesState(pokemons: $pokemons, firstPokemonSelected: $firstPokemonSelected, secondPokemonSelected: $secondPokemonSelected, initialIndex: $initialIndex)';
   }
 
   @override
@@ -160,7 +176,9 @@ class _$ComparesStateImpl extends _ComparesState {
             (identical(other.firstPokemonSelected, firstPokemonSelected) ||
                 other.firstPokemonSelected == firstPokemonSelected) &&
             (identical(other.secondPokemonSelected, secondPokemonSelected) ||
-                other.secondPokemonSelected == secondPokemonSelected));
+                other.secondPokemonSelected == secondPokemonSelected) &&
+            (identical(other.initialIndex, initialIndex) ||
+                other.initialIndex == initialIndex));
   }
 
   @override
@@ -168,7 +186,8 @@ class _$ComparesStateImpl extends _ComparesState {
       runtimeType,
       const DeepCollectionEquality().hash(_pokemons),
       firstPokemonSelected,
-      secondPokemonSelected);
+      secondPokemonSelected,
+      initialIndex);
 
   /// Create a copy of ComparesState
   /// with the given fields replaced by the non-null parameter values.
@@ -183,7 +202,8 @@ abstract class _ComparesState extends ComparesState {
   const factory _ComparesState(
       {required final List<PokemonModel> pokemons,
       final PokemonModel? firstPokemonSelected,
-      final PokemonModel? secondPokemonSelected}) = _$ComparesStateImpl;
+      final PokemonModel? secondPokemonSelected,
+      final int? initialIndex}) = _$ComparesStateImpl;
   const _ComparesState._() : super._();
 
   @override
@@ -192,6 +212,8 @@ abstract class _ComparesState extends ComparesState {
   PokemonModel? get firstPokemonSelected;
   @override
   PokemonModel? get secondPokemonSelected;
+  @override
+  int? get initialIndex;
 
   /// Create a copy of ComparesState
   /// with the given fields replaced by the non-null parameter values.

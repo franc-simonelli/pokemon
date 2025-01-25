@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/counties/cubit/countries_cubit.dart';
-import 'package:pokedex/counties/widgets/country_card.dart';
+import 'package:pokedex/countries/cubit/countries_cubit.dart';
+import 'package:pokedex/countries/widgets/country_card.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 
 class CountriesContent extends StatelessWidget {

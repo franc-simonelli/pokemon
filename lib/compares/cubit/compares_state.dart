@@ -6,6 +6,7 @@ class ComparesState with _$ComparesState {
     required List<PokemonModel> pokemons,
     PokemonModel? firstPokemonSelected,
     PokemonModel? secondPokemonSelected,
+    int? initialIndex,
   }) = _ComparesState;
 
   const ComparesState._();

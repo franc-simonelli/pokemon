@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:translator/translator.dart';
 
 class MyText extends StatefulWidget {
   const MyText({
@@ -7,6 +6,7 @@ class MyText extends StatefulWidget {
     required this.style,
     this.isFontBold = false,
     this.textAlign,
+    this.textOverflow,
     super.key,
   });
 
@@ -14,6 +14,7 @@ class MyText extends StatefulWidget {
   final TextStyle style;
   final bool isFontBold;
   final TextAlign? textAlign;
+  final TextOverflow? textOverflow;
 
   factory MyText.labelSmall({
     required BuildContext context,
@@ -71,6 +72,7 @@ class MyText extends StatefulWidget {
     bool isUnderLine = false,
     Color? color,
     TextAlign? textAlign,
+    TextOverflow? textOverflow,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
@@ -81,6 +83,7 @@ class MyText extends StatefulWidget {
         color: color ?? appColors.onSurface,
         decoration: isUnderLine ? TextDecoration.underline : null,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
+        overflow: textOverflow,
         shadows: isBorderText
             ? [
                 const BoxShadow(

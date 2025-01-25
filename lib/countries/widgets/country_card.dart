@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/card_fade_animations.dart';
 import 'package:pokedex/components/widgets/card_scaled.dart';
-import 'package:pokedex/counties/models/country_model.dart';
+import 'package:pokedex/countries/models/country_model.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 

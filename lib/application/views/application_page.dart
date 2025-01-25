@@ -1,12 +1,10 @@
-import 'dart:async';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
-import 'package:pokedex/constants/image_constants.dart';
-import 'package:pokedex/counties/cubit/countries_cubit.dart';
+import 'package:pokedex/countries/cubit/countries_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
-import 'package:pokedex/shared/widget/my_button.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class ApplicationPage extends StatefulWidget {
@@ -22,79 +20,137 @@ class ApplicationPage extends StatefulWidget {
 
 class _ApplicationPageState extends State<ApplicationPage>
     with TickerProviderStateMixin {
-  late AnimationController _controllerPokeball;
-  late AnimationController _controllerContent;
-  late Animation _sizeAnimationPokeball;
-  late Animation _sizeAnimationContent;
-  late ApplicationBloc applicationBloc;
-  double padding = 0;
-  bool _animateText = false;
-  bool _animateButton1 = false;
-  bool _animateButton2 = false;
-  Widget? widgetContent;
-  ApplicationState? _previousState;
+  late AnimationController _controller;
+  late Animation<double> _sizeAnimation1;
+  late Animation<double> _sizeAnimation2;
+  late Animation<double> _sizeAnimation3;
+  late Animation<double> _sizeAnimation4;
+  late Animation<double> _sizeAnimation5;
+  late Animation<double> _sizeAnimation6;
+  late Animation<double> _sizeAnimation7;
+  late Animation<double> _sizeAnimation8;
+  late Animation<double> _sizeAnimationWallpaper;
 
   @override
   void initState() {
-    applicationBloc = context.read<ApplicationBloc>();
-    // sharedPrefsService.removeValue(kGen1);
-    // sharedPrefsService.removeValue(kGen2);
-    // sharedPrefsService.removeValue(kGen3);
-    // sharedPrefsService.removeValue(kGen4);
-    // sharedPrefsService.removeValue(kGen5);
-    // sharedPrefsService.removeValue(kGen6);
-    // sharedPrefsService.removeValue(kGen7);
-
-    _initializeAnimation();
     super.initState();
+    _controller = AnimationController(
+      duration: Duration(milliseconds: 1200),
+      vsync: this,
+    );
   }
 
-  void _initializeAnimation() {
-    _controllerPokeball = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this);
-    _controllerContent = AnimationController(
-        duration: const Duration(milliseconds: 300), vsync: this);
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
 
-    _sizeAnimationPokeball = Tween<double>(begin: 0, end: 200).animate(
-        CurvedAnimation(
-            parent: _controllerPokeball, curve: Curves.easeInToLinear));
-    _sizeAnimationContent = Tween<double>(begin: 0, end: 1).animate(
-        CurvedAnimation(
-            parent: _controllerContent, curve: Curves.easeInToLinear));
+    // await Future.delayed(Duration(milliseconds: 300));
+    _sizeAnimationWallpaper = Tween<double>(
+      begin: 0.0,
+      end: 10.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0, 0.2),
+      ),
+    );
 
-    _controllerPokeball.addListener(() {
-      setState(() {});
-    });
-    _controllerContent.addListener(() {
-      setState(() {});
-    });
+    _sizeAnimation1 = Tween<double>(
+      begin: 0.0,
+      end: 240.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.11, 0.22),
+      ),
+    );
 
-    _start();
+    _sizeAnimation2 = Tween<double>(
+      begin: 0.0,
+      end: 320.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.22, 0.33),
+      ),
+    );
+
+    _sizeAnimation3 = Tween<double>(
+      begin: 0.0,
+      end: 320.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.33, 0.44),
+      ),
+    );
+
+    _sizeAnimation4 = Tween<double>(
+      begin: 0.0,
+      end: 210.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.44, 0.55),
+      ),
+    );
+
+    _sizeAnimation5 = Tween<double>(
+      begin: 0.0,
+      end: 360.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.55, 0.66),
+      ),
+    );
+
+    _sizeAnimation6 = Tween<double>(
+      begin: 0.0,
+      end: 240.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.66, 0.77),
+      ),
+    );
+
+    _sizeAnimation7 = Tween<double>(
+      begin: 0.0,
+      end: 160.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(0.77, 0.88),
+      ),
+    );
+
+    final size = MediaQuery.of(context).size.width;
+
+    _sizeAnimation8 = Tween<double>(
+      begin: 0.0,
+      end: size,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(
+          0.88,
+          1.0,
+          curve: Curves.decelerate,
+        ),
+      ),
+    );
+
+    await _controller.forward();
+    if (mounted) {
+      context.read<ApplicationBloc>().add(ApplicationStart());
+    }
   }
 
-  _start() async {
-    await _controllerPokeball.forward();
-    applicationBloc.add(const ApplicationStart());
-  }
-
-  startAnimation() {
-    Timer(const Duration(milliseconds: 500), () {
-      setState(() {
-        _animateText = true;
-      });
-    });
-
-    Timer(const Duration(milliseconds: 1000), () {
-      setState(() {
-        _animateButton1 = true;
-      });
-    });
-
-    Timer(const Duration(milliseconds: 1500), () {
-      setState(() {
-        _animateButton2 = true;
-      });
-    });
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -107,115 +163,225 @@ class _ApplicationPageState extends State<ApplicationPage>
         return !(previous is ApplicationReady && current is ApplicationReady);
       },
       builder: (context, state) {
-        return Scaffold(
-          body: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(bottom: _sizeAnimationContent.value),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Center(
-                    child: SizedBox(
-                      width: _sizeAnimationPokeball.value,
-                      child: Transform.rotate(
-                        angle:
-                            _controllerPokeball.value * 2.0 * 3.141592653589793,
-                        child: GestureDetector(
-                          onTap: () {
-                            _controllerPokeball.reset();
-                            _controllerPokeball.forward();
-                          },
-                          child: Image.asset(kImgPokeball),
-                        ),
-                      ),
+        return _buildScaffold(state);
+      },
+      listenWhen: (previous, current) {
+        return previous is! ApplicationReady && current is ApplicationReady;
+      },
+      listener: (context, state) async {
+        context.read<CountriesCubit>().fetchCountries();
+        context.go(ScreenPaths.home);
+      },
+    );
+  }
+
+  Widget _buildScaffold(ApplicationState state) {
+    return Scaffold(
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/wallpaper_2.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: _sizeAnimationWallpaper.value,
+                      sigmaY: _sizeAnimationWallpaper.value,
                     ),
-                  ),
+                    child: Container(
+                      color: Colors.black.withOpacity(0),
+                    ),
+                  );
+                },
+              ),
+            ),
+            // bulbasaur
+            Positioned(
+              top: 200,
+              right: 105,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation7.value,
+                    height: _sizeAnimation7.value,
+                    child: Image.asset(
+                      'assets/images/bulbasaur.png',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+            // lapras
+            Positioned(
+              top: 150,
+              left: -70,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation5.value,
+                    height: _sizeAnimation5.value,
+                    child: Image.asset(
+                      'assets/images/lapras.png',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+            // voltorb
+            Positioned(
+              bottom: -70,
+              right: -30,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation4.value,
+                    height: _sizeAnimation4.value,
+                    child: Image.asset(
+                      'assets/images/voltorb.png',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+            // gengar
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 390, left: 80),
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return SizedBox(
+                      width: _sizeAnimation3.value,
+                      height: _sizeAnimation3.value,
+                      child: Image.asset(
+                        'assets/images/gengar.png',
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
                 ),
               ),
-              if (state is ApplicationDownloadRequired) ...[
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.elasticInOut,
-                  left: _animateText ? 75 : -250,
-                  bottom: 250,
-                  child: MyText.labelSmall(
-                    context: context,
-                    text: 'Per continuare devi scaricare i dati',
-                    isFontBold: true,
-                  ),
-                ),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.elasticInOut,
-                  left: _animateButton1 ? 100 : -250,
-                  bottom: 180,
-                  child: SizedBox(
-                    width: 200,
-                    height: 50,
-                    child: MyButton(
-                      onPress: () {
-                        context
-                            .read<ApplicationBloc>()
-                            .add(ApplicationDownload());
-                      },
-                      text: 'Download',
+            ),
+            // cyndaquil
+            Positioned(
+              bottom: -50,
+              left: -70,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation1.value,
+                    height: _sizeAnimation1.value,
+                    child: Image.asset(
+                      'assets/images/cyndaquil.png',
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.elasticInOut,
-                  left: _animateButton2 ? 170 : -250,
-                  bottom: 130,
-                  child: MyText.labelSmall(
-                    context: context,
-                    text: 'Annulla',
-                  ),
-                ),
-              ],
-              if (state is ApplicationDownloading)
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 240),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        MyText.labelSmall(
-                          context: context,
-                          text: 'Download in corso...',
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          child: Image.asset(
-                            'assets/images/pika_loader.gif',
-                          ),
-                        ),
-                      ],
+                  );
+                },
+              ),
+            ),
+            // eevee
+            Positioned(
+              top: 170,
+              right: -70,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation6.value,
+                    height: _sizeAnimation6.value,
+                    child: Image.asset(
+                      'assets/images/eevee.png',
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                ),
-            ],
-          ),
-        );
-      },
-      // listenWhen: (previous, current) {
-      //   // Replace with tabs only the first time app is ready
-      //   return previous is! ApplicationReady && current is ApplicationReady;
-      // },
-      listener: (context, state) async {
-        if (_previousState is! ApplicationReady && state is ApplicationReady) {
-          // context.read<PokemonCubit>().init();
-          // context.read<FiltersCubit>().fetchFilters();
-          context.read<CountriesCubit>().fetchCountries();
-          context.go(ScreenPaths.home);
-        }
+                  );
+                },
+              ),
+            ),
+            // pikachu
+            Positioned(
+              bottom: 60,
+              right: -170,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation2.value,
+                    height: _sizeAnimation2.value,
+                    child: Image.asset(
+                      'assets/images/pikachu.png',
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+            // pokemon logo
+            Align(
+              alignment: Alignment.center,
+              child: AnimatedBuilder(
+                animation: _controller,
+                builder: (context, child) {
+                  return SizedBox(
+                    width: _sizeAnimation8.value,
+                    child: Image.asset(
+                      'assets/images/pokemon_logo.png',
+                    ),
+                  );
+                },
+              ),
+            ),
 
-        if (state is ApplicationDownloadRequired) {
-          startAnimation();
-        }
-        _previousState = state;
-      },
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 150,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.black87,
+                      Colors.black54,
+                      Colors.transparent,
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                child: state is ApplicationBooting
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset('assets/images/pika_loader.gif'),
+                          SizedBox(width: 10),
+                          MyText.labelMedium(
+                            context: context,
+                            text: 'Loading . . .',
+                            isFontBold: true,
+                          ),
+                        ],
+                      )
+                    : Container(),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

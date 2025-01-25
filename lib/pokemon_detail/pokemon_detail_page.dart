@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/compares/pages/compare_page.dart';
+import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
@@ -9,8 +11,6 @@ import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
-import 'package:pokedex/shared/utils/mapping_type.dart';
-import 'package:pokedex/shared/widget/my_button.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class PokemonDetailPage extends StatefulWidget {
@@ -53,35 +53,21 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
             body: Stack(
               children: [
                 Positioned(
-                  top: -30,
-                  right: -80,
-                  child: SizedBox(
-                    width: 400,
-                    child: Opacity(
-                      opacity: 0.5,
-                      child: ShaderMask(
-                        shaderCallback: (Rect bounds) {
-                          return LinearGradient(
-                            colors: [
-                              mappingColors(
-                                state.pokemonSelected.typeofpokemon![0],
-                              ),
-                              Colors.black87,
-                              Colors.black87,
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight,
-                          ).createShader(bounds);
-                        },
-                        blendMode: BlendMode.srcATop,
-                        child: Image.asset(
-                          mappingType(
-                            state.pokemonSelected.typeofpokemon?[0] ?? '',
-                          ),
-                          fit: BoxFit.cover,
-                          // fit: BoxFit.contain,
+                  top: 0,
+                  right: -110,
+                  child: Opacity(
+                    opacity: 1,
+                    child: ImgType(
+                      width: 450,
+                      typeImg: state.pokemonSelected.typeofpokemon![0],
+                      boxFit: BoxFit.contain,
+                      colorGradient: [
+                        mappingColors(
+                          state.pokemonSelected.typeofpokemon![0],
                         ),
-                      ),
+                        Colors.black87,
+                        Colors.black87,
+                      ],
                     ),
                   ),
                 ),
@@ -114,35 +100,6 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
         },
       ),
     );
-  }
-
-  Widget _buildOtherButton(PokemonModel pokemon) {
-    return MyButton(
-      text: 'Other information',
-      onPress: () {
-        context.push(
-          ScreenPaths.otherInformationPokemon,
-          extra: pokemon,
-        );
-      },
-    );
-    // return Row(
-    //   children: [
-    //     Expanded(
-    //       child: MyButton(
-    //         text: 'Evo line',
-    //         onPress: () {},
-    //       ),
-    //     ),
-    //     SizedBox(width: 10),
-    //     Expanded(
-    //       child: MyButton(
-    //         text: 'Moveset',
-    //         onPress: () {},
-    //       ),
-    //     )
-    //   ],
-    // );
   }
 
   Widget _buildDebolezze(PokemonModel pokemon) {
@@ -207,7 +164,26 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16),
-          child: Icon(Icons.favorite_border_outlined),
+          child: GestureDetector(
+            onTap: () {},
+            child: Icon(Icons.favorite_border_outlined),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: IconButton(
+            icon: Icon(Icons.compare_arrows_outlined),
+            onPressed: () {
+              final list =
+                  context.read<PokemonDetailCubit>().state.pokemonList.toList();
+              final index = list.indexWhere(
+                (element) {
+                  return element.id == pokemon.id;
+                },
+              );
+              context.push(ScreenPaths.compareInit, extra: index);
+            },
+          ),
         ),
       ],
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/shared/widget/image_shadow.dart';
+import 'package:pokedex/pokemon/widget/img_pokemon_shadow.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class SearchPokemonItemList extends StatelessWidget {
@@ -27,7 +27,7 @@ class SearchPokemonItemList extends StatelessWidget {
             // child: Image.network(
             //   'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif',
             // ),
-            child: ImageShadow(
+            child: ImgPokemonShadow(
               pokemon: pokemon,
               imageGif:
                   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",

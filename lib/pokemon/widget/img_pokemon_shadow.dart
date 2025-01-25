@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 
-class ImageShadow extends StatelessWidget {
-  const ImageShadow({
+class ImgPokemonShadow extends StatelessWidget {
+  const ImgPokemonShadow({
     required this.pokemon,
     // required this.imgDefault,
     this.imageGif,
@@ -26,18 +26,11 @@ class ImageShadow extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: imageGif ?? pokemon.imageurl ?? '',
         imageBuilder: (context, imageProvider) => Container(
-          // width: double.infinity,
-          // width: 100,
           decoration: BoxDecoration(
             image: DecorationImage(image: imageProvider),
           ),
         ),
         placeholder: (context, url) => const Center(
-          // child: Image.asset(
-          //   imgDefault,
-          //   color: Colors.black,
-          //   width: 100,
-          // ),
           child: Center(
             child: CupertinoActivityIndicator(),
           ),

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/counties/repositories/countries_repository.dart';
-import 'package:pokedex/counties/models/country_model.dart';
+import 'package:pokedex/countries/repositories/countries_repository.dart';
+import 'package:pokedex/countries/models/country_model.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 
 part 'countries_state.dart';

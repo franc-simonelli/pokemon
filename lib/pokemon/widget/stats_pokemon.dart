@@ -10,6 +10,7 @@ class StatsPokemon extends StatelessWidget {
     this.widthMax = 250,
     this.smallStats = false,
     this.valueCompare = '',
+    this.onlyGraphic = false,
     super.key,
   });
 
@@ -19,6 +20,7 @@ class StatsPokemon extends StatelessWidget {
   final int widthMax;
   final bool smallStats;
   final String valueCompare;
+  final bool onlyGraphic;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,11 @@ class StatsPokemon extends StatelessWidget {
     if (valueCompare != '') {
       flexDesc = 2;
       flexValue = 1;
+      flexWidth = 4;
+    }
+
+    if (onlyGraphic) {
+      flexDesc = 2;
       flexWidth = 4;
     }
 
@@ -43,31 +50,29 @@ class StatsPokemon extends StatelessWidget {
                 : MyText.labelMedium(context: context, text: stats),
           ),
         ),
-        Expanded(
-          flex: flexValue,
-          child: Container(
-            // color: Colors.blue,
-            child: smallStats
-                ? MyText.labelSmall(
-                    context: context,
-                    text: value,
-                    textAlign: TextAlign.end,
-                  )
-                : MyText.labelMedium(
-                    context: context,
-                    text: value,
-                    textAlign: TextAlign.end,
-                  ),
-          ),
-        ),
-        if (valueCompare == '')
+        if (!onlyGraphic)
           Expanded(
-            flex: 1,
+            flex: flexValue,
             child: Container(
-              color: Colors.green,
+              child: smallStats
+                  ? MyText.labelSmall(
+                      context: context,
+                      text: value,
+                      textAlign: TextAlign.end,
+                    )
+                  : MyText.labelMedium(
+                      context: context,
+                      text: value,
+                      textAlign: TextAlign.end,
+                    ),
             ),
           ),
-        if (valueCompare != '') ...[
+        if (valueCompare == '' && !onlyGraphic)
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+        if (valueCompare != '' && !onlyGraphic) ...[
           SizedBox(width: 10),
           Expanded(
             flex: flexValue,
@@ -106,36 +111,53 @@ class StatsPokemon extends StatelessWidget {
                 widthCompareStats =
                     int.parse(valueCompare) * widthExpanded / widthMax;
               }
-              return Stack(
-                children: [
-                  Container(
-                    width: widthExpanded,
-                    color: color.withOpacity(0.3),
-                    height: smallStats ? 5 : 10,
-                  ),
-                  if (valueCompare == '')
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: widthStats,
-                      color: color,
-                      height: smallStats ? 5 : 10,
-                    ),
-                  if (valueCompare != '') ...[
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: widthCompareStats,
-                      color: color,
-                      height: smallStats ? 5 : 10,
-                    ),
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      width: widthStats,
-                      color: color.withOpacity(0.3),
-                      height: smallStats ? 5 : 10,
-                    ),
-                  ]
-                ],
-              );
+
+              return valueCompare == ''
+                  ? Stack(
+                      children: [
+                        Container(
+                          width: widthExpanded,
+                          height: smallStats ? 5 : 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: color.withOpacity(0.3),
+                          ),
+                        ),
+                        AnimatedContainer(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: color,
+                          ),
+                          duration: Duration(milliseconds: 300),
+                          width: widthStats,
+                          height: smallStats ? 5 : 10,
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AnimatedContainer(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.blue,
+                          ),
+                          duration: Duration(milliseconds: 300),
+                          width: widthStats,
+                          height: 5,
+                        ),
+                        SizedBox(height: 2),
+                        AnimatedContainer(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Colors.red,
+                          ),
+                          duration: Duration(milliseconds: 300),
+                          width: widthCompareStats,
+                          height: 5,
+                        ),
+                      ],
+                    );
             },
           ),
         ),

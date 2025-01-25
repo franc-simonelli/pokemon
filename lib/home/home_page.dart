@@ -42,14 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
       filtersCubit: _filtersCubit,
       gen: EnumGen.all,
     )..init();
-
-    print('INIT HOME: ');
     super.initState();
   }
 
   @override
   void dispose() {
-    print('DISPOSE HOME:');
     _pokemonCubit.close();
     _filtersCubit.close();
     super.dispose();

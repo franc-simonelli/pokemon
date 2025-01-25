@@ -46,9 +46,9 @@ class AllTypeModalWidget extends StatelessWidget {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
-                        childAspectRatio: 1,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
+                        childAspectRatio: 0.7,
+                        crossAxisSpacing: 30,
+                        mainAxisSpacing: 20,
                       ),
                       itemCount: state.allTypes.length,
                       itemBuilder: (_, i) {

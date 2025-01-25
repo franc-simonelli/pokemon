@@ -43,10 +43,15 @@ class SearchPokemonContent extends StatelessWidget {
                       context
                           .read<SearchPokemonCubit>()
                           .manageChronology(value);
-                      context.push(ScreenPaths.detailPokemon, extra: {
-                        'pokemonSelected': value,
-                        'gen': EnumGen.all,
-                      });
+
+                      if (searchCompare) {
+                        context.pop(value);
+                      } else {
+                        context.push(ScreenPaths.detailPokemon, extra: {
+                          'pokemonSelected': value,
+                          'gen': EnumGen.all,
+                        });
+                      }
                     },
                   ),
                 if (state.pokemons.isEmpty && state.chronology.isNotEmpty) ...[

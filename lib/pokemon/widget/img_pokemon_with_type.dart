@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon/widget/img_pokemon_shadow.dart';
 import 'package:pokedex/shared/utils/mapping_type.dart';
-import 'package:pokedex/shared/widget/image_shadow.dart';
 
-class ImagePokemon extends StatelessWidget {
-  const ImagePokemon({
+class ImgPokemonWithType extends StatelessWidget {
+  const ImgPokemonWithType({
     required this.pokemon,
     this.widthType = 180,
     this.widthImage = 150,
@@ -32,13 +32,21 @@ class ImagePokemon extends StatelessWidget {
                 fit: BoxFit.contain,
                 width: widthType,
               ),
+              // child: ImgType(
+              //   typeImg: mappingType(pokemon.typeofpokemon?[0] ?? ''),
+              //   width: widthType,
+              //   colorGradient: [
+              //     mappingColors(pokemon.typeofpokemon?[0] ?? ''),
+              //     Colors.black45,
+              //   ],
+              // ),
             ),
           ),
         Center(
           child: AnimatedOpacity(
             opacity: 1,
             duration: Duration(milliseconds: 1000),
-            child: ImageShadow(
+            child: ImgPokemonShadow(
               pokemon: pokemon,
             ),
           ),

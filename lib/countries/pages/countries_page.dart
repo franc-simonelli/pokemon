@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/counties/widgets/countries_content.dart';
+import 'package:pokedex/countries/widgets/countries_content.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class CountriesPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class CountriesPage extends StatelessWidget {
           text: 'Countries',
           isFontBold: true,
         ),
-        centerTitle: false,
+        centerTitle: true,
       ),
       body: CountriesContent(),
     );

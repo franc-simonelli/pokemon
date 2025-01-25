@@ -38,6 +38,7 @@ dependencies:
   auto_size_text: ^3.0.0
   contentsize_tabbarview: ^0.0.2
   translator: ^1.0.3+1
+  flutter_radar_chart: ^0.2.1
 
 dev_dependencies:
   flutter_test:

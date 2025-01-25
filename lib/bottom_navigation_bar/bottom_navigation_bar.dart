@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pokedex/bottom_navigation_bar/widgets/glow_icon.dart';
 
 class BottomNavigationScreen extends StatelessWidget {
   const BottomNavigationScreen({
@@ -50,9 +51,6 @@ class BottomNavigationScreen extends StatelessWidget {
                       navigationShell.currentIndex == 0
                           ? Icons.catching_pokemon
                           : Icons.catching_pokemon_outlined,
-                      // color: navigationShell.currentIndex == 0
-                      //     ? appColors.primary
-                      //     : appColors.onPrimaryContainer,
                     ),
                     label: 'Home',
                   ),
@@ -61,9 +59,6 @@ class BottomNavigationScreen extends StatelessWidget {
                       navigationShell.currentIndex == 1
                           ? Icons.language_sharp
                           : Icons.language_sharp,
-                      // color: navigationShell.currentIndex == 1
-                      //     ? appColors.primary
-                      //     : appColors.onPrimaryContainer,
                     ),
                     label: 'Country',
                   ),
@@ -72,9 +67,6 @@ class BottomNavigationScreen extends StatelessWidget {
                       navigationShell.currentIndex == 2
                           ? Icons.compare_arrows_outlined
                           : Icons.compare_arrows_outlined,
-                      // color: navigationShell.currentIndex == 3
-                      //     ? appColors.primary
-                      //     : appColors.onPrimaryContainer,
                     ),
                     label: 'Compare',
                   ),
@@ -100,29 +92,6 @@ class BottomNavigationScreen extends StatelessWidget {
           ),
         );
       }),
-    );
-  }
-}
-
-class GlowIcon extends StatelessWidget {
-  final IconData icon;
-
-  const GlowIcon(this.icon);
-
-  @override
-  Widget build(BuildContext context) {
-    return ShaderMask(
-      shaderCallback: (Rect bounds) {
-        return RadialGradient(
-          colors: [
-            Colors.grey.shade400,
-            Colors.blueGrey,
-          ],
-          stops: [0.4, 1],
-        ).createShader(bounds);
-      },
-      blendMode: BlendMode.srcATop,
-      child: Icon(icon, size: 30, color: Colors.white),
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/other_informations/cubit/evolution_line_cubit.dart';
 import 'package:pokedex/other_informations/widgets/evolution_from_to.dart';

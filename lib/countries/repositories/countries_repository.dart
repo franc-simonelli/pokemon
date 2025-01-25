@@ -1,4 +1,4 @@
-import 'package:pokedex/counties/models/country_model.dart';
+import 'package:pokedex/countries/models/country_model.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 
 class CountriesRepository {

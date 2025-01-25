@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/card_fade_animations.dart';
 import 'package:pokedex/components/widgets/card_scaled.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/pokemon/widget/image_type.dart';
+import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
-import 'package:pokedex/shared/widget/image_shadow.dart';
+import 'package:pokedex/pokemon/widget/img_pokemon_shadow.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class CardItem extends StatelessWidget {
@@ -79,7 +79,7 @@ class CardItem extends StatelessWidget {
             ),
             // name
             Positioned(
-              top: 25,
+              top: 15,
               left: 5,
               child: Stack(
                 children: [
@@ -95,25 +95,14 @@ class CardItem extends StatelessWidget {
             ),
             // type image
             Positioned(
-              top: 20,
-              right: -20,
-              child: ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return LinearGradient(
-                    colors: [
-                      mappingColors(
-                        pokemon.typeofpokemon![0],
-                      ),
-                      Colors.black54,
-                    ],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.srcATop,
-                child: ImageType(
-                  typeImg: pokemon.typeofpokemon![0],
-                ),
+              top: 30,
+              right: -10,
+              child: ImgType(
+                typeImg: pokemon.typeofpokemon![0],
+                colorGradient: [
+                  mappingColors(pokemon.typeofpokemon![0]),
+                  Colors.black54,
+                ],
               ),
             ),
             // image pokemon
@@ -123,7 +112,7 @@ class CardItem extends StatelessWidget {
               child: SizedBox(
                 height: 90,
                 width: 90,
-                child: ImageShadow(
+                child: ImgPokemonShadow(
                   pokemon: pokemon,
                   // imageGif: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
                 ),
@@ -131,7 +120,7 @@ class CardItem extends StatelessWidget {
             ),
             // list type
             Positioned(
-              top: 70,
+              top: 65,
               left: 5,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

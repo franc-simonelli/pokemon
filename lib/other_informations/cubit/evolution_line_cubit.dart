@@ -28,9 +28,9 @@ class EvolutionLineCubit extends Cubit<EvolutionLineState> {
 
   fetchEvolutionLine() async {
     try {
+      emit(state.copyWith(evolutionLineStatus: Status.loading));
       List<PokemonModel> evolutionLine = [];
       if (this.evolutionLine.isNotEmpty) {
-        emit(state.copyWith(evolutionLineStatus: Status.loading));
         for (var item in state.evolutionLineId) {
           final pokemon = await pokemonRepository.fetchPokemonById(item);
           final pokemonUpdate = await checkPokemonStats(pokemon);
@@ -43,7 +43,9 @@ class EvolutionLineCubit extends Cubit<EvolutionLineState> {
           ),
         );
       }
-    } catch (e) {}
+    } catch (e) {
+      emit(state.copyWith(evolutionLineStatus: Status.error));
+    }
   }
 
   getPokemonByIdFromState(String id) {

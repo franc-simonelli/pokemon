@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/other_informations/utils/build_difference_text.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/pokemon/widget/image_pokemon.dart';
+import 'package:pokedex/pokemon/widget/img_pokemon_with_type.dart';
 import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
@@ -215,7 +215,7 @@ class EvolutionLineContent extends StatelessWidget {
       },
       child: SizedBox(
         height: 80,
-        child: ImagePokemon(
+        child: ImgPokemonWithType(
           pokemon: pokemon,
           widthImage: 70,
           showType: true,

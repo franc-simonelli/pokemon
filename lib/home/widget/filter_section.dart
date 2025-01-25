@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/features/home/widget/filter_section_item.dart';
+import 'package:pokedex/home/widget/filter_section_item.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
 import 'package:pokedex/filters/widgets/all_type_widget.dart';
 

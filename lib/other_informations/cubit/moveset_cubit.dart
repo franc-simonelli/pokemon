@@ -108,9 +108,7 @@ class MovesetCubit extends Cubit<MovesetState> {
     );
     final index = pokemonBySP.moveset?.moves?.indexWhere(
       (element) {
-        if (element.move?.name == move.move?.name) {
-          print('ecco');
-        }
+        if (element.move?.name == move.move?.name) {}
         return element.move?.name == move.move?.name;
       },
     );
