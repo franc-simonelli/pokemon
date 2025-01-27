@@ -74,7 +74,7 @@ class _MoveContentState extends State<MoveContent> {
                         context: context,
                         text: 'Acc.',
                         value: widget.move.accuracy != null
-                            ? widget.move.accuracy.toString()
+                            ? "${widget.move.accuracy.toString()} %"
                             : '-'),
                     _buildStats(
                         context: context,
@@ -94,10 +94,6 @@ class _MoveContentState extends State<MoveContent> {
                       context: context,
                       text: widget.move.effectEntries?.effect ?? '',
                     ),
-                    // child: MyTextTranslateSmall(
-                    //   key: UniqueKey(),
-                    //   text: widget.move.effectEntries?.effect ?? '',
-                    // ),
                   ),
                   SizedBox(height: 20),
                 ]

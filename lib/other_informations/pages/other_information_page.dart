@@ -84,11 +84,20 @@ class _OtherInformationState extends State<OtherInformation>
                 typeImg: widget.pokemon.typeofpokemon![0],
                 boxFit: BoxFit.contain,
                 colorGradient: [
+                  // mappingColors(
+                  //   widget.pokemon.typeofpokemon![0],
+                  // ),
+                  // Colors.black87,
+                  // Colors.black87,
+                  Colors.black87,
+                  Colors.black54,
                   mappingColors(
                     widget.pokemon.typeofpokemon![0],
                   ),
-                  Colors.black87,
-                  Colors.black87,
+                  Colors.black54,
+                  mappingColors(
+                    widget.pokemon.typeofpokemon![0],
+                  ),
                 ],
               ),
             ),

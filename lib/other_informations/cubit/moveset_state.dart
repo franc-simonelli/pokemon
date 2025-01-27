@@ -6,5 +6,7 @@ class MovesetState with _$MovesetState {
     required Status status,
     MovesetModel? moveset,
     PokemonModel? pokemon,
+    Status? autoDownloadStatus,
+    bool? isAllMovesDowloaded,
   }) = _MovesetState;
 }

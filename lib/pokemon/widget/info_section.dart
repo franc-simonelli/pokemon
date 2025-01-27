@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/widget/info_type_section.dart';
+import 'package:pokedex/shared/utils/mapping_color.dart';
 
 class InfoSection extends StatelessWidget {
   const InfoSection({
@@ -23,7 +24,12 @@ class InfoSection extends StatelessWidget {
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.black54,
-                border: Border.all(color: Colors.white),
+                border: Border.all(
+                  width: 2,
+                  color: element.toLowerCase() == 'dark'
+                      ? Colors.white54
+                      : mappingColors(element),
+                ),
               )
             : null,
         child: Padding(
@@ -34,6 +40,7 @@ class InfoSection extends StatelessWidget {
             bottom: 5,
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               TypeInfoSection(type: element),
               const SizedBox(width: 8),

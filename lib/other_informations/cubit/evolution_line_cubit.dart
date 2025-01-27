@@ -54,8 +54,8 @@ class EvolutionLineCubit extends Cubit<EvolutionLineState> {
   }
 
   checkPokemonStats(PokemonModel pokemon) async {
-    if (pokemon.statsUpdate != true) {
-      return await updateStats(pokemon);
+    if (pokemon.infoUpdate != true) {
+      return await updateInfo(pokemon);
     } else {
       return pokemon;
     }
@@ -65,8 +65,8 @@ class EvolutionLineCubit extends Cubit<EvolutionLineState> {
     return await pokemonRepository.fetchPokemonById(id);
   }
 
-  updateStats(PokemonModel pokemon) async {
-    final pokemonUpdate = await fetchStatsPokemon(
+  updateInfo(PokemonModel pokemon) async {
+    final pokemonUpdate = await fetchInfoPokemon(
       int.parse(pokemon.id!.replaceAll("#", "")),
       pokemon,
     );
@@ -77,8 +77,8 @@ class EvolutionLineCubit extends Cubit<EvolutionLineState> {
     return pokemonUpdate;
   }
 
-  fetchStatsPokemon(int id, PokemonModel pokemon) async {
-    return await pokemonRepository.fetchPokemonStatsById(
+  fetchInfoPokemon(int id, PokemonModel pokemon) async {
+    return await pokemonRepository.fetchPokemonInfoById(
       id,
       pokemon,
     );

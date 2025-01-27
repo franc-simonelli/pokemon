@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/utils/generate_ticks.dart';
 import 'package:pokedex/compares/widgets/table_stats.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/page_view_pokemon_list.dart';
@@ -109,21 +108,6 @@ class _CompareContentState extends State<CompareContent> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ComparesCubit, ComparesState>(
-      // listenWhen: (previous, current) {
-      //   return current.initialPokemon != null;
-      // },
-      // listener: (context, state) {
-      //   PokemonModel? initialPokemon = state.initialPokemon;
-      //   final pokemons = state.pokemons.toList();
-      //   final index = pokemons.indexWhere(
-      //     (element) {
-      //       return element.id == initialPokemon?.id;
-      //     },
-      //   );
-      //   if (initialPokemon != null) {
-      //     widget.controller1.jumpToPage(index);
-      //   }
-      // },
       builder: (context, state) {
         if (state.pokemons.isNotEmpty) {
           return SingleChildScrollView(
@@ -241,7 +225,7 @@ class _CompareContentState extends State<CompareContent> {
         ),
         ticks: ticks,
         features: [
-          "HP",
+          "Hp",
           "Att",
           "Def",
           "S.Atk",
@@ -278,13 +262,13 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Hp',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.hp.toString()
                 : '0',
             color: Colors.green,
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.hp.toString()
                 : '0',
           ),
@@ -292,13 +276,13 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Att',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.attack.toString()
                 : '0',
             color: Colors.orange,
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.attack.toString()
                 : '0',
           ),
@@ -306,12 +290,12 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Def',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.defense.toString()
                 : '0',
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.defense.toString()
                 : '0',
             color: Colors.red,
@@ -320,12 +304,12 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Sp.A',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.specialAttack.toString()
                 : '0',
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.specialAttack.toString()
                 : '0',
             color: Colors.blue,
@@ -334,12 +318,12 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Sp.D',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.specialDefense.toString()
                 : '0',
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.specialDefense.toString()
                 : '0',
             color: Colors.blueGrey,
@@ -348,12 +332,12 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Spe',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.speed.toString()
                 : '0',
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.speed.toString()
                 : '0',
             color: Colors.purple,
@@ -362,12 +346,12 @@ class _CompareContentState extends State<CompareContent> {
           StatsPokemon(
             onlyGraphic: true,
             stats: 'Tot',
-            value: state.firstPokemonSelected?.statsUpdate != null &&
-                    state.firstPokemonSelected!.statsUpdate!
+            value: state.firstPokemonSelected?.infoUpdate != null &&
+                    state.firstPokemonSelected!.infoUpdate!
                 ? state.firstPokemonSelected!.total.toString()
                 : '0',
-            valueCompare: state.secondPokemonSelected?.statsUpdate != null &&
-                    state.secondPokemonSelected!.statsUpdate!
+            valueCompare: state.secondPokemonSelected?.infoUpdate != null &&
+                    state.secondPokemonSelected!.infoUpdate!
                 ? state.secondPokemonSelected!.total.toString()
                 : '0',
             widthMax: 720,
@@ -492,7 +476,7 @@ class _CompareContentState extends State<CompareContent> {
         IconButton(
           icon: Icon(
             Icons.search_outlined,
-            color: isFirstPokemon ? Colors.blue : Colors.red,
+            // color: isFirstPokemon ? Colors.blue : Colors.red,
           ),
           onPressed: () async {
             PokemonModel? pokemon =

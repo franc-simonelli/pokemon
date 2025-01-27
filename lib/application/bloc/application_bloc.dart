@@ -21,7 +21,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       (event, emit) => _mapApplicationStartToState(emit),
     );
     on<ApplicationDownload>(
-      (event, emit) => _mapApplicationDownload(emit),
+      (event, emit) => _mapApplicationDownload(),
     );
     on<ApplicationPause>(
       (event, emit) => _mapApplicationPauseToState(emit),
@@ -59,9 +59,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
       // Download required
       final downloadRequired = await _isDownloadRequired();
       if (downloadRequired) {
-        // emit(ApplicationDownloadRequired());
-        // return;
-        _mapApplicationDownload(emit);
+        await _mapApplicationDownload();
+        emit(ApplicationReady());
       } else {
         emit(const ApplicationReady());
       }
@@ -71,8 +70,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     }
   }
 
-  Future<void> _mapApplicationDownload(Emitter<ApplicationState> emit) async {
-    emit(ApplicationDownloading());
+  Future<void> _mapApplicationDownload() async {
     final allPokemon = await pokemonRepository.downloadPokemon();
     final gen1 = await generateGeneration(allPokemon, 0, 151, '1_gen', 'Kanto');
     final gen2 =
@@ -103,8 +101,6 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     await sharedPrefsService.setValue<String>(kGen5, encodedata5);
     await sharedPrefsService.setValue<String>(kGen6, encodedata6);
     await sharedPrefsService.setValue<String>(kGen7, encodedata7);
-
-    emit(const ApplicationReady());
   }
 
   Future<void> _mapApplicationPauseToState(

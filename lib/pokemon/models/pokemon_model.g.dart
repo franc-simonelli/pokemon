@@ -18,9 +18,6 @@ PokemonModel _$PokemonModelFromJson(Map<String, dynamic> json) => PokemonModel(
       typeofpokemon: (json['typeofpokemon'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      weaknesses: (json['weaknesses'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList(),
       evolutions: (json['evolutions'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -42,11 +39,20 @@ PokemonModel _$PokemonModelFromJson(Map<String, dynamic> json) => PokemonModel(
       evolvedfrom: json['evolvedfrom'] as String?,
       reason: json['reason'] as String?,
       baseExp: json['base_exp'] as String?,
-      statsUpdate: json['statsUpdate'] as bool?,
+      infoUpdate: json['infoUpdate'] as bool?,
       moveset: json['moveset'] == null
           ? null
           : MovesetModel.fromJson(json['moveset'] as Map<String, dynamic>),
       movesetUpdate: json['movesetUpdate'] as bool?,
+      weaknesses: (json['weaknesses'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      resistence: (json['resistence'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      immunity: (json['immunity'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$PokemonModelToJson(PokemonModel instance) =>
@@ -60,7 +66,6 @@ Map<String, dynamic> _$PokemonModelToJson(PokemonModel instance) =>
       'category': instance.category,
       'weight': instance.weight,
       'typeofpokemon': instance.typeofpokemon,
-      'weaknesses': instance.weaknesses,
       'evolutions': instance.evolutions,
       'abilities': instance.abilities,
       'hp': instance.hp,
@@ -79,6 +84,9 @@ Map<String, dynamic> _$PokemonModelToJson(PokemonModel instance) =>
       'reason': instance.reason,
       'base_exp': instance.baseExp,
       'moveset': instance.moveset,
-      'statsUpdate': instance.statsUpdate,
+      'infoUpdate': instance.infoUpdate,
       'movesetUpdate': instance.movesetUpdate,
+      'weaknesses': instance.weaknesses,
+      'resistence': instance.resistence,
+      'immunity': instance.immunity,
     };

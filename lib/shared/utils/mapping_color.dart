@@ -37,7 +37,7 @@ mappingColors(String type) {
     case 'dragon':
       return Colors.blue.shade900;
     case 'dark':
-      return Colors.black87;
+      return Colors.black;
     case 'steel':
       return Colors.grey;
   }

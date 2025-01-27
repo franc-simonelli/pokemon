@@ -4,7 +4,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/models/stats_model.dart';
+import 'package:pokedex/pokemon/models/type_model.dart';
+import 'package:pokedex/pokemon/utils/check_type.dart';
 import 'package:pokedex/pokemon/utils/data_pokemons.dart';
+import 'package:pokedex/pokemon/utils/generate_weakness_reistence.dart';
+import 'package:pokedex/pokemon/utils/save_types.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 
 class PokemonRepository {
@@ -74,7 +78,7 @@ class PokemonRepository {
     }
   }
 
-  Future<PokemonModel?> fetchPokemonStatsById(
+  Future<PokemonModel?> fetchPokemonInfoById(
       int id, PokemonModel pokemon) async {
     try {
       final dio = Dio(
@@ -88,12 +92,21 @@ class PokemonRepository {
       );
 
       List<StatsModel> stats = [];
+      List<dynamic> types = [];
+      List<String> weaknesses = [];
+      List<String> resistence = [];
+      List<String> immunity = [];
+
       final response = await dio.get('');
       final data = response.data;
       final statsJson = data['stats'] as List;
       final height = data['height'] as int;
       final weight = data['weight'] as int;
+      final typesJson = data['types'] as List;
       stats = statsJson.map((e) => StatsModel.fromJson(e)).toList();
+      for (var item in typesJson) {
+        types.add(item['type']);
+      }
 
       final hpStat = stats.firstWhere(
         (stat) => stat.stat?.name == 'hp',
@@ -114,8 +127,39 @@ class PokemonRepository {
         (stat) => stat.stat?.name == 'speed',
       );
 
+      for (var item in types) {
+        final type = await checkType(item['name']);
+        if (type != null) {
+          weaknesses.addAll(type.weaknesses);
+          resistence.addAll(type.resistence);
+          immunity.addAll(type.immunity);
+        } else {
+          final result = await fetchTypeDetailById(item['url']);
+
+          TypeModel newType = TypeModel(
+            name: item['name'],
+            weaknesses: result?['weaknesses'],
+            resistence: result?['resistence'],
+            immunity: result?['immunity'],
+          );
+          await saveType(newType);
+          weaknesses.addAll(result?['weaknesses']);
+          resistence.addAll(result?['resistence']);
+          immunity.addAll(result?['immunity']);
+        }
+      }
+
+      final generateWeakResImm = generateWeaknessResistence(
+        doubleDamageFrom: weaknesses,
+        halfDamageFrom: resistence,
+        immunity: immunity,
+      );
+
       return pokemon.copyWith(
-        statsUpdate: true,
+        infoUpdate: true,
+        weaknesses: generateWeakResImm['weaknesses'],
+        resistence: generateWeakResImm['resistence'],
+        immunity: generateWeakResImm['immunity'],
         height: height.toString(),
         weight: weight.toString(),
         hp: hpStat.baseStat,
@@ -134,4 +178,45 @@ class PokemonRepository {
     } catch (e) {}
     return null;
   }
+}
+
+Future<Map<String, dynamic>?> fetchTypeDetailById(String url) async {
+  try {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: url,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      ),
+    );
+    final response = await dio.get('');
+    List<String> weaknesses = [];
+    List<String> resistence = [];
+    List<String> immunity = [];
+
+    final data = response.data;
+    final relations = data['damage_relations'] as Map<String, dynamic>;
+    final weakJson = relations['double_damage_from'] as List;
+    final resJson = relations['half_damage_from'] as List;
+    final immunityJson = relations['no_damage_from'] as List;
+    for (var item in weakJson) {
+      weaknesses.add(item['name']);
+    }
+    for (var item in resJson) {
+      resistence.add(item['name']);
+    }
+    for (var item in immunityJson) {
+      immunity.add(item['name']);
+    }
+    List<String> uniqueListImmunity = immunity.toSet().toList();
+
+    return {
+      'weaknesses': weaknesses,
+      'resistence': resistence,
+      'immunity': uniqueListImmunity,
+    };
+  } catch (e) {}
+  return null;
 }

@@ -1,9 +1,10 @@
 import 'dart:collection';
 
-generateWeaknessResistence({
+Map<String, dynamic> generateWeaknessResistence({
   required List<String> doubleDamageFrom,
   required List<String> halfDamageFrom,
-}) async {
+  required List<String> immunity,
+}) {
   // Conta le occorrenze di ogni elemento in entrambe le liste
   var doubleCount = HashMap<String, int>();
   var halfCount = HashMap<String, int>();
@@ -34,6 +35,16 @@ generateWeaknessResistence({
     }
   }
 
+  // Rimuovi i tipi immuni dalla lista double_damage_from
+  for (var tipo in immunity) {
+    if (doubleCount.containsKey(tipo)) {
+      doubleCount[tipo] = 0;
+    }
+    if (halfCount.containsKey(tipo)) {
+      halfCount[tipo] = 0;
+    }
+  }
+
   // Genera le liste finali rimuovendo le occorrenze a 0
   var finalDoubleDamageFrom = <String>[];
   doubleCount.forEach((tipo, count) {
@@ -50,7 +61,8 @@ generateWeaknessResistence({
   });
 
   return {
-    "double_damage_from": finalDoubleDamageFrom,
-    "half_damage_from": finalHalfDamageFrom,
+    "weaknesses": finalDoubleDamageFrom,
+    "resistence": finalHalfDamageFrom,
+    "immunity": immunity,
   };
 }

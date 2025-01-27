@@ -63,21 +63,21 @@ class _SearchBarPokemonState extends State<SearchBarPokemon>
   @override
   Widget build(BuildContext context) {
     final appColors = Theme.of(context).colorScheme;
-
+    final color = Theme.of(context).scaffoldBackgroundColor;
     return Opacity(
       opacity: 1,
       child: Container(
         height: 44,
         decoration: BoxDecoration(
-          color: Colors.grey.shade900,
+          color: color,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade800,
-              offset: const Offset(-1, -1),
+              color: Colors.grey.shade700,
+              offset: const Offset(0, -1),
             ),
-            const BoxShadow(
+            BoxShadow(
               color: Colors.black,
-              offset: Offset(3, 3),
+              offset: Offset(2, 2),
             )
           ],
           borderRadius: BorderRadius.circular(20),

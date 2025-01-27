@@ -26,7 +26,7 @@ class StatsPokemon extends StatelessWidget {
   Widget build(BuildContext context) {
     var flexDesc = smallStats ? 2 : 3;
     var flexValue = smallStats ? 2 : 2;
-    var flexWidth = smallStats ? 6 : 8;
+    var flexWidth = smallStats ? 5 : 8;
 
     if (valueCompare != '') {
       flexDesc = 2;

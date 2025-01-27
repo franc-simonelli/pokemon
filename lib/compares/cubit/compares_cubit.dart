@@ -43,8 +43,8 @@ class ComparesCubit extends Cubit<ComparesState> {
       firstPokemonSelected: pokemon,
     ));
 
-    if (pokemon.statsUpdate != true) {
-      final pokemonUpdate = await updateStats(pokemon);
+    if (pokemon.infoUpdate != true) {
+      final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
         pokemons: updateList,
@@ -59,8 +59,8 @@ class ComparesCubit extends Cubit<ComparesState> {
       secondPokemonSelected: pokemon,
     ));
 
-    if (pokemon.statsUpdate != true) {
-      final pokemonUpdate = await updateStats(pokemon);
+    if (pokemon.infoUpdate != true) {
+      final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
         pokemons: updateList,
@@ -81,8 +81,8 @@ class ComparesCubit extends Cubit<ComparesState> {
     return currentList;
   }
 
-  updateStats(PokemonModel pokemon) async {
-    final pokemonUpdate = await fetchStatsPokemon(
+  updateInfo(PokemonModel pokemon) async {
+    final pokemonUpdate = await fetchInfoPokemon(
       int.parse(pokemon.id!.replaceAll("#", "")),
       pokemon,
     );
@@ -93,8 +93,8 @@ class ComparesCubit extends Cubit<ComparesState> {
     return pokemonUpdate;
   }
 
-  fetchStatsPokemon(int id, PokemonModel pokemon) async {
-    return await pokemonRepository.fetchPokemonStatsById(
+  fetchInfoPokemon(int id, PokemonModel pokemon) async {
+    return await pokemonRepository.fetchPokemonInfoById(
       id,
       pokemon,
     );

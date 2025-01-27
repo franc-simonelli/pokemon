@@ -76,7 +76,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     );
 
     // se il pokemon selezionato ha gia le statistiche aggiornate
-    if (pokemonSelected.statsUpdate == true) {
+    if (pokemonSelected.infoUpdate == true) {
       emit(state.copyWith(
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
@@ -88,7 +88,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     // faccio prima una verifica nell SP
     final pokemonById =
         await pokemonRepository.fetchPokemonById(pokemonSelected.id ?? '');
-    if (pokemonById.statsUpdate == true) {
+    if (pokemonById.infoUpdate == true) {
       emit(state.copyWith(
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
@@ -101,7 +101,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       ));
 
       // aggiorno il pokemon con le statistiche
-      final pokemonUpdate = await updateStats(pokemonById);
+      final pokemonUpdate = await updateInfo(pokemonById);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
         pokemonList: updateList,
@@ -116,8 +116,8 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     emit(state.copyWith(
       pokemonSelected: pokemon,
     ));
-    if (pokemon.statsUpdate != true) {
-      final pokemonUpdate = await updateStats(pokemon);
+    if (pokemon.infoUpdate != true) {
+      final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       emit(state.copyWith(
         pokemonList: updateList,
@@ -138,8 +138,8 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     return currentList;
   }
 
-  updateStats(PokemonModel pokemon) async {
-    final pokemonUpdate = await fetchStatsPokemon(
+  updateInfo(PokemonModel pokemon) async {
+    final pokemonUpdate = await fetchInfoPokemon(
       int.parse(pokemon.id!.replaceAll("#", "")),
       pokemon,
     );
@@ -182,8 +182,8 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
   //   ));
   // }
 
-  fetchStatsPokemon(int id, PokemonModel pokemon) async {
-    return await pokemonRepository.fetchPokemonStatsById(
+  fetchInfoPokemon(int id, PokemonModel pokemon) async {
+    return await pokemonRepository.fetchPokemonInfoById(
       id,
       pokemon,
     );

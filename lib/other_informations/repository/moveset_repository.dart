@@ -110,6 +110,12 @@ class MovesetRepository {
         orElse: () => null,
       );
 
+      String effect = '';
+      String shortEffect = '';
+      if (enEffect != null) {
+        effect = enEffect['effect'] ?? '';
+        shortEffect = enEffect['short_effect'] ?? '';
+      }
       return move.copyWith(
         id: id,
         isDownloaded: true,
@@ -120,8 +126,8 @@ class MovesetRepository {
         damageClass: damageClass,
         type: type,
         effectEntries: EffectModel(
-          effect: enEffect['effect'],
-          shortEffect: enEffect['short_effect'],
+          effect: effect,
+          shortEffect: shortEffect,
         ),
       );
     } catch (e) {}

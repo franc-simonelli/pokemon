@@ -66,28 +66,33 @@ class EvolutionLineContent extends StatelessWidget {
             ],
           ),
           SizedBox(height: 10),
-          Row(
-            children: [
-              Expanded(
-                flex: 6,
-                child: _buildStats(pokemonFrom, null),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  // color: Colors.green,
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 6,
+                  child: _buildStats(pokemonFrom, null),
+                ),
+                Expanded(
+                  flex: 4,
                   child: _buildDifferences(
                     context: context,
                     pokemon1: pokemonFrom,
                     pokemon2: pokemon,
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 6,
-                child: _buildStats(pokemon, pokemonFrom),
-              ),
-            ],
+                Expanded(
+                  flex: 6,
+                  child: _buildStats(pokemon, pokemonFrom),
+                ),
+              ],
+            ),
           )
         ],
       ),
@@ -103,7 +108,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'Hp',
           value: pokemon.hp ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.green,
           difference: pokemonForDifference != null
               ? pokemon.hp! - pokemonForDifference.hp!
@@ -112,7 +117,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'At',
           value: pokemon.attack ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.orange,
           difference: pokemonForDifference != null
               ? pokemon.attack! - pokemonForDifference.attack!
@@ -121,7 +126,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'De',
           value: pokemon.defense ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.red,
           difference: pokemonForDifference != null
               ? pokemon.defense! - pokemonForDifference.defense!
@@ -130,7 +135,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'Sa',
           value: pokemon.specialAttack ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.blue,
           difference: pokemonForDifference != null
               ? pokemon.specialAttack! - pokemonForDifference.specialAttack!
@@ -139,7 +144,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
             desc: 'Sd',
             value: pokemon.specialDefense ?? 0,
-            statsUpdate: pokemon.statsUpdate ?? false,
+            statsUpdate: pokemon.infoUpdate ?? false,
             color: Colors.blueGrey,
             difference: pokemonForDifference != null
                 ? pokemon.specialDefense! - pokemonForDifference.specialDefense!
@@ -147,7 +152,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'Sp',
           value: pokemon.speed ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.purple,
           difference: pokemonForDifference != null
               ? pokemon.speed! - pokemonForDifference.speed!
@@ -156,7 +161,7 @@ class EvolutionLineContent extends StatelessWidget {
         _buildItemStats(
           desc: 'To',
           value: pokemon.total ?? 0,
-          statsUpdate: pokemon.statsUpdate ?? false,
+          statsUpdate: pokemon.infoUpdate ?? false,
           color: Colors.grey,
           difference: pokemonForDifference != null
               ? pokemon.total! - pokemonForDifference.total!

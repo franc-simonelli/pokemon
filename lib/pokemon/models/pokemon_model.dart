@@ -86,9 +86,6 @@ class PokemonModel {
   @JsonKey(name: "typeofpokemon")
   List<String>? typeofpokemon;
 
-  @JsonKey(name: "weaknesses")
-  List<String>? weaknesses;
-
   @JsonKey(name: "evolutions")
   List<String>? evolutions;
 
@@ -142,9 +139,13 @@ class PokemonModel {
 
   MovesetModel? moveset;
 
-  bool? statsUpdate;
+  bool? infoUpdate;
 
   bool? movesetUpdate;
+
+  List<String>? weaknesses;
+  List<String>? resistence;
+  List<String>? immunity;
 
   PokemonModel({
     this.name,
@@ -156,7 +157,6 @@ class PokemonModel {
     this.category,
     this.weight,
     this.typeofpokemon,
-    this.weaknesses,
     this.evolutions,
     this.abilities,
     this.hp,
@@ -174,9 +174,12 @@ class PokemonModel {
     this.evolvedfrom,
     this.reason,
     this.baseExp,
-    this.statsUpdate,
+    this.infoUpdate,
     this.moveset,
     this.movesetUpdate,
+    this.weaknesses,
+    this.resistence,
+    this.immunity,
   });
 
   factory PokemonModel.fromJson(Map<String, dynamic> json) =>
@@ -221,7 +224,6 @@ class PokemonModel {
     String? category,
     String? weight,
     List<String>? typeofpokemon,
-    List<String>? weaknesses,
     List<String>? evolutions,
     List<String>? abilities,
     int? hp,
@@ -239,9 +241,12 @@ class PokemonModel {
     String? evolvedfrom,
     String? reason,
     String? baseExp,
-    bool? statsUpdate,
+    bool? infoUpdate,
     bool? movesetUpdate,
     MovesetModel? moveset,
+    List<String>? weaknesses,
+    List<String>? resistence,
+    List<String>? immunity,
   }) {
     return PokemonModel(
       id: id ?? this.id,
@@ -253,7 +258,6 @@ class PokemonModel {
       category: category ?? this.category,
       weight: weight ?? this.weight,
       typeofpokemon: typeofpokemon ?? this.typeofpokemon,
-      weaknesses: weaknesses ?? this.weaknesses,
       evolutions: evolutions ?? this.evolutions,
       abilities: abilities ?? this.abilities,
       hp: hp ?? this.hp,
@@ -271,9 +275,12 @@ class PokemonModel {
       evolvedfrom: evolvedfrom ?? this.evolvedfrom,
       reason: reason ?? this.reason,
       baseExp: baseExp ?? this.baseExp,
-      statsUpdate: statsUpdate ?? this.statsUpdate,
+      infoUpdate: infoUpdate ?? this.infoUpdate,
       movesetUpdate: movesetUpdate ?? this.movesetUpdate,
       moveset: moveset ?? this.moveset,
+      weaknesses: weaknesses ?? this.weaknesses,
+      resistence: resistence ?? this.resistence,
+      immunity: immunity ?? this.immunity,
     );
   }
 }

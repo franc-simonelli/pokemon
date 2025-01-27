@@ -19,6 +19,8 @@ mixin _$MovesetState {
   Status get status => throw _privateConstructorUsedError;
   MovesetModel? get moveset => throw _privateConstructorUsedError;
   PokemonModel? get pokemon => throw _privateConstructorUsedError;
+  Status? get autoDownloadStatus => throw _privateConstructorUsedError;
+  bool? get isAllMovesDowloaded => throw _privateConstructorUsedError;
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +35,12 @@ abstract class $MovesetStateCopyWith<$Res> {
           MovesetState value, $Res Function(MovesetState) then) =
       _$MovesetStateCopyWithImpl<$Res, MovesetState>;
   @useResult
-  $Res call({Status status, MovesetModel? moveset, PokemonModel? pokemon});
+  $Res call(
+      {Status status,
+      MovesetModel? moveset,
+      PokemonModel? pokemon,
+      Status? autoDownloadStatus,
+      bool? isAllMovesDowloaded});
 }
 
 /// @nodoc
@@ -54,6 +61,8 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
     Object? status = null,
     Object? moveset = freezed,
     Object? pokemon = freezed,
+    Object? autoDownloadStatus = freezed,
+    Object? isAllMovesDowloaded = freezed,
   }) {
     return _then(_value.copyWith(
       status: null == status
@@ -68,6 +77,14 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
           ? _value.pokemon
           : pokemon // ignore: cast_nullable_to_non_nullable
               as PokemonModel?,
+      autoDownloadStatus: freezed == autoDownloadStatus
+          ? _value.autoDownloadStatus
+          : autoDownloadStatus // ignore: cast_nullable_to_non_nullable
+              as Status?,
+      isAllMovesDowloaded: freezed == isAllMovesDowloaded
+          ? _value.isAllMovesDowloaded
+          : isAllMovesDowloaded // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -80,7 +97,12 @@ abstract class _$$MovesetStateImplCopyWith<$Res>
       __$$MovesetStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Status status, MovesetModel? moveset, PokemonModel? pokemon});
+  $Res call(
+      {Status status,
+      MovesetModel? moveset,
+      PokemonModel? pokemon,
+      Status? autoDownloadStatus,
+      bool? isAllMovesDowloaded});
 }
 
 /// @nodoc
@@ -99,6 +121,8 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
     Object? status = null,
     Object? moveset = freezed,
     Object? pokemon = freezed,
+    Object? autoDownloadStatus = freezed,
+    Object? isAllMovesDowloaded = freezed,
   }) {
     return _then(_$MovesetStateImpl(
       status: null == status
@@ -113,6 +137,14 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
           ? _value.pokemon
           : pokemon // ignore: cast_nullable_to_non_nullable
               as PokemonModel?,
+      autoDownloadStatus: freezed == autoDownloadStatus
+          ? _value.autoDownloadStatus
+          : autoDownloadStatus // ignore: cast_nullable_to_non_nullable
+              as Status?,
+      isAllMovesDowloaded: freezed == isAllMovesDowloaded
+          ? _value.isAllMovesDowloaded
+          : isAllMovesDowloaded // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -120,7 +152,12 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MovesetStateImpl implements _MovesetState {
-  const _$MovesetStateImpl({required this.status, this.moveset, this.pokemon});
+  const _$MovesetStateImpl(
+      {required this.status,
+      this.moveset,
+      this.pokemon,
+      this.autoDownloadStatus,
+      this.isAllMovesDowloaded});
 
   @override
   final Status status;
@@ -128,10 +165,14 @@ class _$MovesetStateImpl implements _MovesetState {
   final MovesetModel? moveset;
   @override
   final PokemonModel? pokemon;
+  @override
+  final Status? autoDownloadStatus;
+  @override
+  final bool? isAllMovesDowloaded;
 
   @override
   String toString() {
-    return 'MovesetState(status: $status, moveset: $moveset, pokemon: $pokemon)';
+    return 'MovesetState(status: $status, moveset: $moveset, pokemon: $pokemon, autoDownloadStatus: $autoDownloadStatus, isAllMovesDowloaded: $isAllMovesDowloaded)';
   }
 
   @override
@@ -141,11 +182,16 @@ class _$MovesetStateImpl implements _MovesetState {
             other is _$MovesetStateImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.moveset, moveset) || other.moveset == moveset) &&
-            (identical(other.pokemon, pokemon) || other.pokemon == pokemon));
+            (identical(other.pokemon, pokemon) || other.pokemon == pokemon) &&
+            (identical(other.autoDownloadStatus, autoDownloadStatus) ||
+                other.autoDownloadStatus == autoDownloadStatus) &&
+            (identical(other.isAllMovesDowloaded, isAllMovesDowloaded) ||
+                other.isAllMovesDowloaded == isAllMovesDowloaded));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, moveset, pokemon);
+  int get hashCode => Object.hash(runtimeType, status, moveset, pokemon,
+      autoDownloadStatus, isAllMovesDowloaded);
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.
@@ -160,7 +206,9 @@ abstract class _MovesetState implements MovesetState {
   const factory _MovesetState(
       {required final Status status,
       final MovesetModel? moveset,
-      final PokemonModel? pokemon}) = _$MovesetStateImpl;
+      final PokemonModel? pokemon,
+      final Status? autoDownloadStatus,
+      final bool? isAllMovesDowloaded}) = _$MovesetStateImpl;
 
   @override
   Status get status;
@@ -168,6 +216,10 @@ abstract class _MovesetState implements MovesetState {
   MovesetModel? get moveset;
   @override
   PokemonModel? get pokemon;
+  @override
+  Status? get autoDownloadStatus;
+  @override
+  bool? get isAllMovesDowloaded;
 
   /// Create a copy of MovesetState
   /// with the given fields replaced by the non-null parameter values.

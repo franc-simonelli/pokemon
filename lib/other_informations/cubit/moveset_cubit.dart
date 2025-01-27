@@ -1,12 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pokedex/constants/shared_preferences_constants.dart';
+import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/other_informations/models/moveset_model.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/utils/save_pokemon_storage.dart';
-
 part 'moveset_state.dart';
 part 'moveset_cubit.freezed.dart';
 
@@ -29,7 +31,6 @@ class MovesetCubit extends Cubit<MovesetState> {
   initialize() async {
     try {
       emit(state.copyWith(status: Status.loading));
-
       final pokemonById = await pokemonRepository.fetchPokemonById(
         pokemon.id ?? '',
       );
@@ -43,6 +44,8 @@ class MovesetCubit extends Cubit<MovesetState> {
             moveset: pokemonUpdate?.moveset,
           ),
         );
+        final result = await checkAllMovesAreDownload();
+        emit(state.copyWith(isAllMovesDowloaded: result));
       } else {
         emit(
           state.copyWith(
@@ -53,6 +56,16 @@ class MovesetCubit extends Cubit<MovesetState> {
     } catch (e) {
       emit(state.copyWith(status: Status.error));
     }
+  }
+
+  checkAllMovesAreDownload() async {
+    final moves = state.moveset?.moves?.toList() ?? [];
+    for (var item in moves) {
+      if (item.isDownloaded != true) {
+        return false;
+      }
+    }
+    return true;
   }
 
   Future<PokemonModel?> checkMoveset(PokemonModel pokemon) async {
@@ -75,15 +88,67 @@ class MovesetCubit extends Cubit<MovesetState> {
     }
   }
 
+  downloadAllMoves() async {
+    emit(state.copyWith(autoDownloadStatus: Status.loading));
+    final moves = state.moveset?.moves?.toList() ?? [];
+    for (var item in moves) {
+      await checkMoveById(item);
+    }
+    emit(state.copyWith(
+      autoDownloadStatus: Status.success,
+      isAllMovesDowloaded: true,
+    ));
+  }
+
   checkMoveById(MoveModel move) async {
     if (move.isDownloaded == null) {
-      final moveUpdate = await movesetRepository.fetchPokemonMoveByUrl(move);
-      final movesUpdate = await updateLocalMoves(moveUpdate!);
+      final check = await checkMoveSP(move);
+      List<MoveModel> movesUpdate = [];
+      MoveModel? moveUpdate;
+      if (check != null) {
+        moveUpdate = check;
+      } else {
+        moveUpdate = await movesetRepository.fetchPokemonMoveByUrl(move);
+        await saveMoveSP(moveUpdate!);
+      }
+
+      movesUpdate = await updateLocalMoves(moveUpdate!);
       await updatePokemonMoveSP(moveUpdate);
-      emit(state.copyWith(
+      final result = await checkAllMovesAreDownload();
+      emit(
+        state.copyWith(
+          isAllMovesDowloaded: result,
           moveset: state.moveset?.copyWith(
-        moves: movesUpdate,
-      )));
+            moves: movesUpdate,
+          ),
+        ),
+      );
+    }
+  }
+
+  saveMoveSP(MoveModel move) async {
+    List<MoveModel> moves = [];
+    final moveJson = await sharedPrefsService.getValue<String>(kMoves) ?? '';
+    if (moveJson != '') {
+      moves = MoveModel.decode(moveJson);
+      moves.add(move);
+    } else {
+      moves.add(move);
+    }
+    String encode = MoveModel.encode(moves);
+    await sharedPrefsService.removeValue(kMoves);
+    await sharedPrefsService.setValue(kMoves, encode);
+  }
+
+  checkMoveSP(MoveModel move) async {
+    final moveJson = await sharedPrefsService.getValue<String>(kMoves) ?? '';
+    if (moveJson != '') {
+      List<MoveModel> moves = MoveModel.decode(moveJson);
+      return moves.firstWhereOrNull(
+        (element) {
+          return element.move?.name == move.move?.name;
+        },
+      );
     }
   }
 

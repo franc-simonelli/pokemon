@@ -49,7 +49,6 @@ class _ComparesPageState extends State<ComparesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isFirstPage = Navigator.of(context).widget.pages.length == 1;
     return BlocProvider.value(
       value: _comparesCubit,
       child: Scaffold(

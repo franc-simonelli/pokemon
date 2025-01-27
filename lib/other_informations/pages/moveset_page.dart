@@ -37,8 +37,8 @@ class _MovesetPageState extends State<MovesetPage> {
               children: [
                 SizedBox(height: 30),
                 _buildAbilities(state, context),
-                SizedBox(height: 20),
-                _buildMoveset(state, context)
+                SizedBox(height: 0),
+                _buildMoveset(context)
               ],
             ),
           );
@@ -48,11 +48,24 @@ class _MovesetPageState extends State<MovesetPage> {
     );
   }
 
-  Widget _buildMoveset(MovesetState state, BuildContext context) {
+  Widget _buildMoveset(BuildContext context) {
     final appTheme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        BlocBuilder<MovesetCubit, MovesetState>(
+          builder: (context, state) {
+            if (state.isAllMovesDowloaded != true) {
+              return IconButton(
+                onPressed: () {
+                  context.read<MovesetCubit>().downloadAllMoves();
+                },
+                icon: Icon(Icons.download),
+              );
+            }
+            return Container();
+          },
+        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
@@ -69,42 +82,45 @@ class _MovesetPageState extends State<MovesetPage> {
           ),
         ),
         SizedBox(height: 10),
-        ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: state.moveset?.moves?.length,
-          itemBuilder: (context, index) {
-            final item = state.moveset?.moves?[index];
-            return Column(
-              children: [
-                ExpansionTile(
-                  // initiallyExpanded: item?.isDownloaded ?? false,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.transparent),
-                    borderRadius: BorderRadius.zero,
-                  ),
-                  // title: MyTextTranslateMedium(
-                  //   key: UniqueKey(),
-                  //   text: item?.move?.name?.toUpperCase() ?? '',
-                  //   isFontBold: true,
-                  // ),
-                  title: MyText.labelMedium(
-                    context: context,
-                    text: item?.move?.name?.toUpperCase() ?? '',
-                    isFontBold: true,
-                  ),
+        BlocBuilder<MovesetCubit, MovesetState>(
+          builder: (context, state) {
+            if (state.autoDownloadStatus == Status.loading) {
+              return Center(
+                child: CupertinoActivityIndicator(),
+              );
+            }
+            return ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: state.moveset?.moves?.length,
+              itemBuilder: (context, index) {
+                final item = state.moveset?.moves?[index];
+                return Column(
                   children: [
-                    MoveContent(
-                      move: item!,
-                      onlyStats: onlyStats,
+                    ExpansionTile(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Colors.transparent),
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      title: MyText.labelMedium(
+                        context: context,
+                        text: item?.move?.name?.toUpperCase() ?? '',
+                        isFontBold: true,
+                      ),
+                      children: [
+                        MoveContent(
+                          move: item!,
+                          onlyStats: onlyStats,
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      endIndent: 20,
+                      indent: 20,
                     ),
                   ],
-                ),
-                Divider(
-                  endIndent: 20,
-                  indent: 20,
-                ),
-              ],
+                );
+              },
             );
           },
         ),

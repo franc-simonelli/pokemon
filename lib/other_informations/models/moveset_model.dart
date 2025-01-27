@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'moveset_model.g.dart';
@@ -94,6 +96,15 @@ class MoveModel {
     this.effectEntries,
     this.isDownloaded,
   });
+
+  static String encode(List<MoveModel> data) {
+    return json.encode(data.map((item) => item.toJson()).toList());
+  }
+
+  static List<MoveModel> decode(String data) =>
+      (json.decode(data) as List<dynamic>)
+          .map<MoveModel>((item) => MoveModel.fromJson(item))
+          .toList();
 
   factory MoveModel.fromJson(Map<String, dynamic> json) =>
       _$MoveModelFromJson(json);
