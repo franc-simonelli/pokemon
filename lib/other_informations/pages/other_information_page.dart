@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/other_informations/cubit/evolution_line_cubit.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
@@ -29,6 +31,8 @@ class _OtherInformationState extends State<OtherInformation>
   late MovesetCubit _movesetCubit;
   late EvolutionLineCubit _evolutionLineCubit;
   late List<bool> _visitedTabs;
+  bool showEffect = false;
+  bool showSwitch = true;
 
   @override
   void initState() {
@@ -48,17 +52,19 @@ class _OtherInformationState extends State<OtherInformation>
     );
 
     _tabController.addListener(() {
+      setState(() {
+        showSwitch = _tabController.index == 0 ? true : false;
+      });
       if (_tabController.indexIsChanging) return;
 
       final currentIndex = _tabController.index;
       if (!_visitedTabs[currentIndex]) {
         if (currentIndex == 0) {
-          // _movesetCubit.initialize();
         } else if (currentIndex == 1) {
           _evolutionLineCubit.fetchEvolutionLine();
         }
 
-        _visitedTabs[currentIndex] = true; // Segna il tab come visitato
+        _visitedTabs[currentIndex] = true;
       }
     });
     super.initState();
@@ -71,65 +77,80 @@ class _OtherInformationState extends State<OtherInformation>
         BlocProvider.value(value: _movesetCubit),
         BlocProvider.value(value: _evolutionLineCubit)
       ],
-      child: Scaffold(
-        appBar: _buildAppBar(widget.pokemon.name ?? ''),
-        body: Stack(children: [
-          Positioned(
-            top: 0,
-            right: -110,
-            child: Opacity(
-              opacity: 1,
-              child: ImgType(
-                width: 450,
-                typeImg: widget.pokemon.typeofpokemon![0],
-                boxFit: BoxFit.contain,
-                colorGradient: [
-                  // mappingColors(
-                  //   widget.pokemon.typeofpokemon![0],
-                  // ),
-                  // Colors.black87,
-                  // Colors.black87,
-                  Colors.black87,
-                  Colors.black54,
-                  mappingColors(
-                    widget.pokemon.typeofpokemon![0],
+      child: BlocBuilder<MovesetCubit, MovesetState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: _buildAppBar(widget.pokemon.name ?? '', context),
+            body: Stack(
+              children: [
+                Positioned(
+                  top: 0,
+                  right: -110,
+                  child: Opacity(
+                    opacity: 1,
+                    child: ImgType(
+                      width: 450,
+                      typeImg: widget.pokemon.typeofpokemon![0],
+                      boxFit: BoxFit.contain,
+                      colorGradient: [
+                        // mappingColors(
+                        //   widget.pokemon.typeofpokemon![0],
+                        // ),
+                        // Colors.black87,
+                        // Colors.black87,
+                        Colors.black87,
+                        Colors.black54,
+                        mappingColors(
+                          widget.pokemon.typeofpokemon![0],
+                        ),
+                        Colors.black54,
+                        mappingColors(
+                          widget.pokemon.typeofpokemon![0],
+                        ),
+                      ],
+                    ),
                   ),
-                  Colors.black54,
-                  mappingColors(
-                    widget.pokemon.typeofpokemon![0],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Column(
-            children: [
-              TabBar(
-                controller: _tabController,
-                tabs: [
-                  Tab(text: 'Moveset'),
-                  Tab(text: 'Evolution'),
-                ],
-              ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
+                ),
+                Column(
                   children: [
-                    MovesetPage(),
-                    EvolutionLinePage(),
+                    TabBar(
+                      controller: _tabController,
+                      tabs: [
+                        Tab(text: 'Moveset'),
+                        Tab(text: 'Evolution'),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        controller: _tabController,
+                        children: [
+                          MovesetPage(
+                            showEffect: showEffect,
+                          ),
+                          EvolutionLinePage(),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        ]),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  AppBar _buildAppBar(String title) {
+  AppBar _buildAppBar(String title, BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_outlined),
+        onPressed: () {
+          context.read<MovesetCubit>().closeStream();
+          context.pop();
+        },
+      ),
       title: Row(
         children: [
           MyText.labelLarge(
@@ -139,9 +160,29 @@ class _OtherInformationState extends State<OtherInformation>
         ],
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 16),
-          child: Icon(Icons.favorite_border_outlined),
+        showSwitch ? _buildSwitchMoves() : Container(),
+        // Padding(
+        //   padding: const EdgeInsets.only(right: 16),
+        //   child: Icon(Icons.favorite_border_outlined),
+        // ),
+      ],
+    );
+  }
+
+  Widget _buildSwitchMoves() {
+    final appTheme = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        MyText.labelSmall(context: context, text: 'Show  eff..'),
+        SizedBox(width: 10),
+        CupertinoSwitch(
+          activeColor: appTheme.primaryContainer,
+          value: showEffect,
+          onChanged: (value) {
+            setState(() {
+              showEffect = value;
+            });
+          },
         ),
       ],
     );

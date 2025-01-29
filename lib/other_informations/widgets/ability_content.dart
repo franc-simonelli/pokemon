@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
-import 'package:pokedex/other_informations/models/moveset_model.dart';
+import 'package:pokedex/other_informations/models/ability_model.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class AbilityContent extends StatefulWidget {
@@ -11,7 +11,7 @@ class AbilityContent extends StatefulWidget {
     super.key,
   });
 
-  final AbilitiesModel ability;
+  final AbilityModel ability;
 
   @override
   State<AbilityContent> createState() => _AbilityContentState();

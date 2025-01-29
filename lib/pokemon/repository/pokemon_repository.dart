@@ -178,45 +178,45 @@ class PokemonRepository {
     } catch (e) {}
     return null;
   }
-}
 
-Future<Map<String, dynamic>?> fetchTypeDetailById(String url) async {
-  try {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: url,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-      ),
-    );
-    final response = await dio.get('');
-    List<String> weaknesses = [];
-    List<String> resistence = [];
-    List<String> immunity = [];
+  Future<Map<String, dynamic>?> fetchTypeDetailById(String url) async {
+    try {
+      final dio = Dio(
+        BaseOptions(
+          baseUrl: url,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      final response = await dio.get('');
+      List<String> weaknesses = [];
+      List<String> resistence = [];
+      List<String> immunity = [];
 
-    final data = response.data;
-    final relations = data['damage_relations'] as Map<String, dynamic>;
-    final weakJson = relations['double_damage_from'] as List;
-    final resJson = relations['half_damage_from'] as List;
-    final immunityJson = relations['no_damage_from'] as List;
-    for (var item in weakJson) {
-      weaknesses.add(item['name']);
-    }
-    for (var item in resJson) {
-      resistence.add(item['name']);
-    }
-    for (var item in immunityJson) {
-      immunity.add(item['name']);
-    }
-    List<String> uniqueListImmunity = immunity.toSet().toList();
+      final data = response.data;
+      final relations = data['damage_relations'] as Map<String, dynamic>;
+      final weakJson = relations['double_damage_from'] as List;
+      final resJson = relations['half_damage_from'] as List;
+      final immunityJson = relations['no_damage_from'] as List;
+      for (var item in weakJson) {
+        weaknesses.add(item['name']);
+      }
+      for (var item in resJson) {
+        resistence.add(item['name']);
+      }
+      for (var item in immunityJson) {
+        immunity.add(item['name']);
+      }
+      List<String> uniqueListImmunity = immunity.toSet().toList();
 
-    return {
-      'weaknesses': weaknesses,
-      'resistence': resistence,
-      'immunity': uniqueListImmunity,
-    };
-  } catch (e) {}
-  return null;
+      return {
+        'weaknesses': weaknesses,
+        'resistence': resistence,
+        'immunity': uniqueListImmunity,
+      };
+    } catch (e) {}
+    return null;
+  }
 }

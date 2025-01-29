@@ -1,14 +1,10 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/pokemon/utils/generate_weakness_reistence.dart';
 import 'package:pokedex/pokemon/widget/damage_relations.dart';
-import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';

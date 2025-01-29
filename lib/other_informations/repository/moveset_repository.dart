@@ -1,7 +1,10 @@
 // ignore_for_file: empty_catches
 
 import 'package:dio/dio.dart';
+import 'package:pokedex/other_informations/models/ability_model.dart';
+import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/models/moveset_model.dart';
+import 'package:pokedex/other_informations/utils/generate_id_by_url.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 
 class MovesetRepository {
@@ -22,7 +25,7 @@ class MovesetRepository {
       // await Future.delayed(Duration(milliseconds: 1000));
 
       MovesetModel moveset;
-      List<AbilitiesModel> abilities = [];
+      List<AbilityModel> abilities = [];
       List<MoveModel> moves = [];
 
       final response = await dio.get('');
@@ -30,7 +33,14 @@ class MovesetRepository {
       final abilitiesjSON = data['abilities'] as List;
       final movesJson = data['moves'] as List;
 
-      abilities = abilitiesjSON.map((e) => AbilitiesModel.fromJson(e)).toList();
+      for (int i = 0; i < movesJson.length; i++) {
+        if (movesJson[i] is Map<String, dynamic>) {
+          final id = generateIdByUrl(movesJson[i]['move']['url']);
+          (movesJson[i] as Map<String, dynamic>)['id'] = id;
+        }
+      }
+
+      abilities = abilitiesjSON.map((e) => AbilityModel.fromJson(e)).toList();
       moves = movesJson.map((e) => MoveModel.fromJson(e)).toList();
 
       moveset = MovesetModel(
@@ -45,8 +55,8 @@ class MovesetRepository {
     return null;
   }
 
-  Future<AbilitiesModel?> fetchPokemonAbilityByUrl(
-    AbilitiesModel ability,
+  Future<AbilityModel?> fetchPokemonAbilityByUrl(
+    AbilityModel ability,
   ) async {
     try {
       final dio = Dio(
@@ -81,12 +91,13 @@ class MovesetRepository {
   }
 
   Future<MoveModel?> fetchPokemonMoveByUrl(
-    MoveModel move,
+    // MoveModel move,
+    String url,
   ) async {
     try {
       final dio = Dio(
         BaseOptions(
-          baseUrl: move.move?.url ?? '',
+          baseUrl: url,
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -98,6 +109,11 @@ class MovesetRepository {
       final response = await dio.get('');
       final data = response.data;
       final id = data['id'] as int;
+      final names = data['names'] as List;
+      final name = names.firstWhere(
+        (entry) => entry['language']['name'] == 'it',
+        orElse: () => null,
+      );
       final accuracy = data['accuracy'] as int?;
       final power = data['power'] as int?;
       final pp = data['pp'] as int;
@@ -116,8 +132,12 @@ class MovesetRepository {
         effect = enEffect['effect'] ?? '';
         shortEffect = enEffect['short_effect'] ?? '';
       }
-      return move.copyWith(
+
+      return MoveModel(
         id: id,
+        move: MoveNameModel(
+          name: name['name'],
+        ),
         isDownloaded: true,
         accuracy: accuracy,
         power: power,

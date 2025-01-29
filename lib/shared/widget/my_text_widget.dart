@@ -23,6 +23,7 @@ class MyText extends StatefulWidget {
     bool isBorderText = false,
     Color? color,
     TextAlign? textAlign,
+    TextOverflow? textOverflow,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
@@ -32,6 +33,7 @@ class MyText extends StatefulWidget {
       style: appTextTheme.labelSmall!.copyWith(
         color: color ?? appColors.onSurface,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
+        overflow: textOverflow,
         shadows: isBorderText
             ? [
                 BoxShadow(

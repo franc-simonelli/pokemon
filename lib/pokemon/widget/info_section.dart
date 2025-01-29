@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/widget/info_type_section.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
+import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class InfoSection extends StatelessWidget {
   const InfoSection({
     super.key,
     required this.element,
     this.isBorder = true,
+    this.isSmallText = false,
   });
 
   final String element;
   final bool isBorder;
+  final bool isSmallText;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +47,19 @@ class InfoSection extends StatelessWidget {
             children: [
               TypeInfoSection(type: element),
               const SizedBox(width: 8),
-              Text(
-                element,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              isSmallText
+                  ? MyText.labelSmall(
+                      context: context,
+                      text: element,
+                      color: Colors.white,
+                      isFontBold: true,
+                    )
+                  : MyText.labelMedium(
+                      context: context,
+                      text: element,
+                      color: Colors.white,
+                      isFontBold: true,
+                    ),
             ],
           ),
         ),

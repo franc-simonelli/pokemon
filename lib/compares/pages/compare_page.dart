@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/widgets/compare_content.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
-import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class ComparesPage extends StatefulWidget {
@@ -103,38 +99,38 @@ class _ComparesPageState extends State<ComparesPage> {
     );
   }
 
-  Widget _buildButton(
-    BuildContext context,
-    bool isFirstPokemon,
-    List<PokemonModel> pokemons,
-  ) {
-    return ButtonScaled(
-      child: Row(
-        children: [
-          Icon(
-            Icons.search_outlined,
-            color: Colors.grey.shade400,
-          ),
-          SizedBox(width: 10),
-          MyText.labelMedium(context: context, text: 'Search ...'),
-        ],
-      ),
-      onPress: () async {
-        PokemonModel? pokemon =
-            await context.push(ScreenPaths.searchPokemon, extra: true);
-        final index = pokemons.indexWhere(
-          (element) {
-            return element.id == pokemon?.id;
-          },
-        );
-        if (pokemon != null) {
-          if (isFirstPokemon) {
-            controller1.jumpToPage(index);
-          } else {
-            controller2.jumpToPage(index);
-          }
-        }
-      },
-    );
-  }
+  // Widget _buildButton(
+  //   BuildContext context,
+  //   bool isFirstPokemon,
+  //   List<PokemonModel> pokemons,
+  // ) {
+  //   return ButtonScaled(
+  //     child: Row(
+  //       children: [
+  //         Icon(
+  //           Icons.search_outlined,
+  //           color: Colors.grey.shade400,
+  //         ),
+  //         SizedBox(width: 10),
+  //         MyText.labelMedium(context: context, text: 'Search ...'),
+  //       ],
+  //     ),
+  //     onPress: () async {
+  //       PokemonModel? pokemon =
+  //           await context.push(ScreenPaths.searchPokemon, extra: true);
+  //       final index = pokemons.indexWhere(
+  //         (element) {
+  //           return element.id == pokemon?.id;
+  //         },
+  //       );
+  //       if (pokemon != null) {
+  //         if (isFirstPokemon) {
+  //           controller1.jumpToPage(index);
+  //         } else {
+  //           controller2.jumpToPage(index);
+  //         }
+  //       }
+  //     },
+  //   );
+  // }
 }

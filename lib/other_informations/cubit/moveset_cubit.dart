@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/constants/shared_preferences_constants.dart';
-import 'package:pokedex/core/di/shared_export.dart';
+import 'package:pokedex/other_informations/models/ability_model.dart';
+import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/models/moveset_model.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
+import 'package:pokedex/other_informations/utils/check_move_sp.dart';
+import 'package:pokedex/other_informations/utils/filter_moves_by_version.dart';
+import 'package:pokedex/other_informations/utils/save_move_sp.dart';
+import 'package:pokedex/other_informations/utils/update_pokemon_ability_sp.dart';
+import 'package:pokedex/other_informations/utils/update_pokemon_move_sp.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
@@ -20,6 +25,9 @@ class MovesetCubit extends Cubit<MovesetState> {
   }) : super(MovesetState(
           status: Status.initial,
           pokemon: pokemon,
+          abilities: [],
+          moveLevelUp: [],
+          moveMachine: [],
         )) {
     initialize();
   }
@@ -27,6 +35,11 @@ class MovesetCubit extends Cubit<MovesetState> {
   final PokemonModel pokemon;
   final MovesetRepository movesetRepository;
   final PokemonRepository pokemonRepository;
+
+  final StreamController<double> _progressController =
+      StreamController<double>();
+  Stream<double> get progressStream => _progressController.stream;
+  bool _isCancelled = false;
 
   initialize() async {
     try {
@@ -38,14 +51,20 @@ class MovesetCubit extends Cubit<MovesetState> {
       final pokemonUpdate = await checkMoveset(pokemonById);
 
       if (pokemonUpdate?.moveset != null) {
+        final filterMoves =
+            await filterScarletAndViolet(pokemonUpdate?.moveset?.moves ?? []);
+
+        final result =
+            await checkAllMovesAreDownload(pokemonUpdate?.moveset?.moves ?? []);
         emit(
           state.copyWith(
             status: Status.success,
             moveset: pokemonUpdate?.moveset,
+            moveLevelUp: filterMoves['levelUp'],
+            moveMachine: filterMoves['machine'],
+            isAllMovesDowloaded: result,
           ),
         );
-        final result = await checkAllMovesAreDownload();
-        emit(state.copyWith(isAllMovesDowloaded: result));
       } else {
         emit(
           state.copyWith(
@@ -58,8 +77,8 @@ class MovesetCubit extends Cubit<MovesetState> {
     }
   }
 
-  checkAllMovesAreDownload() async {
-    final moves = state.moveset?.moves?.toList() ?? [];
+  checkAllMovesAreDownload(List<MoveModel> moves) async {
+    // final moves = state.moveset?.moves?.toList() ?? [];
     for (var item in moves) {
       if (item.isDownloaded != true) {
         return false;
@@ -89,67 +108,106 @@ class MovesetCubit extends Cubit<MovesetState> {
   }
 
   downloadAllMoves() async {
-    emit(state.copyWith(autoDownloadStatus: Status.loading));
-    final moves = state.moveset?.moves?.toList() ?? [];
-    for (var item in moves) {
-      await checkMoveById(item);
+    try {
+      _isCancelled = false;
+      emit(state.copyWith(autoDownloadStatus: Status.loading));
+      final moves = state.moveset?.moves?.toList() ?? [];
+      for (int i = 0; i < moves.length; i++) {
+        if (_isCancelled) break;
+        if (moves[i].isDownloaded != true) {
+          await checkMoveById(moves[i]);
+          double nMoves = i.toDouble();
+          final value = ((nMoves + 1) * 100) / state.moveset!.moves!.length;
+          _progressController.add(value / 100);
+        }
+      }
+      if (!_isCancelled) {
+        emit(state.copyWith(
+          autoDownloadStatus: Status.success,
+          isAllMovesDowloaded: true,
+        ));
+        return true;
+      }
+      return false;
+    } catch (e) {
+      emit(state.copyWith(
+        autoDownloadStatus: Status.error,
+        isAllMovesDowloaded: false,
+      ));
+      return false;
     }
-    emit(state.copyWith(
-      autoDownloadStatus: Status.success,
-      isAllMovesDowloaded: true,
-    ));
   }
 
   checkMoveById(MoveModel move) async {
+    // move è un elemento della lista filtrata per scarlet and violet quindi con un solo versiongroup
     if (move.isDownloaded == null) {
-      final check = await checkMoveSP(move);
+      final originalListMoves = state.moveset?.moves?.toList();
+
+      // recupero l'elemento completo con tutti i versiongroup
+      final recoveryMove = originalListMoves?.firstWhere(
+        (element) {
+          return element.id == move.id;
+        },
+      );
+
+      // controllo se ho gia scaricato le statistiche della mossa
+      final check = await checkMoveSP(recoveryMove!);
       List<MoveModel> movesUpdate = [];
       MoveModel? moveUpdate;
       if (check != null) {
         moveUpdate = check;
       } else {
-        moveUpdate = await movesetRepository.fetchPokemonMoveByUrl(move);
+        // scarico le statistiche della mossa e le salvo
+        moveUpdate =
+            await movesetRepository.fetchPokemonMoveByUrl(move.move?.url ?? '');
         await saveMoveSP(moveUpdate!);
       }
 
-      movesUpdate = await updateLocalMoves(moveUpdate!);
-      await updatePokemonMoveSP(moveUpdate);
-      final result = await checkAllMovesAreDownload();
+      // unisco la mossa con i versiongroup e la mossa con le statistiche
+      // creando una mossa specifica per quel pokemon
+      final moveMerged = mergeMoveWithNewInfo(
+        previusMove: recoveryMove,
+        moveWithNewInfo: moveUpdate!,
+      );
+      movesUpdate = await updateLocalMoves(moveMerged);
+      await updatePokemonMoveSP(
+        move: moveMerged,
+        pokemon: state.pokemon!,
+        pokemonRepository: pokemonRepository,
+      );
+      final filterMoves = await filterScarletAndViolet(movesUpdate);
+      final result = await checkAllMovesAreDownload(movesUpdate);
       emit(
         state.copyWith(
           isAllMovesDowloaded: result,
           moveset: state.moveset?.copyWith(
             moves: movesUpdate,
           ),
+          moveLevelUp: filterMoves['levelUp'],
+          moveMachine: filterMoves['machine'],
         ),
       );
     }
   }
 
-  saveMoveSP(MoveModel move) async {
-    List<MoveModel> moves = [];
-    final moveJson = await sharedPrefsService.getValue<String>(kMoves) ?? '';
-    if (moveJson != '') {
-      moves = MoveModel.decode(moveJson);
-      moves.add(move);
-    } else {
-      moves.add(move);
-    }
-    String encode = MoveModel.encode(moves);
-    await sharedPrefsService.removeValue(kMoves);
-    await sharedPrefsService.setValue(kMoves, encode);
-  }
-
-  checkMoveSP(MoveModel move) async {
-    final moveJson = await sharedPrefsService.getValue<String>(kMoves) ?? '';
-    if (moveJson != '') {
-      List<MoveModel> moves = MoveModel.decode(moveJson);
-      return moves.firstWhereOrNull(
-        (element) {
-          return element.move?.name == move.move?.name;
-        },
-      );
-    }
+  mergeMoveWithNewInfo({
+    required MoveModel previusMove,
+    required MoveModel moveWithNewInfo,
+  }) {
+    return previusMove.copyWith(
+      move: previusMove.move?.copyWith(name: moveWithNewInfo.move?.name ?? ''),
+      isDownloaded: moveWithNewInfo.isDownloaded,
+      accuracy: moveWithNewInfo.accuracy,
+      power: moveWithNewInfo.power,
+      pp: moveWithNewInfo.pp,
+      priority: moveWithNewInfo.priority,
+      damageClass: moveWithNewInfo.damageClass,
+      type: moveWithNewInfo.type,
+      effectEntries: EffectModel(
+        effect: moveWithNewInfo.effectEntries?.effect,
+        shortEffect: moveWithNewInfo.effectEntries?.shortEffect,
+      ),
+    );
   }
 
   Future<List<MoveModel>> updateLocalMoves(
@@ -159,7 +217,7 @@ class MovesetCubit extends Cubit<MovesetState> {
 
     final index = currentMoves?.indexWhere(
       (element) {
-        return element.move?.name == move.move?.name;
+        return element.id == move.id;
       },
     );
     currentMoves?.removeAt(index!);
@@ -167,31 +225,16 @@ class MovesetCubit extends Cubit<MovesetState> {
     return currentMoves ?? [];
   }
 
-  updatePokemonMoveSP(MoveModel move) async {
-    final pokemonBySP = await pokemonRepository.fetchPokemonById(
-      state.pokemon?.id ?? '',
-    );
-    final index = pokemonBySP.moveset?.moves?.indexWhere(
-      (element) {
-        if (element.move?.name == move.move?.name) {}
-        return element.move?.name == move.move?.name;
-      },
-    );
-
-    pokemonBySP.moveset?.moves?.removeAt(index!);
-    pokemonBySP.moveset?.moves?.insert(index!, move);
-    await savePokemonUpdate(
-      pokemon: pokemonBySP,
-      pokemonRepository: pokemonRepository,
-    );
-  }
-
-  checkAbilityById(AbilitiesModel ability) async {
+  checkAbilityById(AbilityModel ability) async {
     if (ability.isDownloaded == null) {
       final abilityUpdate =
           await movesetRepository.fetchPokemonAbilityByUrl(ability);
       final abilitiesUpdate = await updateLocalAbility(abilityUpdate!);
-      await updatePokemonAbilitySP(abilityUpdate);
+      await updatePokemonAbilitySP(
+        ability: abilityUpdate,
+        pokemon: state.pokemon!,
+        pokemonRepository: pokemonRepository,
+      );
       emit(state.copyWith(
           moveset: state.moveset?.copyWith(
         abilities: abilitiesUpdate,
@@ -199,8 +242,7 @@ class MovesetCubit extends Cubit<MovesetState> {
     }
   }
 
-  Future<List<AbilitiesModel>> updateLocalAbility(
-      AbilitiesModel ability) async {
+  Future<List<AbilityModel>> updateLocalAbility(AbilityModel ability) async {
     final currentAbilities = state.moveset?.abilities?.toList();
 
     final index = currentAbilities?.indexWhere(
@@ -213,20 +255,8 @@ class MovesetCubit extends Cubit<MovesetState> {
     return currentAbilities ?? [];
   }
 
-  updatePokemonAbilitySP(AbilitiesModel ability) async {
-    final pokemonBySP = await pokemonRepository.fetchPokemonById(
-      state.pokemon?.id ?? '',
-    );
-    final index = pokemonBySP.moveset?.abilities?.indexWhere(
-      (element) {
-        return element.ability?.name == ability.ability?.name;
-      },
-    );
-    pokemonBySP.moveset?.abilities?.removeAt(index!);
-    pokemonBySP.moveset?.abilities?.insert(index!, ability);
-    await savePokemonUpdate(
-      pokemon: pokemonBySP,
-      pokemonRepository: pokemonRepository,
-    );
+  closeStream() {
+    _isCancelled = true;
+    _progressController.onResume;
   }
 }

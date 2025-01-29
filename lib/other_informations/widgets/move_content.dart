@@ -2,19 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
-import 'package:pokedex/other_informations/models/moveset_model.dart';
+import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class MoveContent extends StatefulWidget {
   const MoveContent({
     required this.move,
-    required this.onlyStats,
+    required this.showEffect,
     super.key,
   });
 
   final MoveModel move;
-  final bool onlyStats;
+  final bool showEffect;
 
   @override
   State<MoveContent> createState() => _MoveContentState();
@@ -87,7 +87,7 @@ class _MoveContentState extends State<MoveContent> {
                 SizedBox(height: 16),
                 // desc move
 
-                if (widget.onlyStats) ...[
+                if (widget.showEffect) ...[
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: MyText.labelSmall(

@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
+import 'package:pokedex/shared/utils/capitaliza_first_letter.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 enum EnumRelation {
@@ -155,7 +156,10 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x4']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(element: element);
+                                        return InfoSection(
+                                          element:
+                                              capitalizeFirstLetter(element),
+                                        );
                                       },
                                     )
                                   ],
@@ -184,7 +188,10 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x2']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(element: element);
+                                        return InfoSection(
+                                          element:
+                                              capitalizeFirstLetter(element),
+                                        );
                                       },
                                     )
                                   ],
@@ -213,7 +220,10 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x2']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(element: element);
+                                        return InfoSection(
+                                          element:
+                                              capitalizeFirstLetter(element),
+                                        );
                                       },
                                     )
                                   ],
@@ -242,7 +252,10 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x4']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(element: element);
+                                        return InfoSection(
+                                          element:
+                                              capitalizeFirstLetter(element),
+                                        );
                                       },
                                     )
                                   ],
@@ -273,7 +286,9 @@ class DamageRelations extends StatelessWidget {
                                 children: [
                                   ...immunity.mapIndexed(
                                     (index, element) {
-                                      return InfoSection(element: element);
+                                      return InfoSection(
+                                        element: capitalizeFirstLetter(element),
+                                      );
                                     },
                                   )
                                 ],
