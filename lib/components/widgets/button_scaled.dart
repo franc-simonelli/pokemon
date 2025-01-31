@@ -66,7 +66,7 @@ class _ButtonScaledState extends State<ButtonScaled> {
                 vertical: 10,
               ),
               decoration: BoxDecoration(
-                color: Colors.black45,
+                color: Colors.black87,
                 border: Border.all(color: Colors.grey.shade800),
                 borderRadius: BorderRadius.circular(24),
               ),

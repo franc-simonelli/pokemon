@@ -63,7 +63,10 @@ class TableMovesContent extends StatelessWidget {
       children: [
         _buildTableHeader(context, true),
         ..._buildTableRows(
-            context: context, moves: state.moveLevelUp, isTableLevel: true),
+          context: context,
+          moves: state.moveLevelUp,
+          isTableLevel: true,
+        ),
       ],
     );
   }
@@ -244,7 +247,7 @@ class TableMovesContent extends StatelessWidget {
   ) {
     return Row(
       children: [
-        InfoSection(
+        TypePokemon(
           element: type,
           isBorder: false,
           isSmallText: true,

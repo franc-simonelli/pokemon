@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/pokemon/widget/info_type_section.dart';
+import 'package:pokedex/pokemon/widget/type_info_section.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
-class InfoSection extends StatelessWidget {
-  const InfoSection({
+class TypePokemon extends StatelessWidget {
+  const TypePokemon({
     super.key,
     required this.element,
     this.isBorder = true,
@@ -26,9 +26,9 @@ class InfoSection extends StatelessWidget {
         decoration: isBorder
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: Colors.black54,
+                color: Colors.black38,
                 border: Border.all(
-                  width: 2,
+                  width: 1,
                   color: element.toLowerCase() == 'dark'
                       ? Colors.white54
                       : mappingColors(element),

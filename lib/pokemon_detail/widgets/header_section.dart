@@ -2,13 +2,10 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon/widget/page_view_pokemon_list.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
-import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
@@ -129,26 +126,26 @@ class _HeaderSectionState extends State<HeaderSection> {
             ),
           ),
           SizedBox(height: 10),
-          ButtonScaled(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                MyText.labelMedium(
-                  context: context,
-                  text: 'Moves/Evo',
-                  isFontBold: true,
-                ),
-                Icon(Icons.keyboard_arrow_right)
-              ],
-            ),
-            onPress: () {
-              context.push(
-                ScreenPaths.otherInformationPokemon,
-                extra: state.pokemonSelected,
-              );
-            },
-          )
+          // ButtonScaled(
+          //   child: Row(
+          //     mainAxisSize: MainAxisSize.min,
+          //     mainAxisAlignment: MainAxisAlignment.end,
+          //     children: [
+          //       MyText.labelMedium(
+          //         context: context,
+          //         text: 'Moves/Evo',
+          //         isFontBold: true,
+          //       ),
+          //       Icon(Icons.keyboard_arrow_right)
+          //     ],
+          //   ),
+          //   onPress: () {
+          //     context.push(
+          //       ScreenPaths.otherInformationPokemon,
+          //       extra: state.pokemonSelected,
+          //     );
+          //   },
+          // )
         ],
       ),
     );
@@ -169,7 +166,7 @@ class _HeaderSectionState extends State<HeaderSection> {
           ...pokemon.typeofpokemon!.mapIndexed(
             (index, element) => Row(
               children: [
-                InfoSection(
+                TypePokemon(
                   element: element,
                 ),
               ],
@@ -215,7 +212,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             icon: Icon(
               Icons.scale_outlined,
               color: Colors.brown,
-              size: 18,
+              size: 14,
             ),
             statUpdate: pokemon.infoUpdate ?? false,
             value: pokemon.infoUpdate != null ? pokemon.weightMap : '',
@@ -226,7 +223,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             icon: Icon(
               Icons.straight_outlined,
               color: Colors.orange,
-              size: 18,
+              size: 14,
             ),
             statUpdate: pokemon.infoUpdate ?? false,
             value: pokemon.infoUpdate != null ? pokemon.heightMap : '',
@@ -256,11 +253,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             : icon,
         if (statUpdate == false) ...[
           SizedBox(width: 15),
-          SizedBox(
-            width: 5,
-            height: 5,
-            child: CupertinoActivityIndicator(),
-          ),
+          CupertinoActivityIndicator(),
         ],
         if (statUpdate!) ...[
           SizedBox(width: 5),

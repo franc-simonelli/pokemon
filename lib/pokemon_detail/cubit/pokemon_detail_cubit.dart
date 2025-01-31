@@ -3,8 +3,12 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/constants/shared_preferences_constants.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon/models/stats_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/utils/save_pokemon_storage.dart';
+import 'package:pokedex/stats_pokemon/models/stats_value_model.dart';
+import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
+import 'package:pokedex/stats_pokemon/utils/generate_stats.dart';
 part 'pokemon_detail_state.dart';
 part 'pokemon_detail_cubit.freezed.dart';
 
@@ -52,17 +56,20 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     required this.pokemonSelected,
     required this.gen,
     required this.pokemonRepository,
+    required this.statsPokemonCubit,
   }) : super(PokemonDetailState(
           pokemonSelected: pokemonSelected,
           gen: gen,
           pokemonList: [],
           pokemonStatus: Status.initial,
+          statsPokeonCubit: statsPokemonCubit,
         )) {
     initialize();
   }
   final PokemonModel pokemonSelected;
   final EnumGen gen;
   final PokemonRepository pokemonRepository;
+  final StatsPokemonCubit statsPokemonCubit;
 
   initialize() async {
     if (gen == EnumGen.none) return;
@@ -77,9 +84,12 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
 
     // se il pokemon selezionato ha gia le statistiche aggiornate
     if (pokemonSelected.infoUpdate == true) {
+      final stats = await generateStats(pokemonSelected);
+      state.statsPokeonCubit.initialize(pokemon: pokemonSelected, stats: stats);
       emit(state.copyWith(
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
+        manageStats: stats,
       ));
       return;
     }
@@ -89,24 +99,29 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     final pokemonById =
         await pokemonRepository.fetchPokemonById(pokemonSelected.id ?? '');
     if (pokemonById.infoUpdate == true) {
+      final stats = await generateStats(pokemonById);
+      state.statsPokeonCubit.initialize(pokemon: pokemonById, stats: stats);
       emit(state.copyWith(
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
         pokemonSelected: pokemonById,
+        manageStats: stats,
       ));
     } else {
       emit(state.copyWith(
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
       ));
-
       // aggiorno il pokemon con le statistiche
       final pokemonUpdate = await updateInfo(pokemonById);
       final updateList = await updateLocalList(pokemonUpdate);
+      final stats = await generateStats(pokemonUpdate);
+      state.statsPokeonCubit.initialize(pokemon: pokemonUpdate, stats: stats);
       emit(state.copyWith(
         pokemonList: updateList,
         initialIndex: indexInitial,
         pokemonSelected: pokemonUpdate,
+        manageStats: stats,
       ));
     }
   }
@@ -116,12 +131,22 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     emit(state.copyWith(
       pokemonSelected: pokemon,
     ));
+    state.statsPokeonCubit.initialize(pokemon: pokemon, stats: null);
     if (pokemon.infoUpdate != true) {
       final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
+      final stats = await generateStats(pokemonUpdate);
+      state.statsPokeonCubit.initialize(pokemon: pokemonUpdate, stats: stats);
       emit(state.copyWith(
         pokemonList: updateList,
         pokemonSelected: pokemonUpdate,
+        manageStats: stats,
+      ));
+    } else {
+      final stats = await generateStats(pokemon);
+      state.statsPokeonCubit.initialize(pokemon: pokemon, stats: stats);
+      emit(state.copyWith(
+        manageStats: stats,
       ));
     }
   }
@@ -150,49 +175,10 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
     return pokemonUpdate;
   }
 
-  // logicDetailPokemon() async {
-  //   late PokemonModel pokemonUpdate;
-  //   final pokemon = await pokemonRepository
-  //       .fetchPokemonById(state.pokemonSelected.id ?? '');
-  //   final isUpdate = await checkStatsUpdate(pokemon);
-  //   if (!isUpdate) {
-  //     pokemonUpdate = await fetchStatsPokemon(
-  //       int.parse(pokemon.id!.replaceAll("#", "")),
-  //       pokemon,
-  //     );
-  //     await savePokemonUpdate(
-  //       pokemon: pokemonUpdate,
-  //       pokemonRepository: pokemonRepository,
-  //     );
-  //   } else {
-  //     pokemonUpdate = pokemon;
-  //   }
-  //   final result = await pokemonRepository.fetchPokemonGen(gen);
-  //   final indexInitial = result.indexWhere(
-  //     (element) {
-  //       if (element.id == pokemonSelected.id) {}
-  //       return element.id == pokemonSelected.id;
-  //     },
-  //   );
-  //   emit(state.copyWith(
-  //     pokemonList: result,
-  //     pokemonStatus: Status.success,
-  //     initialIndex: indexInitial,
-  //     pokemonSelected: pokemonUpdate,
-  //   ));
-  // }
-
   fetchInfoPokemon(int id, PokemonModel pokemon) async {
     return await pokemonRepository.fetchPokemonInfoById(
       id,
       pokemon,
     );
   }
-
-  // checkStatsUpdate(PokemonModel checkPokemon) async {
-  //   final pokemons = await pokemonRepository.fetchPokemonGen(EnumGen.all);
-  //   final pokemon =
-  //       pokemons.firstWhere((element) => element.id == checkPokemon.id);
-  //   return pokemon.statsUpdate ?? false;
-  // }
 }

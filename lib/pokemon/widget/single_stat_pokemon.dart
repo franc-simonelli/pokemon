@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:pokedex/other_informations/utils/build_difference_text.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
-class StatsPokemon extends StatelessWidget {
-  const StatsPokemon({
+class SinglStatPokemon extends StatelessWidget {
+  const SinglStatPokemon({
     required this.stats,
     required this.value,
     required this.color,

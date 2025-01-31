@@ -4,6 +4,7 @@ import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/widgets/compare_content.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
+import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 
 class ComparesPage extends StatefulWidget {
   const ComparesPage({
@@ -19,6 +20,8 @@ class ComparesPage extends StatefulWidget {
 
 class _ComparesPageState extends State<ComparesPage> {
   late ComparesCubit _comparesCubit;
+  late StatsPokemonCubit _statsFirstPokemonCubit;
+  late StatsPokemonCubit _statsSecondPokemonCubit;
   late PageController controller1;
   late PageController controller2;
 
@@ -27,7 +30,11 @@ class _ComparesPageState extends State<ComparesPage> {
     controller1 = PageController(initialPage: widget.initialIndex ?? 0);
     controller2 = PageController(initialPage: 0);
     final pokemonRepository = context.read<PokemonRepository>();
+    _statsFirstPokemonCubit = StatsPokemonCubit();
+    _statsSecondPokemonCubit = StatsPokemonCubit();
     _comparesCubit = ComparesCubit(
+      statsFirstPokemonCubit: _statsFirstPokemonCubit,
+      statsSecondPokemonCubit: _statsSecondPokemonCubit,
       pokemonRepository: pokemonRepository,
       initialIndex: widget.initialIndex,
     );
@@ -45,12 +52,15 @@ class _ComparesPageState extends State<ComparesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _comparesCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _comparesCubit),
+        BlocProvider.value(value: _statsFirstPokemonCubit),
+        BlocProvider.value(value: _statsSecondPokemonCubit),
+      ],
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: true,
-          // toolbarHeight: 100,
           title: BlocBuilder<ComparesCubit, ComparesState>(
             builder: (context, state) {
               return Column(
@@ -94,43 +104,10 @@ class _ComparesPageState extends State<ComparesPage> {
         body: CompareContent(
           controller1: controller1,
           controller2: controller2,
+          firstStatsCubit: _statsFirstPokemonCubit,
+          secondStatsCubit: _statsSecondPokemonCubit,
         ),
       ),
     );
   }
-
-  // Widget _buildButton(
-  //   BuildContext context,
-  //   bool isFirstPokemon,
-  //   List<PokemonModel> pokemons,
-  // ) {
-  //   return ButtonScaled(
-  //     child: Row(
-  //       children: [
-  //         Icon(
-  //           Icons.search_outlined,
-  //           color: Colors.grey.shade400,
-  //         ),
-  //         SizedBox(width: 10),
-  //         MyText.labelMedium(context: context, text: 'Search ...'),
-  //       ],
-  //     ),
-  //     onPress: () async {
-  //       PokemonModel? pokemon =
-  //           await context.push(ScreenPaths.searchPokemon, extra: true);
-  //       final index = pokemons.indexWhere(
-  //         (element) {
-  //           return element.id == pokemon?.id;
-  //         },
-  //       );
-  //       if (pokemon != null) {
-  //         if (isFirstPokemon) {
-  //           controller1.jumpToPage(index);
-  //         } else {
-  //           controller2.jumpToPage(index);
-  //         }
-  //       }
-  //     },
-  //   );
-  // }
 }

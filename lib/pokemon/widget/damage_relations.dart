@@ -156,7 +156,7 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x4']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(
+                                        return TypePokemon(
                                           element:
                                               capitalizeFirstLetter(element),
                                         );
@@ -188,7 +188,7 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x2']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(
+                                        return TypePokemon(
                                           element:
                                               capitalizeFirstLetter(element),
                                         );
@@ -220,7 +220,7 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x2']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(
+                                        return TypePokemon(
                                           element:
                                               capitalizeFirstLetter(element),
                                         );
@@ -252,7 +252,7 @@ class DamageRelations extends StatelessWidget {
                                   children: [
                                     ...groupedElements['x4']!.mapIndexed(
                                       (index, element) {
-                                        return InfoSection(
+                                        return TypePokemon(
                                           element:
                                               capitalizeFirstLetter(element),
                                         );
@@ -286,7 +286,7 @@ class DamageRelations extends StatelessWidget {
                                 children: [
                                   ...immunity.mapIndexed(
                                     (index, element) {
-                                      return InfoSection(
+                                      return TypePokemon(
                                         element: capitalizeFirstLetter(element),
                                       );
                                     },

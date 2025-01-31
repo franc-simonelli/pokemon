@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/other_informations/utils/build_difference_text.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/img_pokemon_with_type.dart';
-import 'package:pokedex/pokemon/widget/stats_pokemon.dart';
+import 'package:pokedex/pokemon/widget/single_stat_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
@@ -180,7 +180,7 @@ class EvolutionLineContent extends StatelessWidget {
     required int? difference,
     int? widthMax,
   }) {
-    return StatsPokemon(
+    return SinglStatPokemon(
       smallStats: true,
       stats: desc,
       value: statsUpdate ? value.toString() : '0',

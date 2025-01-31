@@ -96,7 +96,7 @@ class CardItem extends StatelessWidget {
             // type image
             Positioned(
               top: 30,
-              right: -10,
+              right: -15,
               child: ImgType(
                 typeImg: pokemon.typeofpokemon![0],
                 colorGradient: [
@@ -108,7 +108,7 @@ class CardItem extends StatelessWidget {
             // image pokemon
             Positioned(
               top: 50,
-              right: 0,
+              right: -5,
               child: SizedBox(
                 height: 90,
                 width: 90,
@@ -120,15 +120,15 @@ class CardItem extends StatelessWidget {
             ),
             // list type
             Positioned(
-              top: 65,
-              left: 5,
+              top: 60,
+              left: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ...pokemon.typeofpokemon!.mapIndexed(
                     (index, element) => Padding(
                       padding: const EdgeInsets.only(bottom: 0),
-                      child: InfoSection(
+                      child: TypePokemon(
                         element: element,
                       ),
                     ),

@@ -21,6 +21,8 @@ mixin _$PokemonDetailState {
   Status get pokemonStatus => throw _privateConstructorUsedError;
   List<PokemonModel> get pokemonList => throw _privateConstructorUsedError;
   int? get initialIndex => throw _privateConstructorUsedError;
+  StatsValueModel? get manageStats => throw _privateConstructorUsedError;
+  StatsPokemonCubit get statsPokeonCubit => throw _privateConstructorUsedError;
 
   /// Create a copy of PokemonDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +42,9 @@ abstract class $PokemonDetailStateCopyWith<$Res> {
       EnumGen gen,
       Status pokemonStatus,
       List<PokemonModel> pokemonList,
-      int? initialIndex});
+      int? initialIndex,
+      StatsValueModel? manageStats,
+      StatsPokemonCubit statsPokeonCubit});
 }
 
 /// @nodoc
@@ -63,6 +67,8 @@ class _$PokemonDetailStateCopyWithImpl<$Res, $Val extends PokemonDetailState>
     Object? pokemonStatus = null,
     Object? pokemonList = null,
     Object? initialIndex = freezed,
+    Object? manageStats = freezed,
+    Object? statsPokeonCubit = null,
   }) {
     return _then(_value.copyWith(
       pokemonSelected: null == pokemonSelected
@@ -85,6 +91,14 @@ class _$PokemonDetailStateCopyWithImpl<$Res, $Val extends PokemonDetailState>
           ? _value.initialIndex
           : initialIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      manageStats: freezed == manageStats
+          ? _value.manageStats
+          : manageStats // ignore: cast_nullable_to_non_nullable
+              as StatsValueModel?,
+      statsPokeonCubit: null == statsPokeonCubit
+          ? _value.statsPokeonCubit
+          : statsPokeonCubit // ignore: cast_nullable_to_non_nullable
+              as StatsPokemonCubit,
     ) as $Val);
   }
 }
@@ -102,7 +116,9 @@ abstract class _$$PokemonDetailStateImplCopyWith<$Res>
       EnumGen gen,
       Status pokemonStatus,
       List<PokemonModel> pokemonList,
-      int? initialIndex});
+      int? initialIndex,
+      StatsValueModel? manageStats,
+      StatsPokemonCubit statsPokeonCubit});
 }
 
 /// @nodoc
@@ -123,6 +139,8 @@ class __$$PokemonDetailStateImplCopyWithImpl<$Res>
     Object? pokemonStatus = null,
     Object? pokemonList = null,
     Object? initialIndex = freezed,
+    Object? manageStats = freezed,
+    Object? statsPokeonCubit = null,
   }) {
     return _then(_$PokemonDetailStateImpl(
       pokemonSelected: null == pokemonSelected
@@ -145,6 +163,14 @@ class __$$PokemonDetailStateImplCopyWithImpl<$Res>
           ? _value.initialIndex
           : initialIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      manageStats: freezed == manageStats
+          ? _value.manageStats
+          : manageStats // ignore: cast_nullable_to_non_nullable
+              as StatsValueModel?,
+      statsPokeonCubit: null == statsPokeonCubit
+          ? _value.statsPokeonCubit
+          : statsPokeonCubit // ignore: cast_nullable_to_non_nullable
+              as StatsPokemonCubit,
     ));
   }
 }
@@ -157,7 +183,9 @@ class _$PokemonDetailStateImpl extends _PokemonDetailState {
       required this.gen,
       required this.pokemonStatus,
       required final List<PokemonModel> pokemonList,
-      this.initialIndex})
+      this.initialIndex,
+      this.manageStats,
+      required this.statsPokeonCubit})
       : _pokemonList = pokemonList,
         super._();
 
@@ -177,10 +205,14 @@ class _$PokemonDetailStateImpl extends _PokemonDetailState {
 
   @override
   final int? initialIndex;
+  @override
+  final StatsValueModel? manageStats;
+  @override
+  final StatsPokemonCubit statsPokeonCubit;
 
   @override
   String toString() {
-    return 'PokemonDetailState(pokemonSelected: $pokemonSelected, gen: $gen, pokemonStatus: $pokemonStatus, pokemonList: $pokemonList, initialIndex: $initialIndex)';
+    return 'PokemonDetailState(pokemonSelected: $pokemonSelected, gen: $gen, pokemonStatus: $pokemonStatus, pokemonList: $pokemonList, initialIndex: $initialIndex, manageStats: $manageStats, statsPokeonCubit: $statsPokeonCubit)';
   }
 
   @override
@@ -196,7 +228,11 @@ class _$PokemonDetailStateImpl extends _PokemonDetailState {
             const DeepCollectionEquality()
                 .equals(other._pokemonList, _pokemonList) &&
             (identical(other.initialIndex, initialIndex) ||
-                other.initialIndex == initialIndex));
+                other.initialIndex == initialIndex) &&
+            (identical(other.manageStats, manageStats) ||
+                other.manageStats == manageStats) &&
+            (identical(other.statsPokeonCubit, statsPokeonCubit) ||
+                other.statsPokeonCubit == statsPokeonCubit));
   }
 
   @override
@@ -206,7 +242,9 @@ class _$PokemonDetailStateImpl extends _PokemonDetailState {
       gen,
       pokemonStatus,
       const DeepCollectionEquality().hash(_pokemonList),
-      initialIndex);
+      initialIndex,
+      manageStats,
+      statsPokeonCubit);
 
   /// Create a copy of PokemonDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -220,11 +258,14 @@ class _$PokemonDetailStateImpl extends _PokemonDetailState {
 
 abstract class _PokemonDetailState extends PokemonDetailState {
   const factory _PokemonDetailState(
-      {required final PokemonModel pokemonSelected,
-      required final EnumGen gen,
-      required final Status pokemonStatus,
-      required final List<PokemonModel> pokemonList,
-      final int? initialIndex}) = _$PokemonDetailStateImpl;
+          {required final PokemonModel pokemonSelected,
+          required final EnumGen gen,
+          required final Status pokemonStatus,
+          required final List<PokemonModel> pokemonList,
+          final int? initialIndex,
+          final StatsValueModel? manageStats,
+          required final StatsPokemonCubit statsPokeonCubit}) =
+      _$PokemonDetailStateImpl;
   const _PokemonDetailState._() : super._();
 
   @override
@@ -237,6 +278,10 @@ abstract class _PokemonDetailState extends PokemonDetailState {
   List<PokemonModel> get pokemonList;
   @override
   int? get initialIndex;
+  @override
+  StatsValueModel? get manageStats;
+  @override
+  StatsPokemonCubit get statsPokeonCubit;
 
   /// Create a copy of PokemonDetailState
   /// with the given fields replaced by the non-null parameter values.

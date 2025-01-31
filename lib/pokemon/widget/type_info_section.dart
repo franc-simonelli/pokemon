@@ -16,7 +16,7 @@ class TypeInfoSection extends StatelessWidget {
       width: 20,
       height: 20,
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: Colors.black54,
         shape: BoxShape.circle,
       ),
       child: Center(
@@ -24,7 +24,10 @@ class TypeInfoSection extends StatelessWidget {
           padding: const EdgeInsets.all(2.0),
           child: Image.asset(
             mappingType(type),
-            color: mappingColors(type),
+            // color: mappingColors(type),
+            color: type.toLowerCase() == 'dark'
+                ? Colors.white54
+                : mappingColors(type),
           ),
         ),
       ),

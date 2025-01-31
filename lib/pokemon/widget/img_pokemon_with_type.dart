@@ -32,14 +32,6 @@ class ImgPokemonWithType extends StatelessWidget {
                 fit: BoxFit.contain,
                 width: widthType,
               ),
-              // child: ImgType(
-              //   typeImg: mappingType(pokemon.typeofpokemon?[0] ?? ''),
-              //   width: widthType,
-              //   colorGradient: [
-              //     mappingColors(pokemon.typeofpokemon?[0] ?? ''),
-              //     Colors.black45,
-              //   ],
-              // ),
             ),
           ),
         Center(

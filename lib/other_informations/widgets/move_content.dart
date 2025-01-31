@@ -126,7 +126,7 @@ class _MoveContentState extends State<MoveContent> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InfoSection(
+        TypePokemon(
           element: widget.move.type ?? '',
           isBorder: true,
         ),

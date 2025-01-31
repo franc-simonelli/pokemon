@@ -8,6 +8,8 @@ class PokemonDetailState with _$PokemonDetailState {
     required Status pokemonStatus,
     required List<PokemonModel> pokemonList,
     int? initialIndex,
+    StatsValueModel? manageStats,
+    required StatsPokemonCubit statsPokeonCubit,
   }) = _PokemonDetailState;
 
   const PokemonDetailState._();

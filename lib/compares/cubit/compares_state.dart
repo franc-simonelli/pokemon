@@ -4,6 +4,8 @@ part of 'compares_cubit.dart';
 class ComparesState with _$ComparesState {
   const factory ComparesState({
     required List<PokemonModel> pokemons,
+    required StatsPokemonCubit statsFirstPokemonCubit,
+    required StatsPokemonCubit statsSecondPokemonCubit,
     PokemonModel? firstPokemonSelected,
     PokemonModel? secondPokemonSelected,
     int? initialIndex,
