@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
 import 'package:pokedex/filters/repository/type_repository.dart';
+import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/pages/pokemons_page.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
@@ -32,13 +33,14 @@ class _CountryPokemonListPageState extends State<CountryPokemonListPage> {
         await _loadMoreData();
       }
     });
-
+    final allDataPokemons = context.read<AllDataPokemonsCubit>();
     final filtersRepository = context.read<FiltersRepository>();
     final pokemonRepository = context.read<PokemonRepository>();
     _filtersCubit = FiltersCubit(
       filtersRepository: filtersRepository,
     )..fetchFilters();
     _pokemonCubit = PokemonCubit(
+      allDataPokemonsCubit: allDataPokemons,
       pokemonRepository: pokemonRepository,
       filtersCubit: _filtersCubit,
       gen: widget.gen,

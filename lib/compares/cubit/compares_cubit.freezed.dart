@@ -63,8 +63,8 @@ class _$ComparesStateCopyWithImpl<$Res, $Val extends ComparesState>
   @override
   $Res call({
     Object? pokemons = null,
-    Object? statsFirstPokemonCubit = freezed,
-    Object? statsSecondPokemonCubit = freezed,
+    Object? statsFirstPokemonCubit = null,
+    Object? statsSecondPokemonCubit = null,
     Object? firstPokemonSelected = freezed,
     Object? secondPokemonSelected = freezed,
     Object? initialIndex = freezed,
@@ -74,11 +74,11 @@ class _$ComparesStateCopyWithImpl<$Res, $Val extends ComparesState>
           ? _value.pokemons
           : pokemons // ignore: cast_nullable_to_non_nullable
               as List<PokemonModel>,
-      statsFirstPokemonCubit: freezed == statsFirstPokemonCubit
+      statsFirstPokemonCubit: null == statsFirstPokemonCubit
           ? _value.statsFirstPokemonCubit
           : statsFirstPokemonCubit // ignore: cast_nullable_to_non_nullable
               as StatsPokemonCubit,
-      statsSecondPokemonCubit: freezed == statsSecondPokemonCubit
+      statsSecondPokemonCubit: null == statsSecondPokemonCubit
           ? _value.statsSecondPokemonCubit
           : statsSecondPokemonCubit // ignore: cast_nullable_to_non_nullable
               as StatsPokemonCubit,
@@ -129,8 +129,8 @@ class __$$ComparesStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? pokemons = null,
-    Object? statsFirstPokemonCubit = freezed,
-    Object? statsSecondPokemonCubit = freezed,
+    Object? statsFirstPokemonCubit = null,
+    Object? statsSecondPokemonCubit = null,
     Object? firstPokemonSelected = freezed,
     Object? secondPokemonSelected = freezed,
     Object? initialIndex = freezed,
@@ -140,11 +140,11 @@ class __$$ComparesStateImplCopyWithImpl<$Res>
           ? _value._pokemons
           : pokemons // ignore: cast_nullable_to_non_nullable
               as List<PokemonModel>,
-      statsFirstPokemonCubit: freezed == statsFirstPokemonCubit
+      statsFirstPokemonCubit: null == statsFirstPokemonCubit
           ? _value.statsFirstPokemonCubit
           : statsFirstPokemonCubit // ignore: cast_nullable_to_non_nullable
               as StatsPokemonCubit,
-      statsSecondPokemonCubit: freezed == statsSecondPokemonCubit
+      statsSecondPokemonCubit: null == statsSecondPokemonCubit
           ? _value.statsSecondPokemonCubit
           : statsSecondPokemonCubit // ignore: cast_nullable_to_non_nullable
               as StatsPokemonCubit,
@@ -207,10 +207,11 @@ class _$ComparesStateImpl extends _ComparesState {
         (other.runtimeType == runtimeType &&
             other is _$ComparesStateImpl &&
             const DeepCollectionEquality().equals(other._pokemons, _pokemons) &&
-            const DeepCollectionEquality()
-                .equals(other.statsFirstPokemonCubit, statsFirstPokemonCubit) &&
-            const DeepCollectionEquality().equals(
-                other.statsSecondPokemonCubit, statsSecondPokemonCubit) &&
+            (identical(other.statsFirstPokemonCubit, statsFirstPokemonCubit) ||
+                other.statsFirstPokemonCubit == statsFirstPokemonCubit) &&
+            (identical(
+                    other.statsSecondPokemonCubit, statsSecondPokemonCubit) ||
+                other.statsSecondPokemonCubit == statsSecondPokemonCubit) &&
             (identical(other.firstPokemonSelected, firstPokemonSelected) ||
                 other.firstPokemonSelected == firstPokemonSelected) &&
             (identical(other.secondPokemonSelected, secondPokemonSelected) ||
@@ -223,8 +224,8 @@ class _$ComparesStateImpl extends _ComparesState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_pokemons),
-      const DeepCollectionEquality().hash(statsFirstPokemonCubit),
-      const DeepCollectionEquality().hash(statsSecondPokemonCubit),
+      statsFirstPokemonCubit,
+      statsSecondPokemonCubit,
       firstPokemonSelected,
       secondPokemonSelected,
       initialIndex);

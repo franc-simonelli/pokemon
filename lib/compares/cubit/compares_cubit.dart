@@ -57,8 +57,10 @@ class ComparesCubit extends Cubit<ComparesState> {
     emit(state.copyWith(
       firstPokemonSelected: pokemon,
     ));
+    state.statsFirstPokemonCubit.initialize(pokemon: pokemon, stats: null);
 
     if (pokemon.infoUpdate != true) {
+      // await Future.delayed(Duration(milliseconds: 1000));
       final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       final statsFirstPokemon = await generateStats(pokemonUpdate);
@@ -80,8 +82,10 @@ class ComparesCubit extends Cubit<ComparesState> {
     emit(state.copyWith(
       secondPokemonSelected: pokemon,
     ));
+    state.statsSecondPokemonCubit.initialize(pokemon: pokemon, stats: null);
 
     if (pokemon.infoUpdate != true) {
+      // await Future.delayed(Duration(milliseconds: 1000));
       final pokemonUpdate = await updateInfo(pokemon);
       final updateList = await updateLocalList(pokemonUpdate);
       final statsSecondPokemon = await generateStats(pokemonUpdate);

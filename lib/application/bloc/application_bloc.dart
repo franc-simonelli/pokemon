@@ -80,9 +80,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     final gen4 =
         await generateGeneration(allPokemon, 386, 493, '4_gen', 'Sinnoh');
     final gen5 =
-        await generateGeneration(allPokemon, 493, 649, '5_gen', 'Unima');
+        await generateGeneration(allPokemon, 493, 650, '5_gen', 'Unima');
     final gen6 =
-        await generateGeneration(allPokemon, 649, 721, '6_gen', 'Kalos');
+        await generateGeneration(allPokemon, 650, 721, '6_gen', 'Kalos');
     final gen7 =
         await generateGeneration(allPokemon, 721, 809, '7_gen', 'Alola');
 

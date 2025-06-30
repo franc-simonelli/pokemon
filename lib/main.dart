@@ -8,11 +8,12 @@ void main() async {
   await bootstrap();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      // Colore della barra di navigazione (area in basso)
-      systemNavigationBarColor: Color(0xff111418), // Cambia a nero
-      systemNavigationBarIconBrightness:
-          Brightness.light, // Colore delle icone (se visibili)
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.light,
+      systemNavigationBarContrastEnforced: false,
     ),
   );
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
   runApp(const App());
 }

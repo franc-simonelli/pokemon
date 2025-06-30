@@ -5,6 +5,7 @@ import 'package:pokedex/pokemon/widget/single_stat_pokemon.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/stats_pokemon/models/stats_value_model.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
+import 'package:pokedex/stats_pokemon/widgets/nature_list.dart';
 import 'package:pokedex/stats_pokemon/widgets/slider_level.dart';
 
 class StatsPokemon extends StatelessWidget {
@@ -19,8 +20,14 @@ class StatsPokemon extends StatelessWidget {
         bool infoUpdate = state.pokemon?.infoUpdate ?? false;
         StatsValueModel? stats = state.stats;
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildLvSlider(state, context),
+            if (state.showLvSlider)
+              SliderLevel(
+                level: state.level,
+                changeLevel: context.read<StatsPokemonCubit>().manageStatsByLv,
+              ),
             Container(
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.3),
@@ -97,26 +104,48 @@ class StatsPokemon extends StatelessWidget {
     );
   }
 
+  Widget _buildNature(BuildContext context, StatsPokemonState state) {
+    return ButtonScaled(
+      child: MyText.labelMedium(
+        context: context,
+        text: state.nature.getDesc(),
+        textAlign: TextAlign.center,
+      ),
+      onPress: () async {
+        final nature = await showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (context) => SizedBox(
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: NatureList(),
+          ),
+        );
+        await Future.delayed(Duration(milliseconds: 300));
+        context.read<StatsPokemonCubit>().changeNature(nature);
+      },
+    );
+  }
+
   Widget _buildLvSlider(StatsPokemonState state, BuildContext context) {
     return Row(
       children: [
-        ButtonScaled(
-          child: MyText.labelMedium(
-            context: context,
-            text: state.showLvSlider ? state.level.toString() : 'LV',
-            isFontBold: true,
-          ),
-          onPress: () {
-            context.read<StatsPokemonCubit>().showLvSlider();
-          },
-        ),
-        if (state.showLvSlider)
-          Expanded(
-            child: SliderLevel(
-              level: state.level,
-              changeLevel: context.read<StatsPokemonCubit>().manageStatsByLv,
+        Expanded(
+          child: ButtonScaled(
+            child: MyText.labelMedium(
+              context: context,
+              text: state.showLvSlider ? state.level.toString() : 'LV',
+              isFontBold: true,
+              textAlign: TextAlign.center,
             ),
+            onPress: () {
+              context.read<StatsPokemonCubit>().showLvSlider();
+            },
           ),
+        ),
+        Expanded(
+          child: _buildNature(context, state),
+        ),
       ],
     );
   }

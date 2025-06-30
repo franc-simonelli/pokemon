@@ -40,6 +40,7 @@ dependencies:
   translator: ^1.0.3+1
   flutter_radar_chart: ^0.2.1
   deep_pick: ^1.1.0
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -64,5 +65,6 @@ flutter:
   assets:
     - assets/images/
     - assets/types/
+    - assets/sounds/
 
   uses-material-design: true

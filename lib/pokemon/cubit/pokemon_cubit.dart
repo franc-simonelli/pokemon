@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/filters/cubit/filters_cubit.dart';
@@ -16,6 +17,7 @@ enum Status { initial, success, error, loading }
 
 class PokemonCubit extends Cubit<PokemonState> {
   PokemonCubit({
+    required this.allDataPokemonsCubit,
     required this.pokemonRepository,
     required this.filtersCubit,
     required this.gen,
@@ -29,10 +31,13 @@ class PokemonCubit extends Cubit<PokemonState> {
         ) {
     _filterSubscription = filtersCubit.stream.listen(_onFiltersChanged);
   }
+
+  final AllDataPokemonsCubit allDataPokemonsCubit;
   final PokemonRepository pokemonRepository;
   final FiltersCubit filtersCubit;
   final EnumGen gen;
   late final StreamSubscription<FiltersState> _filterSubscription;
+  bool useSP = false;
 
   @override
   Future<void> close() {
@@ -63,10 +68,18 @@ class PokemonCubit extends Cubit<PokemonState> {
     try {
       List<PokemonModel> list = [];
       if (gen == EnumGen.all) {
-        list = await pokemonRepository.fetchPokemons(state.currentPage);
+        list = await pokemonRepository.fetchPokemons(
+          list: allDataPokemonsCubit.state.allData,
+          page: state.currentPage,
+        );
       } else {
-        list = await pokemonRepository.fetchPokemonGen(gen);
-        list = await dataPagination(list, state.currentPage);
+        // list = await pokemonRepository.fetchPokemonGen(gen);
+        // list = await dataPagination(list, state.currentPage);
+        final genList = await allDataPokemonsCubit.fetchPokemonsByGen(gen: gen);
+        list = await pokemonRepository.fetchPokemons(
+          list: genList,
+          page: state.currentPage,
+        );
       }
 
       emit(state.copyWith(
@@ -99,7 +112,9 @@ class PokemonCubit extends Cubit<PokemonState> {
       List<PokemonModel> list = [];
       if (filtersCubit.state.typesSelect.isEmpty) {
         if (state.gen == EnumGen.all) {
-          list = await pokemonRepository.fetchPokemons(state.currentPage + 1);
+          list = await pokemonRepository.fetchPokemons(
+              list: allDataPokemonsCubit.state.allData,
+              page: state.currentPage + 1);
         } else {
           list = await pokemonRepository.fetchPokemonGen(state.gen);
           list = await dataPagination(list, state.currentPage + 1);
@@ -114,7 +129,7 @@ class PokemonCubit extends Cubit<PokemonState> {
       }
 
       final currentList = state.listPokemons.toList();
-      await Future.delayed(Duration(milliseconds: 3000));
+      // await Future.delayed(Duration(milliseconds: 3000));
       emit(state.copyWith(
         listPokemons: currentList + list,
         currentPage: state.currentPage + 1,

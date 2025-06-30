@@ -12,7 +12,7 @@ import 'package:pokedex/pokemon/utils/save_types.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 
 class PokemonRepository {
-  // final _networkClient = NetworkClient();
+  bool useSP = false;
 
   Future<List<PokemonModel>> downloadPokemon() async {
     final dio = Dio(
@@ -33,10 +33,23 @@ class PokemonRepository {
     return json.map((e) => PokemonModel.fromJson(e)).toList();
   }
 
-  Future<List<PokemonModel>> fetchPokemons(int page) async {
-    final list = await generateAllDataPokemons();
-    final listPagination = await dataPagination(list, page);
-    return listPagination;
+  fetchAllData() async {
+    final obj = await generateAllData();
+    return obj;
+  }
+
+  Future<List<PokemonModel>> fetchPokemons({
+    required List<PokemonModel> list,
+    required int page,
+  }) async {
+    if (useSP) {
+      final list = await generateAllDataPokemons();
+      final listPagination = await dataPagination(list, page);
+      return listPagination;
+    } else {
+      final listPagination = await dataPagination(list, page);
+      return listPagination;
+    }
   }
 
   Future<List<PokemonModel>> filtersPokemons({
@@ -71,8 +84,6 @@ class PokemonRepository {
         return [];
       case EnumGen.all:
         return await generateAllDataPokemons();
-      // case EnumGen.one:
-      //   return await getPokemonByGen(gen.getKey);
       default:
         return await getPokemonByGen(gen.getKey);
     }

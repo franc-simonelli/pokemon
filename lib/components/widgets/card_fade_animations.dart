@@ -22,7 +22,7 @@ class _CardFadeTransitionState extends State<CardFadeTransition>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: Duration(milliseconds: 800),
+      duration: Duration(milliseconds: 500),
       vsync: this,
     );
 
@@ -34,7 +34,6 @@ class _CardFadeTransitionState extends State<CardFadeTransition>
         Tween<Offset>(begin: Offset(0, 0.5), end: Offset(0, 0)).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
-
     _controller.forward();
   }
 

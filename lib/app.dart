@@ -8,6 +8,7 @@ import 'package:pokedex/application/repositories/application_repository.dart';
 import 'package:pokedex/countries/repositories/countries_repository.dart';
 import 'package:pokedex/countries/cubit/countries_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
+import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/theme/app_theme.dart';
@@ -24,6 +25,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> with WidgetsBindingObserver {
   // late PokemonCubit pokemonCubit;
   // late FiltersCubit filtersCubit;
+  late AllDataPokemonsCubit allDataPokemonsCubit;
   late CountriesCubit countriesCubit;
   ApplicationBloc? applicationBloc;
   late ApplicationRepository applicationRepository;
@@ -42,6 +44,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     filtersRepository = FiltersRepository();
     movesetRepository = MovesetRepository();
     countriesRepository = CountriesRepository();
+    allDataPokemonsCubit = AllDataPokemonsCubit(
+      pokemonRepository: pokemonRepository,
+    );
     countriesCubit = CountriesCubit(
       countriesRepository: countriesRepository,
     );
@@ -108,8 +113,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   Widget _buildProviders({required Widget child}) {
     return MultiBlocProvider(
       providers: [
-        // BlocProvider<PokemonCubit>.value(value: pokemonCubit),
-        // BlocProvider<FiltersCubit>.value(value: filtersCubit),
+        BlocProvider<AllDataPokemonsCubit>.value(value: allDataPokemonsCubit),
         BlocProvider<CountriesCubit>.value(value: countriesCubit),
         BlocProvider<ApplicationBloc>(
           create: (context) {

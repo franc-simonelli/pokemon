@@ -45,9 +45,9 @@ class AppTheme {
           ),
         ),
       ),
-      navigationBarTheme: const NavigationBarThemeData(
-        elevation: 0,
-      ),
+      // navigationBarTheme: const NavigationBarThemeData(
+      //   elevation: 0,
+      // ),
       pageTransitionsTheme: const PageTransitionsTheme(
         builders: {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),

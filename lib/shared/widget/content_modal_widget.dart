@@ -11,6 +11,8 @@ class ContentModalWidget extends StatelessWidget {
     var theme = Theme.of(context);
 
     return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.8,
       padding: const EdgeInsets.only(top: 14),
       decoration: BoxDecoration(
         color: theme.primaryColor,
@@ -20,13 +22,16 @@ class ContentModalWidget extends StatelessWidget {
         ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-              width: MediaQuery.of(context).size.width * 0.2,
-              height: 3,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle, color: theme.splashColor)),
+            width: MediaQuery.of(context).size.width * 0.2,
+            height: 3,
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              color: theme.splashColor,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(
               top: 18,

@@ -8,5 +8,6 @@ class StatsPokemonState with _$StatsPokemonState {
     StatsValueModel? stats,
     required int level,
     required bool showLvSlider,
+    required Nature nature,
   }) = _StatsPokemonState;
 }

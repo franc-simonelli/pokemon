@@ -88,19 +88,12 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           child: HeaderSection(),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            _buildButtonMovesEvo(context, state),
-                          ],
-                        ),
                         _buildDescription(context, state.pokemonSelected),
-                        SizedBox(height: 30),
+                        SizedBox(height: 10),
                         BlocProvider.value(
                           value: _statsPokemonCubit,
                           child: StatsPokemon(),
                         ),
-                        // _buildStats(),
                         SizedBox(height: 30),
                         DamageRelations(
                           immunity: state.pokemonSelected.immunity ?? [],

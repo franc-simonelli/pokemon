@@ -22,108 +22,93 @@ class PokemonsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            controller: scrollController,
-            physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
-            slivers: [
-              _buildSliverAppBar(context),
-              const SliverPadding(padding: EdgeInsets.only(bottom: 0)),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    BlocConsumer<PokemonCubit, PokemonState>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        if (state.statusPagination == Status.loading &&
-                            state.listPokemons.isEmpty) {
-                          return const Center(
-                            child: CupertinoActivityIndicator(),
-                          );
-                        }
-                        if (state.statusPagination == Status.error) {
-                          return MyText.labelMedium(
-                              context: context, text: 'Errore');
-                        }
-                        return GridPokemonWidget(
-                          pokemonList: state.listPokemons,
-                          gen: EnumGen.all,
-                        );
-                      },
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        body: CustomScrollView(
+          controller: scrollController,
+          physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
+          slivers: [
+            _buildSliverAppBar(context),
+            BlocConsumer<PokemonCubit, PokemonState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state.statusPagination == Status.loading &&
+                    state.listPokemons.isEmpty) {
+                  return SliverToBoxAdapter(
+                    child: const Center(
+                      child: CupertinoActivityIndicator(),
                     ),
-                    BlocBuilder<PokemonCubit, PokemonState>(
-                      builder: (context, state) {
-                        if (state.statusPagination == Status.loading &&
-                            state.listPokemons.isNotEmpty) {
-                          return const Column(
-                            children: [
-                              SizedBox(height: 30),
-                              CupertinoActivityIndicator(),
-                              SizedBox(height: 30),
-                            ],
-                          );
-                        }
-                        return Container();
-                      },
-                    )
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+                  );
+                }
+                if (state.statusPagination == Status.error) {
+                  return SliverToBoxAdapter(
+                    child: MyText.labelMedium(context: context, text: 'Errore'),
+                  );
+                }
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: GridPokemonWidget(
+                    pokemonList: state.listPokemons,
+                    gen: EnumGen.all,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
     final isFirstPage = Navigator.of(context).widget.pages.length == 1;
-
     return SliverAppBar(
-      shadowColor: Colors.black,
-      pinned: true,
+      elevation: 0,
+      pinned: false,
       floating: true,
-      automaticallyImplyLeading: false,
-      expandedHeight: 130.0,
+      automaticallyImplyLeading: true,
+      expandedHeight: 120.0,
       flexibleSpace: FlexibleSpaceBar(
-        background: Padding(
-          padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 44,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (!isFirstPage) ...[
-                      GestureDetector(
-                        onTap: () {
-                          context.pop();
-                        },
-                        child: Icon(
-                          Icons.arrow_back_ios_new_outlined,
-                          color: Colors.grey.shade400,
+        background: Container(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 20, 16, 30),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 44,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (!isFirstPage) ...[
+                        GestureDetector(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Icon(
+                            Icons.arrow_back_ios_new_outlined,
+                            color: Colors.grey.shade400,
+                          ),
                         ),
+                        SizedBox(width: 20),
+                      ],
+                      Expanded(
+                        child: _buildSearchBar(context),
                       ),
-                      SizedBox(width: 20),
                     ],
-                    Expanded(
-                      child: _buildSearchBar(context),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
       bottom: PreferredSize(
         preferredSize: Size.fromHeight(70.0),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: EdgeInsets.fromLTRB(16, 0, 16, 5),
           child: BlocBuilder<FiltersCubit, FiltersState>(
             builder: (context, state) {
               return FilterSection(

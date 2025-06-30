@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,9 +25,12 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final player = AudioPlayer();
+
     return CardFadeTransition(
       child: CardScaled(
-        onPress: () {
+        onPress: () async {
+          await player.play(AssetSource('sounds/click_sound.wav'));
           context.push(ScreenPaths.detailPokemon, extra: {
             'pokemonSelected': pokemon,
             'gen': EnumGen.all,

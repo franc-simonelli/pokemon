@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -15,77 +16,91 @@ class BottomNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: navigationShell,
       bottomNavigationBar: Builder(builder: (context) {
-        return ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              sigmaX: 40.0,
-              sigmaY: 40.0,
+        return AnimatedSlide(
+          offset: Offset.zero,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              topRight: Radius.circular(16),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                color:
-                    Theme.of(context).scaffoldBackgroundColor.withOpacity(0.1),
-                border: Border(
-                  top: BorderSide(
-                    color: Colors.grey.withOpacity(0.3),
-                    width: 2.0,
-                  ),
-                ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 40,
+                sigmaY: 40,
               ),
-              child: NavigationBar(
-                indicatorColor: Colors.blueGrey.shade800,
-                backgroundColor: Colors.transparent,
-                height: 70,
-                labelBehavior:
-                    NavigationDestinationLabelBehavior.onlyShowSelected,
-                elevation: 3,
-                destinations: [
-                  NavigationDestination(
-                    icon: GlowIcon(
-                      navigationShell.currentIndex == 0
-                          ? Icons.catching_pokemon
-                          : Icons.catching_pokemon_outlined,
+              child: SafeArea(
+                bottom: false,
+                top: false,
+                left: false,
+                right: false,
+                child: Container(
+                  padding: const EdgeInsets.only(top: 5),
+                  height: 60 + max(MediaQuery.of(context).padding.bottom, 16.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withOpacity(0.1),
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey.withOpacity(0.3),
+                        width: 2.0,
+                      ),
                     ),
-                    label: 'Home',
                   ),
-                  NavigationDestination(
-                    icon: GlowIcon(
-                      navigationShell.currentIndex == 1
-                          ? Icons.language_sharp
-                          : Icons.language_sharp,
+                  child: NavigationBar(
+                    indicatorColor: Colors.blueGrey.shade800,
+                    backgroundColor: Colors.transparent,
+                    labelBehavior:
+                        NavigationDestinationLabelBehavior.onlyShowSelected,
+                    elevation: 3,
+                    destinations: [
+                      NavigationDestination(
+                        icon: GlowIcon(
+                          navigationShell.currentIndex == 0
+                              ? Icons.catching_pokemon
+                              : Icons.catching_pokemon_outlined,
+                        ),
+                        label: 'Home',
+                      ),
+                      NavigationDestination(
+                        icon: GlowIcon(
+                          navigationShell.currentIndex == 1
+                              ? Icons.language_sharp
+                              : Icons.language_sharp,
+                        ),
+                        label: 'Country',
+                      ),
+                      NavigationDestination(
+                        icon: GlowIcon(
+                          navigationShell.currentIndex == 2
+                              ? Icons.compare_arrows_outlined
+                              : Icons.compare_arrows_outlined,
+                        ),
+                        label: 'Compare',
+                      ),
+                      NavigationDestination(
+                        icon: GlowIcon(
+                          navigationShell.currentIndex == 3
+                              ? Icons.favorite_outline
+                              : Icons.favorite_outline,
+                          // color: navigationShell.currentIndex == 3
+                          //     ? appColors.primary
+                          //     : appColors.onPrimaryContainer,
+                        ),
+                        label: 'Favorite',
+                      ),
+                    ],
+                    selectedIndex: navigationShell.currentIndex,
+                    onDestinationSelected: (index) => navigationShell.goBranch(
+                      index,
+                      initialLocation: index == navigationShell.currentIndex,
                     ),
-                    label: 'Country',
                   ),
-                  NavigationDestination(
-                    icon: GlowIcon(
-                      navigationShell.currentIndex == 2
-                          ? Icons.compare_arrows_outlined
-                          : Icons.compare_arrows_outlined,
-                    ),
-                    label: 'Compare',
-                  ),
-                  NavigationDestination(
-                    icon: GlowIcon(
-                      navigationShell.currentIndex == 3
-                          ? Icons.favorite_outline
-                          : Icons.favorite_outline,
-                      // color: navigationShell.currentIndex == 3
-                      //     ? appColors.primary
-                      //     : appColors.onPrimaryContainer,
-                    ),
-                    label: 'Favorite',
-                  ),
-                ],
-                selectedIndex: navigationShell.currentIndex,
-                onDestinationSelected: (index) => navigationShell.goBranch(
-                  index,
-                  initialLocation: index == navigationShell.currentIndex,
                 ),
               ),
             ),

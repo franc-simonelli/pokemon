@@ -21,6 +21,7 @@ mixin _$StatsPokemonState {
   StatsValueModel? get stats => throw _privateConstructorUsedError;
   int get level => throw _privateConstructorUsedError;
   bool get showLvSlider => throw _privateConstructorUsedError;
+  Nature get nature => throw _privateConstructorUsedError;
 
   /// Create a copy of StatsPokemonState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +41,8 @@ abstract class $StatsPokemonStateCopyWith<$Res> {
       StatsValueModel? statsBase,
       StatsValueModel? stats,
       int level,
-      bool showLvSlider});
+      bool showLvSlider,
+      Nature nature});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$StatsPokemonStateCopyWithImpl<$Res, $Val extends StatsPokemonState>
     Object? stats = freezed,
     Object? level = null,
     Object? showLvSlider = null,
+    Object? nature = null,
   }) {
     return _then(_value.copyWith(
       pokemon: freezed == pokemon
@@ -85,6 +88,10 @@ class _$StatsPokemonStateCopyWithImpl<$Res, $Val extends StatsPokemonState>
           ? _value.showLvSlider
           : showLvSlider // ignore: cast_nullable_to_non_nullable
               as bool,
+      nature: null == nature
+          ? _value.nature
+          : nature // ignore: cast_nullable_to_non_nullable
+              as Nature,
     ) as $Val);
   }
 }
@@ -102,7 +109,8 @@ abstract class _$$StatsPokemonStateImplCopyWith<$Res>
       StatsValueModel? statsBase,
       StatsValueModel? stats,
       int level,
-      bool showLvSlider});
+      bool showLvSlider,
+      Nature nature});
 }
 
 /// @nodoc
@@ -123,6 +131,7 @@ class __$$StatsPokemonStateImplCopyWithImpl<$Res>
     Object? stats = freezed,
     Object? level = null,
     Object? showLvSlider = null,
+    Object? nature = null,
   }) {
     return _then(_$StatsPokemonStateImpl(
       pokemon: freezed == pokemon
@@ -145,6 +154,10 @@ class __$$StatsPokemonStateImplCopyWithImpl<$Res>
           ? _value.showLvSlider
           : showLvSlider // ignore: cast_nullable_to_non_nullable
               as bool,
+      nature: null == nature
+          ? _value.nature
+          : nature // ignore: cast_nullable_to_non_nullable
+              as Nature,
     ));
   }
 }
@@ -157,7 +170,8 @@ class _$StatsPokemonStateImpl implements _StatsPokemonState {
       this.statsBase,
       this.stats,
       required this.level,
-      required this.showLvSlider});
+      required this.showLvSlider,
+      required this.nature});
 
   @override
   final PokemonModel? pokemon;
@@ -169,10 +183,12 @@ class _$StatsPokemonStateImpl implements _StatsPokemonState {
   final int level;
   @override
   final bool showLvSlider;
+  @override
+  final Nature nature;
 
   @override
   String toString() {
-    return 'StatsPokemonState(pokemon: $pokemon, statsBase: $statsBase, stats: $stats, level: $level, showLvSlider: $showLvSlider)';
+    return 'StatsPokemonState(pokemon: $pokemon, statsBase: $statsBase, stats: $stats, level: $level, showLvSlider: $showLvSlider, nature: $nature)';
   }
 
   @override
@@ -186,12 +202,13 @@ class _$StatsPokemonStateImpl implements _StatsPokemonState {
             (identical(other.stats, stats) || other.stats == stats) &&
             (identical(other.level, level) || other.level == level) &&
             (identical(other.showLvSlider, showLvSlider) ||
-                other.showLvSlider == showLvSlider));
+                other.showLvSlider == showLvSlider) &&
+            (identical(other.nature, nature) || other.nature == nature));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, pokemon, statsBase, stats, level, showLvSlider);
+  int get hashCode => Object.hash(
+      runtimeType, pokemon, statsBase, stats, level, showLvSlider, nature);
 
   /// Create a copy of StatsPokemonState
   /// with the given fields replaced by the non-null parameter values.
@@ -209,7 +226,8 @@ abstract class _StatsPokemonState implements StatsPokemonState {
       final StatsValueModel? statsBase,
       final StatsValueModel? stats,
       required final int level,
-      required final bool showLvSlider}) = _$StatsPokemonStateImpl;
+      required final bool showLvSlider,
+      required final Nature nature}) = _$StatsPokemonStateImpl;
 
   @override
   PokemonModel? get pokemon;
@@ -221,6 +239,8 @@ abstract class _StatsPokemonState implements StatsPokemonState {
   int get level;
   @override
   bool get showLvSlider;
+  @override
+  Nature get nature;
 
   /// Create a copy of StatsPokemonState
   /// with the given fields replaced by the non-null parameter values.

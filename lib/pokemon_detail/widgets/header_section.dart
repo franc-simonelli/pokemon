@@ -2,10 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/info_section.dart';
 import 'package:pokedex/pokemon/widget/page_view_pokemon_list.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
+import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
@@ -96,12 +99,49 @@ class _HeaderSectionState extends State<HeaderSection> {
     );
   }
 
+  Widget _buildButtonMovesEvo(BuildContext context, PokemonDetailState state) {
+    // return ElevatedButton(
+    //   onPressed: () {},
+    //   child: Row(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       MyText.labelMedium(
+    //         context: context,
+    //         text: 'Moves/Evo',
+    //         isFontBold: true,
+    //       ),
+    //       Icon(Icons.keyboard_arrow_right)
+    //     ],
+    //   ),
+    // );
+    return ButtonScaled(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MyText.labelMedium(
+            context: context,
+            text: 'Moves/Evo',
+            isFontBold: true,
+          ),
+          Icon(Icons.keyboard_arrow_right)
+        ],
+      ),
+      onPress: () {
+        context.push(
+          ScreenPaths.otherInformationPokemon,
+          extra: state.pokemonSelected,
+        );
+      },
+    );
+  }
+
   Widget _buildSectionImage(PokemonDetailState state, BuildContext context) {
     return Expanded(
       flex: 10,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
+          _buildButtonMovesEvo(context, state),
           SizedBox(
             height: 200,
             child: PageViewPokemonList(
@@ -125,27 +165,6 @@ class _HeaderSectionState extends State<HeaderSection> {
               },
             ),
           ),
-          SizedBox(height: 10),
-          // ButtonScaled(
-          //   child: Row(
-          //     mainAxisSize: MainAxisSize.min,
-          //     mainAxisAlignment: MainAxisAlignment.end,
-          //     children: [
-          //       MyText.labelMedium(
-          //         context: context,
-          //         text: 'Moves/Evo',
-          //         isFontBold: true,
-          //       ),
-          //       Icon(Icons.keyboard_arrow_right)
-          //     ],
-          //   ),
-          //   onPress: () {
-          //     context.push(
-          //       ScreenPaths.otherInformationPokemon,
-          //       extra: state.pokemonSelected,
-          //     );
-          //   },
-          // )
         ],
       ),
     );

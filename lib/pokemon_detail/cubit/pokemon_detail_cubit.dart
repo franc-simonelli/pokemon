@@ -3,7 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pokedex/constants/shared_preferences_constants.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/pokemon/models/stats_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/utils/save_pokemon_storage.dart';
 import 'package:pokedex/stats_pokemon/models/stats_value_model.dart';
@@ -74,6 +73,7 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
   initialize() async {
     if (gen == EnumGen.none) return;
 
+    // recuper l'index del pokemon selezionato
     final pokemonsList = await pokemonRepository.fetchPokemonGen(gen);
     final indexInitial = pokemonsList.indexWhere(
       (element) {
@@ -94,11 +94,12 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
       return;
     }
 
-    // se il pokemon selecionato non ha le statistiche aggiornate
+    // se il pokemon selezionato non ha le statistiche aggiornate
     // faccio prima una verifica nell SP
     final pokemonById =
         await pokemonRepository.fetchPokemonById(pokemonSelected.id ?? '');
     if (pokemonById.infoUpdate == true) {
+      // il pokemon selezionato recuperato dallo SP ha le statistiche aggiornate
       final stats = await generateStats(pokemonById);
       state.statsPokeonCubit.initialize(pokemon: pokemonById, stats: stats);
       emit(state.copyWith(
@@ -112,7 +113,8 @@ class PokemonDetailCubit extends Cubit<PokemonDetailState> {
         pokemonList: pokemonsList,
         initialIndex: indexInitial,
       ));
-      // aggiorno il pokemon con le statistiche
+      // il pokemon selezionato recuperato dallo SP non ha le statistiche aggiornate
+      // perche è la prima volta che viene visualizzato
       final pokemonUpdate = await updateInfo(pokemonById);
       final updateList = await updateLocalList(pokemonUpdate);
       final stats = await generateStats(pokemonUpdate);

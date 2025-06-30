@@ -18,26 +18,24 @@ class GridPokemonWidget extends StatefulWidget {
 }
 
 class _GridPokemonWidgetState extends State<GridPokemonWidget> {
-  // flutter_staggered_animations
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    return SliverGrid(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 15,
         childAspectRatio: 1.3,
       ),
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: widget.pokemonList.length,
-      itemBuilder: (context, index) {
-        return CardItem(
-          pokemon: widget.pokemonList[index],
-          gen: widget.gen,
-        );
-      },
+      delegate: SliverChildBuilderDelegate(
+        childCount: widget.pokemonList.length,
+        (context, index) => RepaintBoundary(
+          child: CardItem(
+            pokemon: widget.pokemonList[index],
+            gen: widget.gen,
+          ),
+        ),
+      ),
     );
   }
 }
