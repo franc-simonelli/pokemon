@@ -7,6 +7,7 @@ class MovesetState with _$MovesetState {
     required List<AbilityModel> abilities,
     required List<MoveModel> moveLevelUp,
     required List<MoveModel> moveMachine,
+    required bool showDownloadIcon,
     MovesetModel? moveset,
     PokemonModel? pokemon,
     Status? autoDownloadStatus,

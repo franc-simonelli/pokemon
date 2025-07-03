@@ -180,8 +180,9 @@ class _HeaderSectionState extends State<HeaderSection> {
             context: context,
             isFontBold: true,
             text: pokemon.id ?? '',
+            isBorderText: true,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 0),
           ...pokemon.typeofpokemon!.mapIndexed(
             (index, element) => Row(
               children: [
@@ -191,7 +192,7 @@ class _HeaderSectionState extends State<HeaderSection> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 20),
           _buildInfoItem(
             context: context,
             icon: Icon(
@@ -200,10 +201,10 @@ class _HeaderSectionState extends State<HeaderSection> {
               size: 18,
             ),
             statUpdate: true,
-            showContainer: true,
+            showContainer: false,
             value: pokemon.category ?? '',
           ),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
           _buildInfoItem(
             context: context,
             icon: Icon(
@@ -280,6 +281,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             context: context,
             text: value,
             isFontBold: false,
+            color: Colors.white,
           )
         ]
       ],

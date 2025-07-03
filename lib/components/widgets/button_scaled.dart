@@ -53,25 +53,40 @@ class _ButtonScaledState extends State<ButtonScaled> {
           curve: Curves.easeInOut,
           transformAlignment: Alignment.center,
           transform: _isPressed
-              ? Matrix4.identity().scaled(0.90, 0.90, 0.40)
+              ? Matrix4.identity().scaled(0.95, 0.95)
               : Matrix4.identity(),
-          child: Transform(
-            transform: Matrix4.identity()
-              ..setEntry(3, 1, 0.004)
-              ..rotateX(0.0)
-              ..rotateY(0.0),
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.black87,
-                border: Border.all(color: Colors.grey.shade800),
-                borderRadius: BorderRadius.circular(24),
-              ),
-              child: widget.child,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
             ),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF232526),
+                  Color(0xFF414345),
+                  Color(0xFF232526),
+                ],
+              ),
+              border: Border.all(color: Colors.grey.shade800),
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.35),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+                BoxShadow(
+                  color: Colors.white.withOpacity(0.08),
+                  blurRadius: 2,
+                  offset: const Offset(-2, -2),
+                  spreadRadius: -2,
+                ),
+              ],
+            ),
+            child: widget.child,
           ),
         ),
       ),

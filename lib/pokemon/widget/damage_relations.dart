@@ -111,7 +111,7 @@ class DamageRelations extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [],
       ),

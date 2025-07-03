@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/button_scaled.dart';
+import 'package:pokedex/components/widgets/download_stream.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/widgets/ability_content.dart';
@@ -25,64 +26,24 @@ class MovesetPage extends StatelessWidget {
     return BlocBuilder<MovesetCubit, MovesetState>(
       builder: (context, state) {
         if (state.status == Status.loading) {
-          return Scaffold(
-            body: Center(
-              child: CupertinoActivityIndicator(),
-            ),
+          return Center(
+            child: CupertinoActivityIndicator(),
           );
         }
         if (state.status == Status.success) {
-          return Stack(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 30),
-                    _buildAbilities(state, context),
-                    SizedBox(height: 0),
-                    _buildMoveset(context)
-                  ],
-                ),
-              ),
-              if (state.autoDownloadStatus == Status.loading)
-                _buildDownloadProgress(context),
-            ],
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 30),
+                _buildAbilities(state, context),
+                SizedBox(height: 0),
+                _buildMoveset(context)
+              ],
+            ),
           );
         }
         return Container();
       },
-    );
-  }
-
-  Widget _buildDownloadProgress(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 50,
-          left: 20,
-          right: 20,
-        ),
-        child: StreamBuilder<double>(
-          stream: context.read<MovesetCubit>().progressStream,
-          builder: (context, snapshot) {
-            final progress = snapshot.data ?? 0.0;
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                LinearProgressIndicator(
-                  value: progress,
-                ),
-                SizedBox(height: 10),
-                MyText.labelMedium(
-                  context: context,
-                  text: '${(progress * 100).toStringAsFixed(0)}%',
-                )
-              ],
-            );
-          },
-        ),
-      ),
     );
   }
 
@@ -93,7 +54,7 @@ class MovesetPage extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
+            SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -147,6 +108,8 @@ class MovesetPage extends StatelessWidget {
   Widget _buildDownloadButton(BuildContext context, MovesetState state) {
     final isDownloaded =
         context.watch<MovesetCubit>().state.isAllMovesDowloaded ?? false;
+
+    final movesetCubit = context.watch<MovesetCubit>();
     return ButtonScaled(
       child: MyText.labelSmall(
         context: context,
@@ -159,8 +122,60 @@ class MovesetPage extends StatelessWidget {
             extra: state.pokemon,
           );
         } else {
-          final result = await context.read<MovesetCubit>().downloadAllMoves();
-          if (result) {
+          movesetCubit.downloadAllMoves();
+
+          final showTable = await showDialog(
+            barrierDismissible: false,
+            barrierColor: Colors.black54,
+            context: context,
+            builder: (context) => Dialog(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            context
+                                .read<MovesetCubit>()
+                                .setShowDownloadIcon(true);
+                            context.pop();
+                          },
+                          child: Icon(Icons.minimize),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    MyText.labelMedium(
+                        context: context, text: 'Download in corso...'),
+                    SizedBox(height: 30),
+                    DownloadStream(
+                      stream: movesetCubit.progressStream,
+                    ),
+                    SizedBox(height: 20),
+                    ButtonScaled(
+                      child:
+                          MyText.labelMedium(context: context, text: 'Annulla'),
+                      onPress: () {
+                        movesetCubit.closeStream();
+                        context.pop();
+                      },
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
+          );
+
+          if (showTable) {
             context.push(
               ScreenPaths.tableMoves,
               extra: state.pokemon,
@@ -173,6 +188,7 @@ class MovesetPage extends StatelessWidget {
 
   Widget _buildListMoves(List<MoveModel> list) {
     return ListView.builder(
+      padding: EdgeInsets.zero,
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: list.length,
@@ -223,6 +239,7 @@ class MovesetPage extends StatelessWidget {
         ),
         SizedBox(height: 10),
         ListView.builder(
+          padding: EdgeInsets.zero,
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: state.moveset?.abilities?.length,

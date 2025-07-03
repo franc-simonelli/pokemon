@@ -7,6 +7,10 @@ filterScarletAndViolet(List<MoveModel> moves) async {
     for (var item in moves) {
       for (int i = 0; i < item.versionGroupDetailsModel!.length; i++) {
         final version = item.versionGroupDetailsModel?[i];
+
+        print('NAME GAME: ${version?.versionGroup?.name}');
+        print('TYPE: ${version?.moveLearnMethod?.name}');
+
         if (version?.versionGroup?.name == 'scarlet-violet' &&
             version?.moveLearnMethod?.name == 'level-up') {
           MoveModel moveUpdate = item.copyWith(versionGroupDetailsModel: []);

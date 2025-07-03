@@ -12,6 +12,7 @@ import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
+import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 import 'package:pokedex/stats_pokemon/widgets/stats_pokemon.dart';
 
@@ -47,11 +48,13 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBarHeight = AppBar().preferredSize.height;
+    final safeAreaHeight = MediaQuery.of(context).padding.top;
     return BlocProvider.value(
       value: _pokemonDetailCubit,
       child: BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
         builder: (context, state) {
-          return Scaffold(
+          return PkmScaffold(
             appBar: _buildAppBar(context, state.pokemonSelected),
             body: Stack(
               children: [
@@ -78,34 +81,75 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                     ),
                   ),
                 ),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: HeaderSection(),
+
+                Column(
+                  children: [
+                    SizedBox(height: appBarHeight + safeAreaHeight),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
+                                child: HeaderSection(),
+                              ),
+                              SizedBox(height: 16),
+                              _buildDescription(context, state.pokemonSelected),
+                              SizedBox(height: 16),
+                              BlocProvider.value(
+                                value: _statsPokemonCubit,
+                                child: StatsPokemon(),
+                              ),
+                              SizedBox(height: 20),
+                              DamageRelations(
+                                immunity: state.pokemonSelected.immunity ?? [],
+                                isLoading:
+                                    state.pokemonSelected.infoUpdate ?? false,
+                                weaknesses:
+                                    state.pokemonSelected.weaknesses ?? [],
+                                resistence:
+                                    state.pokemonSelected.resistence ?? [],
+                              ),
+                              SizedBox(height: 30),
+                            ],
+                          ),
                         ),
-                        _buildDescription(context, state.pokemonSelected),
-                        SizedBox(height: 10),
-                        BlocProvider.value(
-                          value: _statsPokemonCubit,
-                          child: StatsPokemon(),
-                        ),
-                        SizedBox(height: 30),
-                        DamageRelations(
-                          immunity: state.pokemonSelected.immunity ?? [],
-                          isLoading: state.pokemonSelected.infoUpdate ?? false,
-                          weaknesses: state.pokemonSelected.weaknesses ?? [],
-                          resistence: state.pokemonSelected.resistence ?? [],
-                        ),
-                        SizedBox(height: 30),
-                      ],
-                    ),
-                  ),
-                ),
+                      ),
+                    )
+                  ],
+                )
+                // SingleChildScrollView(
+                //   child: Padding(
+                //     padding: const EdgeInsets.all(16.0),
+                //     child: Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         SizedBox(height: 120),
+                //         Padding(
+                //           padding: const EdgeInsets.symmetric(horizontal: 10),
+                //           child: HeaderSection(),
+                //         ),
+                //         _buildDescription(context, state.pokemonSelected),
+                //         SizedBox(height: 10),
+                //         BlocProvider.value(
+                //           value: _statsPokemonCubit,
+                //           child: StatsPokemon(),
+                //         ),
+                //         SizedBox(height: 30),
+                //         DamageRelations(
+                //           immunity: state.pokemonSelected.immunity ?? [],
+                //           isLoading: state.pokemonSelected.infoUpdate ?? false,
+                //           weaknesses: state.pokemonSelected.weaknesses ?? [],
+                //           resistence: state.pokemonSelected.resistence ?? [],
+                //         ),
+                //         SizedBox(height: 30),
+                //       ],
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           );
@@ -138,7 +182,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   Widget _buildDescription(BuildContext context, PokemonModel pokemon) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [],
       ),
@@ -147,6 +191,7 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
         child: MyText.labelMedium(
           context: context,
           text: pokemon.xdescription ?? '',
+          color: Colors.white,
         ),
       ),
     );
@@ -155,11 +200,15 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
   AppBar _buildAppBar(BuildContext context, PokemonModel pokemon) {
     return AppBar(
       backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
       title: Row(
         children: [
           MyText.labelLarge(
             context: context,
             text: pokemon.name ?? '',
+            isFontBold: true,
+            isBorderText: true,
+            fontSize: 22,
           ),
         ],
       ),

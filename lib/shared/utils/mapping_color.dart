@@ -5,40 +5,40 @@ mappingColors(String type) {
   final typeLowerCase = type.toLowerCase();
   switch (typeLowerCase) {
     case 'grass':
-      return AppColors.lightGreen;
+      return const Color.fromARGB(255, 110, 185, 73);
     case 'poison':
-      return AppColors.lightPurple;
+      return const Color.fromARGB(255, 123, 70, 144);
     case 'fire':
-      return AppColors.red;
+      return const Color.fromARGB(255, 207, 83, 69);
     case 'flying':
       return AppColors.lightBlue;
     case 'water':
-      return AppColors.blue;
+      return const Color.fromARGB(255, 52, 124, 190);
     case 'bug':
-      return AppColors.bug;
+      return const Color.fromARGB(255, 126, 137, 25);
     case 'normal':
-      return AppColors.beige;
+      return const Color.fromARGB(255, 192, 192, 141);
     case 'electric':
-      return AppColors.yellow;
+      return const Color.fromARGB(255, 203, 165, 61);
     case 'ground':
-      return AppColors.darkBrown;
+      return const Color.fromARGB(255, 104, 76, 65);
     case 'fairy':
-      return AppColors.pink;
+      return const Color.fromARGB(255, 195, 80, 114);
     case 'fighting':
-      return AppColors.orange;
+      return const Color.fromARGB(255, 206, 117, 22);
     case 'psychic':
-      return AppColors.lightPink;
+      return const Color.fromARGB(255, 188, 120, 134);
     case 'rock':
-      return const Color(0xFFb8a038);
+      return const Color.fromARGB(255, 144, 125, 44);
     case 'ghost':
-      return AppColors.violet;
+      return const Color.fromARGB(208, 70, 32, 159);
     case 'ice':
-      return AppColors.indigo;
+      return const Color.fromARGB(255, 137, 142, 184);
     case 'dragon':
-      return Colors.blue.shade900;
+      return const Color.fromARGB(255, 7, 42, 94);
     case 'dark':
-      return Colors.black;
+      return const Color.fromARGB(255, 21, 21, 21);
     case 'steel':
-      return Colors.grey;
+      return const Color.fromARGB(255, 124, 124, 124);
   }
 }

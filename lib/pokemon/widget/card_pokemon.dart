@@ -25,12 +25,12 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final player = AudioPlayer();
+    // final player = AudioPlayer();
 
     return CardFadeTransition(
       child: CardScaled(
         onPress: () async {
-          await player.play(AssetSource('sounds/click_sound.wav'));
+          // await player.play(AssetSource('sounds/click_sound.wav'));
           context.push(ScreenPaths.detailPokemon, extra: {
             'pokemonSelected': pokemon,
             'gen': EnumGen.all,
@@ -39,28 +39,17 @@ class CardItem extends StatelessWidget {
         decorationCard: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              mappingColors(pokemon.typeofpokemon![0]),
-              Colors.black38,
+              mappingColors(pokemon.typeofpokemon![0]).withOpacity(0.4),
+              Colors.white10,
             ],
           ),
           boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade100,
-              offset: const Offset(0, 0),
-              blurRadius: 1,
-            ),
-            BoxShadow(
-              color: Colors.grey.shade700,
-              offset: const Offset(1, 0),
-              blurRadius: 1,
-            ),
             BoxShadow(
               color: Colors.black,
               offset: const Offset(0, 3),
               blurRadius: 1,
             ),
           ],
-          color: mappingColors(pokemon.typeofpokemon![0]),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Stack(
@@ -83,7 +72,7 @@ class CardItem extends StatelessWidget {
             ),
             // name
             Positioned(
-              top: 15,
+              top: 18,
               left: 5,
               child: Stack(
                 children: [
@@ -111,14 +100,15 @@ class CardItem extends StatelessWidget {
             ),
             // image pokemon
             Positioned(
-              top: 50,
+              top: 45,
               right: -5,
               child: SizedBox(
                 height: 90,
                 width: 90,
                 child: ImgPokemonShadow(
                   pokemon: pokemon,
-                  // imageGif: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
+                  // imageGif:
+                  //     "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${int.parse(pokemon.id!.replaceAll("#", ""))}.gif",
                 ),
               ),
             ),

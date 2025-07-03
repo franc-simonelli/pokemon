@@ -4,6 +4,7 @@ import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/widgets/compare_content.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
+import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 
 class ComparesPage extends StatefulWidget {
@@ -52,14 +53,19 @@ class _ComparesPageState extends State<ComparesPage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBarHeight = AppBar().preferredSize.height;
+    final safeAreaHeight = MediaQuery.of(context).padding.top;
+
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: _comparesCubit),
         BlocProvider.value(value: _statsFirstPokemonCubit),
         BlocProvider.value(value: _statsSecondPokemonCubit),
       ],
-      child: Scaffold(
+      child: PkmScaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           automaticallyImplyLeading: true,
           title: BlocBuilder<ComparesCubit, ComparesState>(
             builder: (context, state) {
@@ -101,11 +107,16 @@ class _ComparesPageState extends State<ComparesPage> {
             },
           ),
         ),
-        body: CompareContent(
-          controller1: controller1,
-          controller2: controller2,
-          firstStatsCubit: _statsFirstPokemonCubit,
-          secondStatsCubit: _statsSecondPokemonCubit,
+        body: Column(
+          children: [
+            SizedBox(height: appBarHeight + safeAreaHeight),
+            CompareContent(
+              controller1: controller1,
+              controller2: controller2,
+              firstStatsCubit: _statsFirstPokemonCubit,
+              secondStatsCubit: _statsSecondPokemonCubit,
+            ),
+          ],
         ),
       ),
     );

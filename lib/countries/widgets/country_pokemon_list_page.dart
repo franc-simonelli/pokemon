@@ -7,6 +7,7 @@ import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 import 'package:pokedex/pokemon/pages/pokemons_page.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
+import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 
 class CountryPokemonListPage extends StatefulWidget {
   const CountryPokemonListPage({
@@ -66,9 +67,8 @@ class _CountryPokemonListPageState extends State<CountryPokemonListPage> {
         BlocProvider.value(value: _pokemonCubit),
         BlocProvider.value(value: _filtersCubit),
       ],
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: PokemonsPage(
+      child: PkmScaffold(
+        body: PokemonsPage(
           gen: widget.gen,
           scrollController: _scrollController,
         ),

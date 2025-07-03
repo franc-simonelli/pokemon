@@ -6,8 +6,11 @@ import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
 
 class CountriesContent extends StatelessWidget {
   const CountriesContent({
+    required this.heightAppBar,
     super.key,
   });
+
+  final double heightAppBar;
 
   @override
   Widget build(BuildContext context) {
@@ -19,22 +22,30 @@ class CountriesContent extends StatelessWidget {
           );
         }
         if (state.countriesState == Status.success) {
-          return ListView.builder(
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: state.countries.length,
-            itemBuilder: (context, index) {
-              final item = state.countries[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
+          return Column(
+            children: [
+              SizedBox(height: heightAppBar),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.countries.length,
+                  itemBuilder: (context, index) {
+                    final item = state.countries[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
+                      child: CardCountry(
+                        item: item,
+                      ),
+                    );
+                  },
                 ),
-                child: CardCountry(
-                  item: item,
-                ),
-              );
-            },
+              ),
+            ],
           );
         }
         return Container();

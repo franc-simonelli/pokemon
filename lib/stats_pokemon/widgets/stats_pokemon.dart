@@ -30,7 +30,7 @@ class StatsPokemon extends StatelessWidget {
               ),
             Container(
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.3),
+                color: Colors.black.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [],
               ),
@@ -143,6 +143,7 @@ class StatsPokemon extends StatelessWidget {
             },
           ),
         ),
+        SizedBox(width: 16),
         Expanded(
           child: _buildNature(context, state),
         ),

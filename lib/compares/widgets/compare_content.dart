@@ -115,27 +115,29 @@ class _CompareContentState extends State<CompareContent> {
     return BlocBuilder<ComparesCubit, ComparesState>(
       builder: (context, state) {
         if (state.pokemons.isNotEmpty) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 10),
-                _pokemonsSection(state, context),
-                _buildSliders(),
-                SizedBox(height: 20),
-                _buildTable(state),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildStats(state),
-                    ),
-                    Expanded(
-                      child: _buildGraphic(state),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-              ],
+          return Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  _pokemonsSection(state, context),
+                  _buildSliders(),
+                  SizedBox(height: 20),
+                  _buildTable(state),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildStats(state),
+                      ),
+                      Expanded(
+                        child: _buildGraphic(state),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 100),
+                ],
+              ),
             ),
           );
         }

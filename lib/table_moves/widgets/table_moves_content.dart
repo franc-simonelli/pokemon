@@ -13,6 +13,8 @@ class TableMovesContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final appBarHeight = AppBar().preferredSize.height;
+    // final safeAreaHeight = MediaQuery.of(context).padding.top;
     return BlocBuilder<TableMovesCubit, TableMovesState>(
       builder: (context, state) {
         if (state.movesStatus == Status.loading) {
@@ -21,14 +23,22 @@ class TableMovesContent extends StatelessWidget {
           );
         }
         if (state.movesStatus == Status.success) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildTableLevelUp(context, state),
-                SizedBox(height: 30),
-                _buildTableMachine(context, state),
-                SizedBox(height: 30),
-              ],
+          return Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                child: Column(
+                  children: [
+                    _buildTableLevelUp(context, state),
+                    SizedBox(height: 30),
+                    _buildTableMachine(context, state),
+                    SizedBox(height: 30),
+                  ],
+                ),
+              ),
             ),
           );
         }

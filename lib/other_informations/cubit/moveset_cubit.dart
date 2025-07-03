@@ -19,31 +19,38 @@ part 'moveset_cubit.freezed.dart';
 
 class MovesetCubit extends Cubit<MovesetState> {
   MovesetCubit({
-    required this.pokemon,
+    // required this.pokemon,
     required this.movesetRepository,
     required this.pokemonRepository,
   }) : super(MovesetState(
           status: Status.initial,
-          pokemon: pokemon,
+          // pokemon: pokemon,
           abilities: [],
           moveLevelUp: [],
           moveMachine: [],
+          showDownloadIcon: false,
         )) {
-    initialize();
+    // initialize();
   }
 
-  final PokemonModel pokemon;
+  // final PokemonModel pokemon;
   final MovesetRepository movesetRepository;
   final PokemonRepository pokemonRepository;
 
   final StreamController<double> _progressController =
-      StreamController<double>();
+      StreamController<double>.broadcast();
+
   Stream<double> get progressStream => _progressController.stream;
+
   bool _isCancelled = false;
 
-  initialize() async {
+  initialize({required PokemonModel pokemon}) async {
     try {
-      emit(state.copyWith(status: Status.loading));
+      emit(state.copyWith(
+        status: Status.loading,
+        pokemon: pokemon,
+        showDownloadIcon: false,
+      ));
       final pokemonById = await pokemonRepository.fetchPokemonById(
         pokemon.id ?? '',
       );
@@ -119,6 +126,9 @@ class MovesetCubit extends Cubit<MovesetState> {
           double nMoves = i.toDouble();
           final value = ((nMoves + 1) * 100) / state.moveset!.moves!.length;
           _progressController.add(value / 100);
+          // await Future.delayed(
+          //   const Duration(milliseconds: 2000),
+          // );
         }
       }
       if (!_isCancelled) {
@@ -257,6 +267,10 @@ class MovesetCubit extends Cubit<MovesetState> {
 
   closeStream() {
     _isCancelled = true;
-    _progressController.onResume;
+    // _progressController.onResume;
+  }
+
+  setShowDownloadIcon(bool value) {
+    emit(state.copyWith(showDownloadIcon: value));
   }
 }

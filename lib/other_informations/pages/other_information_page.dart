@@ -12,6 +12,7 @@ import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
+import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 
 class OtherInformation extends StatefulWidget {
   const OtherInformation({
@@ -28,7 +29,7 @@ class OtherInformation extends StatefulWidget {
 class _OtherInformationState extends State<OtherInformation>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late MovesetCubit _movesetCubit;
+  // late MovesetCubit _movesetCubit;
   late EvolutionLineCubit _evolutionLineCubit;
   late List<bool> _visitedTabs;
   bool showEffect = false;
@@ -39,13 +40,16 @@ class _OtherInformationState extends State<OtherInformation>
     _tabController = TabController(length: 2, vsync: this);
     _visitedTabs = List<bool>.filled(2, false);
 
-    final movesetRepository = context.read<MovesetRepository>();
+    // final movesetRepository = context.read<MovesetRepository>();
     final pokemonRepository = context.read<PokemonRepository>();
-    _movesetCubit = MovesetCubit(
-      pokemon: widget.pokemon,
-      movesetRepository: movesetRepository,
-      pokemonRepository: pokemonRepository,
-    );
+    // _movesetCubit = MovesetCubit(
+    //   pokemon: widget.pokemon,
+    //   movesetRepository: movesetRepository,
+    //   pokemonRepository: pokemonRepository,
+    // );
+    context.read<MovesetCubit>().initialize(
+          pokemon: widget.pokemon,
+        );
     _evolutionLineCubit = EvolutionLineCubit(
       evolutionLine: widget.pokemon.evolutions ?? [],
       pokemonRepository: pokemonRepository,
@@ -72,14 +76,16 @@ class _OtherInformationState extends State<OtherInformation>
 
   @override
   Widget build(BuildContext context) {
+    final appBarHeight = AppBar().preferredSize.height;
+    final safeAreaHeight = MediaQuery.of(context).padding.top;
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: _movesetCubit),
+        // BlocProvider.value(value: _movesetCubit),
         BlocProvider.value(value: _evolutionLineCubit)
       ],
       child: BlocBuilder<MovesetCubit, MovesetState>(
         builder: (context, state) {
-          return Scaffold(
+          return PkmScaffold(
             appBar: _buildAppBar(widget.pokemon.name ?? '', context),
             body: Stack(
               children: [
@@ -93,11 +99,6 @@ class _OtherInformationState extends State<OtherInformation>
                       typeImg: widget.pokemon.typeofpokemon![0],
                       boxFit: BoxFit.contain,
                       colorGradient: [
-                        // mappingColors(
-                        //   widget.pokemon.typeofpokemon![0],
-                        // ),
-                        // Colors.black87,
-                        // Colors.black87,
                         Colors.black87,
                         Colors.black54,
                         mappingColors(
@@ -113,6 +114,7 @@ class _OtherInformationState extends State<OtherInformation>
                 ),
                 Column(
                   children: [
+                    SizedBox(height: appBarHeight + safeAreaHeight),
                     TabBar(
                       controller: _tabController,
                       tabs: [
@@ -146,8 +148,8 @@ class _OtherInformationState extends State<OtherInformation>
       backgroundColor: Colors.transparent,
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_outlined),
-        onPressed: () {
-          context.read<MovesetCubit>().closeStream();
+        onPressed: () async {
+          // await context.read<MovesetCubit>().closeStream();
           context.pop();
         },
       ),
@@ -156,15 +158,14 @@ class _OtherInformationState extends State<OtherInformation>
           MyText.labelLarge(
             context: context,
             text: title,
+            isFontBold: true,
+            isBorderText: true,
+            fontSize: 22,
           ),
         ],
       ),
       actions: [
         showSwitch ? _buildSwitchMoves() : Container(),
-        // Padding(
-        //   padding: const EdgeInsets.only(right: 16),
-        //   child: Icon(Icons.favorite_border_outlined),
-        // ),
       ],
     );
   }

@@ -22,6 +22,7 @@ class SearchPokemonsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
+        padding: EdgeInsets.zero,
         shrinkWrap: true,
         itemCount: pokemons.length,
         itemBuilder: (context, index) {

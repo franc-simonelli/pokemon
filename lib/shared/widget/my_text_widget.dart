@@ -130,6 +130,7 @@ class MyText extends StatefulWidget {
     bool isUnderLine = false,
     Color? color,
     Color? colorBorder,
+    double fontSize = 20,
   }) {
     final appTextTheme = Theme.of(context).textTheme;
     final appColors = Theme.of(context).colorScheme;
@@ -137,7 +138,7 @@ class MyText extends StatefulWidget {
     return MyText(
       text: text,
       style: appTextTheme.labelLarge!.copyWith(
-        fontSize: 22,
+        fontSize: fontSize,
         color: color ?? appColors.onSurface,
         decoration: isUnderLine ? TextDecoration.underline : null,
         fontWeight: isFontBold ? FontWeight.bold : FontWeight.normal,
