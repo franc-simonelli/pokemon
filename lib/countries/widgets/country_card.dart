@@ -28,12 +28,9 @@ class CardCountry extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black,
-              offset: Offset(2, 2),
+              offset: const Offset(0, 3),
+              blurRadius: 1,
             ),
-            BoxShadow(
-              color: Colors.grey.shade500,
-              offset: Offset(-2, -2),
-            )
           ],
         ),
         child: ClipRRect(

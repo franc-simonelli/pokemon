@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
-import 'package:pokedex/components/widgets/img_type.dart';
+import 'package:pokedex/components/widgets/button_favorite.dart';
+import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/widget/damage_relations.dart';
-import 'package:pokedex/pokemon/widget/single_stat_pokemon.dart';
 import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/pokemon_detail/widgets/header_section.dart';
 import 'package:pokedex/route/go_router_config.dart';
-import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/shared/widget/pkm_scaffold.dart';
+import 'package:pokedex/shared/widget/wallpaper_type_pokemon.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 import 'package:pokedex/stats_pokemon/widgets/stats_pokemon.dart';
 
@@ -58,30 +57,9 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
             appBar: _buildAppBar(context, state.pokemonSelected),
             body: Stack(
               children: [
-                Positioned(
-                  top: 0,
-                  right: -110,
-                  child: Opacity(
-                    opacity: 1,
-                    child: ImgType(
-                      width: 450,
-                      typeImg: state.pokemonSelected.typeofpokemon![0],
-                      boxFit: BoxFit.contain,
-                      colorGradient: [
-                        Colors.black87,
-                        Colors.black54,
-                        mappingColors(
-                          state.pokemonSelected.typeofpokemon![0],
-                        ),
-                        Colors.black54,
-                        mappingColors(
-                          state.pokemonSelected.typeofpokemon![0],
-                        ),
-                      ],
-                    ),
-                  ),
+                WallpaperTypePokemon(
+                  type: state.pokemonSelected.typeofpokemon![0],
                 ),
-
                 Column(
                   children: [
                     SizedBox(height: appBarHeight + safeAreaHeight),
@@ -121,61 +99,11 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
                     )
                   ],
                 )
-                // SingleChildScrollView(
-                //   child: Padding(
-                //     padding: const EdgeInsets.all(16.0),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         SizedBox(height: 120),
-                //         Padding(
-                //           padding: const EdgeInsets.symmetric(horizontal: 10),
-                //           child: HeaderSection(),
-                //         ),
-                //         _buildDescription(context, state.pokemonSelected),
-                //         SizedBox(height: 10),
-                //         BlocProvider.value(
-                //           value: _statsPokemonCubit,
-                //           child: StatsPokemon(),
-                //         ),
-                //         SizedBox(height: 30),
-                //         DamageRelations(
-                //           immunity: state.pokemonSelected.immunity ?? [],
-                //           isLoading: state.pokemonSelected.infoUpdate ?? false,
-                //           weaknesses: state.pokemonSelected.weaknesses ?? [],
-                //           resistence: state.pokemonSelected.resistence ?? [],
-                //         ),
-                //         SizedBox(height: 30),
-                //       ],
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           );
         },
       ),
-    );
-  }
-
-  Widget _buildButtonMovesEvo(BuildContext context, PokemonDetailState state) {
-    return ButtonScaled(
-      child: Row(
-        children: [
-          MyText.labelMedium(
-            context: context,
-            text: 'Moves/Evo',
-            isFontBold: true,
-          ),
-          Icon(Icons.keyboard_arrow_right)
-        ],
-      ),
-      onPress: () {
-        context.push(
-          ScreenPaths.otherInformationPokemon,
-          extra: state.pokemonSelected,
-        );
-      },
     );
   }
 
@@ -215,9 +143,8 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16),
-          child: GestureDetector(
-            onTap: () {},
-            child: Icon(Icons.favorite_border_outlined),
+          child: ButtonFavorite(
+            pokemon: pokemon,
           ),
         ),
         Padding(
@@ -239,91 +166,4 @@ class _PokemonDetailPageState extends State<PokemonDetailPage> {
       ],
     );
   }
-
-  Widget _buildStats() {
-    return BlocBuilder<PokemonDetailCubit, PokemonDetailState>(
-      builder: (context, state) {
-        final infoUpdate = state.pokemonSelected.infoUpdate ?? false;
-        // final stats = state.manageStats;
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.3),
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                SinglStatPokemon(
-                  stats: 'Hp',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.hp.toString()
-                      : '0',
-                  color: Colors.green,
-                ),
-                SinglStatPokemon(
-                  stats: 'Attack',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.attack.toString()
-                      : '0',
-                  color: Colors.orange,
-                ),
-                SinglStatPokemon(
-                  stats: 'Defense',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.defense.toString()
-                      : '0',
-                  color: Colors.red,
-                ),
-                SinglStatPokemon(
-                  stats: 'Sp. Atk',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.specialAttack.toString()
-                      : '0',
-                  color: Colors.blue,
-                ),
-                SinglStatPokemon(
-                  stats: 'Sp. Def',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.specialDefense.toString()
-                      : '0',
-                  color: Colors.blueGrey,
-                ),
-                SinglStatPokemon(
-                  stats: 'Speed',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.speed.toString()
-                      : '0',
-                  color: Colors.purple,
-                ),
-                SinglStatPokemon(
-                  stats: 'Total',
-                  value: infoUpdate && state.manageStats != null
-                      ? state.manageStats!.total.toString()
-                      : '0',
-                  widthMax: 720,
-                  color: Colors.grey,
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
-
-// class StatsPokemon extends StatefulWidget {
-//   const StatsPokemon({super.key});
-
-//   @override
-//   State<StatsPokemon> createState() => _StatsPokemonState();
-// }
-
-// class _StatsPokemonState extends State<StatsPokemon> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }

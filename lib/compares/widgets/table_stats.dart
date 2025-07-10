@@ -47,8 +47,8 @@ class TableStats extends StatelessWidget {
     return TableRow(
       children: [
         _buildCell("Stat", context, isHeader: true),
-        _buildCell(firstName, context, isHeader: true, textColor: Colors.blue),
-        _buildCell(secondName, context, isHeader: true, textColor: Colors.red),
+        _buildCell(firstName, context, isHeader: true),
+        _buildCell(secondName, context, isHeader: true),
         _buildCell("Diff", context, isHeader: true),
       ],
     );

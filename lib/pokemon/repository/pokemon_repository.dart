@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:pokedex/constants/shared_preferences_constants.dart';
+import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/models/stats_model.dart';
 import 'package:pokedex/pokemon/models/type_model.dart';
@@ -229,5 +231,36 @@ class PokemonRepository {
       };
     } catch (e) {}
     return null;
+  }
+
+  Future<List<PokemonModel>> fetchFavoritePokemons() async {
+    final favoritesId = await sharedPrefsService.getValue<String>(kFavorites);
+    final allPokemons = await generateAllDataPokemons();
+
+    if (favoritesId != null) {
+      final favoriteIds = jsonDecode(favoritesId) as List<dynamic>;
+      final favoritePokemons = allPokemons
+          .where((pokemon) => favoriteIds.contains(pokemon.id))
+          .toList();
+      return favoritePokemons;
+    }
+    return [];
+  }
+
+  Future<void> addFavoritePokemon(String id) async {
+    final favoritesId = await sharedPrefsService.getValue<String>(kFavorites);
+    List<String> favoriteIds = [];
+
+    if (favoritesId != null) {
+      favoriteIds = List<String>.from(jsonDecode(favoritesId));
+    }
+
+    if (!favoriteIds.contains(id)) {
+      favoriteIds.add(id);
+      await sharedPrefsService.setValue(kFavorites, jsonEncode(favoriteIds));
+    } else {
+      favoriteIds.remove(id);
+      await sharedPrefsService.setValue(kFavorites, jsonEncode(favoriteIds));
+    }
   }
 }

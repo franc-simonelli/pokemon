@@ -72,33 +72,33 @@ class MovesetPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            if (state.autoDownloadStatus != Status.loading)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: MyText.labelSmall(
-                      context: context,
-                      text: 'Moves level-up',
-                      color: appTheme.colorScheme.primary,
-                      isFontBold: true,
-                    ),
+            // if (state.autoDownloadStatus != Status.loading)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: MyText.labelSmall(
+                    context: context,
+                    text: 'Moves level-up',
+                    color: appTheme.colorScheme.primary,
+                    isFontBold: true,
                   ),
-                  _buildListMoves(state.moveLevelUp),
-                  SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: MyText.labelSmall(
-                      context: context,
-                      text: 'Moves machine',
-                      color: appTheme.colorScheme.primary,
-                      isFontBold: true,
-                    ),
+                ),
+                _buildListMoves(state.moveLevelUp),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: MyText.labelSmall(
+                    context: context,
+                    text: 'Moves machine',
+                    color: appTheme.colorScheme.primary,
+                    isFontBold: true,
                   ),
-                  _buildListMoves(state.moveMachine),
-                ],
-              )
+                ),
+                _buildListMoves(state.moveMachine),
+              ],
+            )
           ],
         );
       },
@@ -106,8 +106,7 @@ class MovesetPage extends StatelessWidget {
   }
 
   Widget _buildDownloadButton(BuildContext context, MovesetState state) {
-    final isDownloaded =
-        context.watch<MovesetCubit>().state.isAllMovesDowloaded ?? false;
+    final isDownloaded = state.isAllMovesDowloaded ?? false;
 
     final movesetCubit = context.watch<MovesetCubit>();
     return ButtonScaled(
@@ -136,22 +135,22 @@ class MovesetPage extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                          onTap: () {
-                            context
-                                .read<MovesetCubit>()
-                                .setShowDownloadIcon(true);
-                            context.pop();
-                          },
-                          child: Icon(Icons.minimize),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(height: 10),
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Align(
+                    //     alignment: Alignment.centerRight,
+                    //     child: GestureDetector(
+                    //       onTap: () {
+                    //         context
+                    //             .read<MovesetCubit>()
+                    //             .setShowDownloadIcon(true);
+                    //         context.pop();
+                    //       },
+                    //       child: Icon(Icons.minimize),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 20),
                     MyText.labelMedium(
                         context: context, text: 'Download in corso...'),
@@ -174,6 +173,8 @@ class MovesetPage extends StatelessWidget {
               ),
             ),
           );
+          await Future.delayed(Duration(milliseconds: 500));
+          await context.read<MovesetCubit>().closeStream();
 
           if (showTable) {
             context.push(

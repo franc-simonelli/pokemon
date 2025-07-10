@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/bottom_navigation_bar/widgets/glow_icon.dart';
-import 'package:pokedex/components/widgets/draggable_ball.dart';
 import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 
 class BottomNavigationScreen extends StatelessWidget {

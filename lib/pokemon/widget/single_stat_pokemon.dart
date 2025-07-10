@@ -150,7 +150,7 @@ class SinglStatPokemon extends StatelessWidget {
                         AnimatedContainer(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Colors.red,
+                            color: Color.fromARGB(255, 238, 106, 50),
                           ),
                           duration: Duration(milliseconds: 300),
                           width: widthCompareStats,

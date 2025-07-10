@@ -62,62 +62,31 @@ class _ComparesPageState extends State<ComparesPage> {
         BlocProvider.value(value: _statsFirstPokemonCubit),
         BlocProvider.value(value: _statsSecondPokemonCubit),
       ],
-      child: PkmScaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          automaticallyImplyLeading: true,
-          title: BlocBuilder<ComparesCubit, ComparesState>(
-            builder: (context, state) {
-              return Column(
-                children: [
-                  MyText.labelLarge(
-                    context: context,
-                    text: 'Comparazing',
-                    isFontBold: true,
-                  ),
-                  // SizedBox(height: 10),
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Expanded(
-                  //       flex: 4,
-                  //       child: _buildButton(
-                  //         context,
-                  //         true,
-                  //         state.pokemons,
-                  //       ),
-                  //     ),
-                  //     Expanded(
-                  //       flex: 1,
-                  //       child: Container(),
-                  //     ),
-                  //     Expanded(
-                  //       flex: 4,
-                  //       child: _buildButton(
-                  //         context,
-                  //         false,
-                  //         state.pokemons,
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ],
-              );
-            },
+      child: Column(
+        children: [
+          _buildAppBar(),
+          // SizedBox(height: appBarHeight + safeAreaHeight),
+          CompareContent(
+            controller1: controller1,
+            controller2: controller2,
+            firstStatsCubit: _statsFirstPokemonCubit,
+            secondStatsCubit: _statsSecondPokemonCubit,
           ),
-        ),
-        body: Column(
-          children: [
-            SizedBox(height: appBarHeight + safeAreaHeight),
-            CompareContent(
-              controller1: controller1,
-              controller2: controller2,
-              firstStatsCubit: _statsFirstPokemonCubit,
-              secondStatsCubit: _statsSecondPokemonCubit,
-            ),
-          ],
-        ),
+        ],
+      ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      automaticallyImplyLeading: true,
+      centerTitle: true,
+      title: MyText.labelLarge(
+        context: context,
+        text: 'Comparazing',
+        isFontBold: true,
       ),
     );
   }

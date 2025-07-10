@@ -13,6 +13,7 @@ import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/shared/widget/pkm_scaffold.dart';
+import 'package:pokedex/shared/widget/wallpaper_type_pokemon.dart';
 
 class OtherInformation extends StatefulWidget {
   const OtherInformation({
@@ -89,28 +90,8 @@ class _OtherInformationState extends State<OtherInformation>
             appBar: _buildAppBar(widget.pokemon.name ?? '', context),
             body: Stack(
               children: [
-                Positioned(
-                  top: 0,
-                  right: -110,
-                  child: Opacity(
-                    opacity: 1,
-                    child: ImgType(
-                      width: 450,
-                      typeImg: widget.pokemon.typeofpokemon![0],
-                      boxFit: BoxFit.contain,
-                      colorGradient: [
-                        Colors.black87,
-                        Colors.black54,
-                        mappingColors(
-                          widget.pokemon.typeofpokemon![0],
-                        ),
-                        Colors.black54,
-                        mappingColors(
-                          widget.pokemon.typeofpokemon![0],
-                        ),
-                      ],
-                    ),
-                  ),
+                WallpaperTypePokemon(
+                  type: state.pokemon!.typeofpokemon![0],
                 ),
                 Column(
                   children: [

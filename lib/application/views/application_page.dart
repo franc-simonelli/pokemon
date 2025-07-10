@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/application/bloc/application_bloc.dart';
 import 'package:pokedex/countries/cubit/countries_cubit.dart';
+import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
 import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
 import 'package:pokedex/route/go_router_config.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
@@ -172,6 +173,7 @@ class _ApplicationPageState extends State<ApplicationPage>
       listener: (context, state) async {
         context.read<AllDataPokemonsCubit>().fetchAllData();
         context.read<CountriesCubit>().fetchCountries();
+        context.read<FavoritesCubit>().fetchFavorites();
         context.go(ScreenPaths.home);
       },
     );

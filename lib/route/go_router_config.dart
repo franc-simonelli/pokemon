@@ -147,7 +147,7 @@ final goRouter = GoRouter(
             GoRoute(
               path: ScreenPaths.favorite,
               builder: (context, state) {
-                return const FavoriteScreen();
+                return const FavoritePage();
               },
             ),
           ],

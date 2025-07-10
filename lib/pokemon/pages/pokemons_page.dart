@@ -56,7 +56,9 @@ class PokemonsPage extends StatelessWidget {
           );
         }
         return SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
+            bottom: 50,
+          ),
           sliver: GridPokemonWidget(
             pokemonList: state.listPokemons,
             gen: EnumGen.all,
@@ -72,7 +74,7 @@ class PokemonsPage extends StatelessWidget {
       surfaceTintColor: Colors.black,
       backgroundColor: Colors.transparent,
       pinned: true,
-      floating: false,
+      floating: true,
       automaticallyImplyLeading: false,
       expandedHeight: 90.0,
       leading: const SizedBox.shrink(),

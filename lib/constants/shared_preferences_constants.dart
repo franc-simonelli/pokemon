@@ -9,3 +9,4 @@ const kGen7 = 'gen_7';
 const kChronology = 'chronology';
 const kTypes = 'types';
 const kMoves = 'moves';
+const kFavorites = 'favorites';

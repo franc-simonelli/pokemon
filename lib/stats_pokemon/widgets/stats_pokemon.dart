@@ -28,6 +28,7 @@ class StatsPokemon extends StatelessWidget {
                 level: state.level,
                 changeLevel: context.read<StatsPokemonCubit>().manageStatsByLv,
               ),
+            SizedBox(height: 10),
             Container(
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.2),

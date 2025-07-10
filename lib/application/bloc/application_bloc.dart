@@ -7,6 +7,7 @@ import 'package:equatable/equatable.dart';
 import 'package:pokedex/constants/shared_preferences_constants.dart';
 import 'package:pokedex/core/di/shared_export.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
+import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
 import 'package:pokedex/pokemon/utils/generate_generation.dart';
 part 'application_event.dart';
 part 'application_state.dart';
@@ -16,6 +17,7 @@ typedef ApplicationBootTask = Future<void> Function();
 class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
   ApplicationBloc({
     required this.applicationRepository,
+    required this.pokemonRepository,
   }) : super(ApplicationInitial()) {
     on<ApplicationStart>(
       (event, emit) => _mapApplicationStartToState(emit),
@@ -34,6 +36,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     );
   }
   final ApplicationRepository applicationRepository;
+  final PokemonRepository pokemonRepository;
 
   @override
   Future<void> close() {
@@ -78,11 +81,11 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     final gen3 =
         await generateGeneration(allPokemon, 251, 386, '3_gen', 'Hoenn');
     final gen4 =
-        await generateGeneration(allPokemon, 386, 493, '4_gen', 'Sinnoh');
+        await generateGeneration(allPokemon, 386, 494, '4_gen', 'Sinnoh');
     final gen5 =
-        await generateGeneration(allPokemon, 493, 650, '5_gen', 'Unima');
+        await generateGeneration(allPokemon, 494, 652, '5_gen', 'Unima');
     final gen6 =
-        await generateGeneration(allPokemon, 650, 721, '6_gen', 'Kalos');
+        await generateGeneration(allPokemon, 652, 721, '6_gen', 'Kalos');
     final gen7 =
         await generateGeneration(allPokemon, 721, 809, '7_gen', 'Alola');
 

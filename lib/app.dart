@@ -10,6 +10,7 @@ import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/components/widgets/download_stream.dart';
 import 'package:pokedex/countries/repositories/countries_repository.dart';
 import 'package:pokedex/countries/cubit/countries_cubit.dart';
+import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
@@ -36,6 +37,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late CountriesCubit countriesCubit;
   ApplicationBloc? applicationBloc;
   late MovesetCubit movesetCubit;
+  late FavoritesCubit favoritesCubit;
   late ApplicationRepository applicationRepository;
   late PokemonRepository pokemonRepository;
   late FiltersRepository filtersRepository;
@@ -61,6 +63,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     );
     movesetCubit = MovesetCubit(
       movesetRepository: movesetRepository,
+      pokemonRepository: pokemonRepository,
+    );
+    favoritesCubit = FavoritesCubit(
       pokemonRepository: pokemonRepository,
     );
   }
@@ -132,11 +137,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         BlocProvider<ApplicationBloc>(
           create: (context) {
             applicationBloc = ApplicationBloc(
-              applicationRepository: applicationRepository,
-            );
+                applicationRepository: applicationRepository,
+                pokemonRepository: pokemonRepository);
             return applicationBloc!;
           },
         ),
+        BlocProvider<FavoritesCubit>.value(value: favoritesCubit),
       ],
       child: child,
     );

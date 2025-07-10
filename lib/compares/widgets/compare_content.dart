@@ -5,15 +5,15 @@ import 'package:go_router/go_router.dart';
 import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/utils/generate_ticks.dart';
 import 'package:pokedex/compares/widgets/compare_table.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
+import 'package:pokedex/components/section_level.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/page_view_pokemon_list.dart';
 import 'package:pokedex/pokemon/widget/single_stat_pokemon.dart';
 import 'package:pokedex/route/go_router_config.dart';
+import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:flutter_radar_chart/flutter_radar_chart.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
-import 'package:pokedex/stats_pokemon/widgets/slider_level.dart';
 
 class CompareContent extends StatefulWidget {
   const CompareContent({
@@ -119,9 +119,8 @@ class _CompareContentState extends State<CompareContent> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   _pokemonsSection(state, context),
-                  _buildSliders(),
                   SizedBox(height: 20),
                   _buildTable(state),
                   SizedBox(height: 10),
@@ -135,7 +134,7 @@ class _CompareContentState extends State<CompareContent> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: 30),
                 ],
               ),
             ),
@@ -187,7 +186,7 @@ class _CompareContentState extends State<CompareContent> {
               BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
                 bloc: widget.firstStatsCubit,
                 builder: (context, stateFirstPokemonStats) {
-                  return _buildFirstList(
+                  return _buildFirstPokemon(
                     compareState: state,
                     firstPokemonStatsState: stateFirstPokemonStats,
                     context: context,
@@ -197,7 +196,7 @@ class _CompareContentState extends State<CompareContent> {
               SizedBox(width: 20),
               BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
                 builder: (context, stateSecondPokemonStats) {
-                  return _buildSecondList(
+                  return _buildSecondPokemon(
                     compareState: state,
                     secondPokemonStatsState: stateSecondPokemonStats,
                     context: context,
@@ -208,53 +207,6 @@ class _CompareContentState extends State<CompareContent> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildSliders() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 6,
-            child: BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
-              bloc: widget.firstStatsCubit,
-              builder: (context, state) {
-                if (state.showLvSlider) {
-                  return SliderLevel(
-                    flexSlider: 4,
-                    level: state.level,
-                    changeLevel: widget.firstStatsCubit.manageStatsByLv,
-                  );
-                }
-                return Container();
-              },
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(),
-          ),
-          Expanded(
-            flex: 6,
-            child: BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
-              bloc: widget.secondStatsCubit,
-              builder: (context, state) {
-                if (state.showLvSlider) {
-                  return SliderLevel(
-                    flexSlider: 4,
-                    level: state.level,
-                    changeLevel: widget.secondStatsCubit.manageStatsByLv,
-                  );
-                }
-                return Container();
-              },
-            ),
-          )
-        ],
-      ),
     );
   }
 
@@ -283,7 +235,7 @@ class _CompareContentState extends State<CompareContent> {
                 ),
                 graphColors: [
                   Colors.blue,
-                  Colors.red,
+                  Color.fromARGB(255, 238, 106, 50),
                 ],
                 ticksTextStyle: TextStyle(
                   color: Colors.transparent,
@@ -339,115 +291,116 @@ class _CompareContentState extends State<CompareContent> {
 
   Widget _buildStats(ComparesState state) {
     return BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
-        bloc: widget.firstStatsCubit,
-        builder: (context, stateFirst) {
-          return BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
-              bloc: widget.secondStatsCubit,
-              builder: (context, stateSecond) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [],
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Hp',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.hp.toString()
-                              : '0',
-                          color: Colors.green,
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.hp.toString()
-                              : '0',
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Att',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.attack.toString()
-                              : '0',
-                          color: Colors.orange,
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.attack.toString()
-                              : '0',
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Def',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.defense.toString()
-                              : '0',
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.defense.toString()
-                              : '0',
-                          color: Colors.red,
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Sp.A',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.specialAttack.toString()
-                              : '0',
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.specialAttack.toString()
-                              : '0',
-                          color: Colors.blue,
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Sp.D',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.specialDefense.toString()
-                              : '0',
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.specialDefense.toString()
-                              : '0',
-                          color: Colors.blueGrey,
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Spe',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.speed.toString()
-                              : '0',
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.speed.toString()
-                              : '0',
-                          color: Colors.purple,
-                        ),
-                        SizedBox(height: 5),
-                        SinglStatPokemon(
-                          onlyGraphic: true,
-                          stats: 'Tot',
-                          value: stateFirst.stats != null
-                              ? stateFirst.stats!.total.toString()
-                              : '0',
-                          valueCompare: stateSecond.stats != null
-                              ? stateSecond.stats!.total.toString()
-                              : '0',
-                          widthMax: 720,
-                          color: Colors.grey,
-                        ),
-                      ],
-                    ),
+      bloc: widget.firstStatsCubit,
+      builder: (context, stateFirst) {
+        return BlocBuilder<StatsPokemonCubit, StatsPokemonState>(
+            bloc: widget.secondStatsCubit,
+            builder: (context, stateSecond) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [],
                   ),
-                );
-              });
-        });
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Hp',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.hp.toString()
+                            : '0',
+                        color: Colors.green,
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.hp.toString()
+                            : '0',
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Att',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.attack.toString()
+                            : '0',
+                        color: Colors.orange,
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.attack.toString()
+                            : '0',
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Def',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.defense.toString()
+                            : '0',
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.defense.toString()
+                            : '0',
+                        color: Colors.red,
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Sp.A',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.specialAttack.toString()
+                            : '0',
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.specialAttack.toString()
+                            : '0',
+                        color: Colors.blue,
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Sp.D',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.specialDefense.toString()
+                            : '0',
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.specialDefense.toString()
+                            : '0',
+                        color: Colors.blueGrey,
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Spe',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.speed.toString()
+                            : '0',
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.speed.toString()
+                            : '0',
+                        color: Colors.purple,
+                      ),
+                      SizedBox(height: 5),
+                      SinglStatPokemon(
+                        onlyGraphic: true,
+                        stats: 'Tot',
+                        value: stateFirst.stats != null
+                            ? stateFirst.stats!.total.toString()
+                            : '0',
+                        valueCompare: stateSecond.stats != null
+                            ? stateSecond.stats!.total.toString()
+                            : '0',
+                        widthMax: 720,
+                        color: Colors.grey,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            });
+      },
+    );
   }
 
-  Widget _buildSecondList({
+  Widget _buildSecondPokemon({
     required ComparesState compareState,
     required StatsPokemonState secondPokemonStatsState,
     required BuildContext context,
@@ -455,21 +408,19 @@ class _CompareContentState extends State<CompareContent> {
     return Expanded(
       child: Column(
         children: [
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // TypeInfoSection(
-              //   type:
-              //       compareState.secondPokemonSelected?.typeofpokemon?[0] ?? '',
-              // ),
-              ButtonScaled(
-                child: Row(
-                  children: [
-                    MyText.labelMedium(context: context, text: 'Search '),
-                    Icon(Icons.search_outlined),
-                  ],
-                ),
-                onPress: () async {
+              MyText.labelMedium(
+                context: context,
+                text: compareState.secondPokemonSelected?.name ?? '',
+                isFontBold: true,
+                // color: const Color.fromARGB(255, 238, 106, 50),
+              ),
+              SizedBox(width: 16),
+              GestureDetector(
+                onTap: () async {
                   PokemonModel? pokemon = await context
                       .push(ScreenPaths.searchPokemon, extra: true);
                   final index = compareState.pokemons.indexWhere(
@@ -481,12 +432,26 @@ class _CompareContentState extends State<CompareContent> {
                     widget.controller2.jumpToPage(index);
                   }
                 },
-              )
+                child: Icon(Icons.search_outlined),
+              ),
             ],
           ),
-          SizedBox(height: 20),
-          SizedBox(
-            height: 100,
+          SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  mappingColors(
+                    secondPokemonStatsState.pokemon!.typeofpokemon![0],
+                  ),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            height: 90,
             child: PageViewPokemonList(
               activeClickImg: true,
               onlyPokemonImg: false,
@@ -512,20 +477,18 @@ class _CompareContentState extends State<CompareContent> {
             ),
           ),
           SizedBox(height: 10),
-          _buildName(
-            context: context,
-            pokemon: compareState.secondPokemonSelected!,
-            level: secondPokemonStatsState.showLvSlider
-                ? secondPokemonStatsState.level.toString()
-                : 'LV',
-            cubit: widget.secondStatsCubit,
+          SectionLevel(
+            initialLevel: secondPokemonStatsState.level,
+            showLvSection: secondPokemonStatsState.showLvSlider,
+            changeLevel: widget.secondStatsCubit.manageStatsByLv,
+            onShowLvSelection: widget.secondStatsCubit.showLvSlider,
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFirstList({
+  Widget _buildFirstPokemon({
     required ComparesState compareState,
     required StatsPokemonState firstPokemonStatsState,
     required BuildContext context,
@@ -533,21 +496,19 @@ class _CompareContentState extends State<CompareContent> {
     return Expanded(
       child: Column(
         children: [
+          SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // TypeInfoSection(
-              //   type:
-              //       compareState.firstPokemonSelected?.typeofpokemon?[0] ?? '',
-              // ),
-              ButtonScaled(
-                child: Row(
-                  children: [
-                    MyText.labelMedium(context: context, text: 'Search '),
-                    Icon(Icons.search_outlined),
-                  ],
-                ),
-                onPress: () async {
+              MyText.labelMedium(
+                context: context,
+                text: compareState.firstPokemonSelected?.name ?? '',
+                isFontBold: true,
+                // color: Colors.blue,
+              ),
+              SizedBox(width: 16),
+              GestureDetector(
+                onTap: () async {
                   PokemonModel? pokemon = await context
                       .push(ScreenPaths.searchPokemon, extra: true);
                   final index = compareState.pokemons.indexWhere(
@@ -559,12 +520,26 @@ class _CompareContentState extends State<CompareContent> {
                     widget.controller1.jumpToPage(index);
                   }
                 },
-              )
+                child: Icon(Icons.search_outlined),
+              ),
             ],
           ),
-          SizedBox(height: 20),
-          SizedBox(
-            height: 100,
+          SizedBox(height: 10),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.transparent,
+                  mappingColors(
+                    firstPokemonStatsState.pokemon!.typeofpokemon![0],
+                  ),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+            height: 90,
             child: PageViewPokemonList(
               onlyPokemonImg: false,
               activeClickImg: true,
@@ -590,56 +565,13 @@ class _CompareContentState extends State<CompareContent> {
             ),
           ),
           SizedBox(height: 10),
-          _buildName(
-            context: context,
-            pokemon: compareState.firstPokemonSelected!,
-            level: firstPokemonStatsState.showLvSlider
-                ? firstPokemonStatsState.level.toString()
-                : 'LV',
-            cubit: widget.firstStatsCubit,
+          SectionLevel(
+            initialLevel: firstPokemonStatsState.level,
+            showLvSection: firstPokemonStatsState.showLvSlider,
+            changeLevel: widget.firstStatsCubit.manageStatsByLv,
+            onShowLvSelection: widget.firstStatsCubit.showLvSlider,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildName({
-    required BuildContext context,
-    required PokemonModel pokemon,
-    required String level,
-    required StatsPokemonCubit cubit,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildButtonLevel(
-          context: context,
-          level: level,
-          onPress: () {
-            cubit.showLvSlider();
-          },
-        ),
-        SizedBox(width: 5),
-        MyText.labelMedium(
-          context: context,
-          text: pokemon.name ?? '',
-          isFontBold: true,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildButtonLevel({
-    required BuildContext context,
-    required String level,
-    required Function onPress,
-  }) {
-    return ButtonScaled(
-      onPress: onPress,
-      child: MyText.labelMedium(
-        context: context,
-        text: level,
-        isFontBold: true,
       ),
     );
   }

@@ -53,12 +53,7 @@ dev_dependencies:
   flutter_native_splash: ^2.3.13
   freezed: ^2.4.7
   widgetbook_generator: ^3.0.0
-  flutter_launcher_icons: ^0.14.2
-
-flutter_icons:
-  android: true  
-  ios: true
-  image_path: "assets/images/pokeball.png"
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
 
@@ -68,3 +63,10 @@ flutter:
     - assets/sounds/
 
   uses-material-design: true
+
+flutter_icons:
+  android: true  
+  ios: true
+  image_path: "assets/images/pokeball.png"
+  daptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon/pokeball.png"

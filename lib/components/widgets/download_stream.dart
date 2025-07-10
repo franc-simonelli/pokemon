@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 
 class DownloadStream extends StatelessWidget {

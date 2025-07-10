@@ -16,7 +16,7 @@ class PageViewPokemonList extends StatelessWidget {
     required this.showForward,
     required this.onBack,
     required this.onForward,
-    this.flex = 4,
+    this.flex = 5,
     this.onlyPokemonImg = true,
     this.activeClickImg = false,
   });
@@ -36,16 +36,12 @@ class PageViewPokemonList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          flex: 1,
-          child: showBack
-              ? IconButton(
-                  onPressed: () {
-                    onBack();
-                  },
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
-                )
-              : Container(),
+        IconButton(
+          onPressed: () {
+            showBack ? onBack() : () {};
+          },
+          color: showBack ? Colors.white : Colors.transparent,
+          icon: Icon(Icons.arrow_back_ios_new_rounded),
         ),
         Expanded(
           flex: flex,
@@ -86,17 +82,13 @@ class PageViewPokemonList extends StatelessWidget {
             },
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: showForward
-              ? IconButton(
-                  onPressed: () {
-                    onForward();
-                  },
-                  icon: Icon(Icons.arrow_forward_ios_rounded),
-                )
-              : Container(),
-        ),
+        IconButton(
+          onPressed: () {
+            showForward ? onForward() : () {};
+          },
+          color: showForward ? Colors.white : Colors.transparent,
+          icon: Icon(Icons.arrow_forward_ios_rounded),
+        )
       ],
     );
   }
