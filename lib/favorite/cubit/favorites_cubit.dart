@@ -34,4 +34,13 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       addError(e);
     }
   }
+
+  removeFavoritePokemon(PokemonModel pokemon) async {
+    try {
+      await pokemonRepository.removeFavoritePokemon(pokemon.id ?? '');
+      fetchFavorites();
+    } catch (e) {
+      addError(e);
+    }
+  }
 }

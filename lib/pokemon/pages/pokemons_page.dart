@@ -10,7 +10,7 @@ import 'package:pokedex/pokemon_detail/cubit/pokemon_detail_cubit.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/shared/widget/pkm_search_bar.dart';
 
-class PokemonsPage extends StatelessWidget {
+class PokemonsPage extends StatefulWidget {
   const PokemonsPage({
     required this.gen,
     this.scrollController,
@@ -21,19 +21,83 @@ class PokemonsPage extends StatelessWidget {
   final ScrollController? scrollController;
 
   @override
+  State<PokemonsPage> createState() => _PokemonsPageState();
+}
+
+class _PokemonsPageState extends State<PokemonsPage> {
+  bool _showScrollToTopButton = false;
+  final double _scrollThreshold = 1500.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.scrollController?.addListener(() {
+      if (widget.scrollController!.position.pixels > _scrollThreshold) {
+        if (!_showScrollToTopButton) {
+          setState(() {
+            _showScrollToTopButton = true;
+          });
+        }
+      } else {
+        if (_showScrollToTopButton) {
+          setState(() {
+            _showScrollToTopButton = false;
+          });
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       bottom: false,
       top: true,
-      child: CustomScrollView(
-        controller: scrollController,
-        physics: const ScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
-        slivers: [
-          _buildSliverAppBar(context),
-          _buildSliverGrid(),
+      child: Stack(
+        children: [
+          CustomScrollView(
+            controller: widget.scrollController,
+            physics: const ScrollPhysics(
+              parent: BouncingScrollPhysics(),
+            ),
+            slivers: [
+              _buildSliverAppBar(context),
+              _buildSliverGrid(),
+            ],
+          ),
+          if (_showScrollToTopButton) _buildIconScrollTop()
         ],
+      ),
+    );
+  }
+
+  Widget _buildIconScrollTop() {
+    return Positioned(
+      top: 80,
+      right: 0,
+      child: GestureDetector(
+        onTap: () {
+          widget.scrollController?.position.animateTo(
+            0,
+            duration: const Duration(milliseconds: 1000),
+            curve: Curves.easeInOut,
+          );
+        },
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black,
+            border: Border.all(
+              color: Colors.white,
+            ),
+          ),
+          child: Center(
+            child: Icon(Icons.arrow_upward),
+          ),
+        ),
       ),
     );
   }
@@ -73,8 +137,8 @@ class PokemonsPage extends StatelessWidget {
     return SliverAppBar(
       surfaceTintColor: Colors.black,
       backgroundColor: Colors.transparent,
-      pinned: true,
-      floating: true,
+      pinned: false,
+      floating: false,
       automaticallyImplyLeading: false,
       expandedHeight: 90.0,
       leading: const SizedBox.shrink(),

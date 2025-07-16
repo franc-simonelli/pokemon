@@ -32,10 +32,18 @@ class TableMovesContent extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _buildTableLevelUp(context, state),
-                    SizedBox(height: 30),
-                    _buildTableMachine(context, state),
-                    SizedBox(height: 30),
+                    if (state.moveLevelUp.isNotEmpty) ...[
+                      _buildTableLevelUp(context, state),
+                      SizedBox(height: 30),
+                    ],
+                    if (state.moveMachine.isNotEmpty) ...[
+                      _buildTableMachine(context, state),
+                      SizedBox(height: 30),
+                    ],
+                    if (state.moveEgg.isNotEmpty) ...[
+                      _buildTableEgg(context, state),
+                      SizedBox(height: 50),
+                    ]
                   ],
                 ),
               ),
@@ -45,6 +53,39 @@ class TableMovesContent extends StatelessWidget {
 
         return Container();
       },
+    );
+  }
+
+  Widget _buildTableEgg(BuildContext context, TableMovesState state) {
+    return Table(
+      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+      border: TableBorder(
+        horizontalInside: BorderSide(
+          color: Colors.grey.shade800,
+          width: 1,
+        ),
+        verticalInside: BorderSide(
+          color: Colors.grey.shade800,
+          width: 1,
+        ),
+      ),
+      columnWidths: const {
+        0: FlexColumnWidth(2),
+        1: FlexColumnWidth(6),
+        2: FlexColumnWidth(6),
+        3: FlexColumnWidth(2),
+        4: FlexColumnWidth(2),
+        5: FlexColumnWidth(2),
+        6: FlexColumnWidth(2),
+      },
+      children: [
+        _buildTableHeader(context, 'Egg'),
+        ..._buildTableRows(
+          context: context,
+          moves: state.moveEgg,
+          isTableLevel: true,
+        ),
+      ],
     );
   }
 
@@ -71,7 +112,7 @@ class TableMovesContent extends StatelessWidget {
         6: FlexColumnWidth(2),
       },
       children: [
-        _buildTableHeader(context, true),
+        _buildTableHeader(context, 'Lv'),
         ..._buildTableRows(
           context: context,
           moves: state.moveLevelUp,
@@ -104,7 +145,7 @@ class TableMovesContent extends StatelessWidget {
         6: FlexColumnWidth(2),
       },
       children: [
-        _buildTableHeader(context, false),
+        _buildTableHeader(context, 'MT'),
         ..._buildTableRows(
           context: context,
           moves: state.moveMachine,
@@ -114,12 +155,11 @@ class TableMovesContent extends StatelessWidget {
     );
   }
 
-  TableRow _buildTableHeader(BuildContext context, bool isTableLevelUp) {
+  TableRow _buildTableHeader(BuildContext context, String type) {
     return TableRow(
       children: [
         _buildItemHeader(
-          child: _buildCell(isTableLevelUp ? "Lv" : 'MT', context,
-              isWeight: true, isTextCenter: true),
+          child: _buildCell(type, context, isWeight: true, isTextCenter: true),
         ),
         _buildItemHeader(
           child:

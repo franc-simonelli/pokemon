@@ -21,6 +21,7 @@ mixin _$TableMovesState {
   PokemonModel? get pokemon => throw _privateConstructorUsedError;
   List<MoveModel> get moveLevelUp => throw _privateConstructorUsedError;
   List<MoveModel> get moveMachine => throw _privateConstructorUsedError;
+  List<MoveModel> get moveEgg => throw _privateConstructorUsedError;
 
   /// Create a copy of TableMovesState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +41,8 @@ abstract class $TableMovesStateCopyWith<$Res> {
       Status movesStatus,
       PokemonModel? pokemon,
       List<MoveModel> moveLevelUp,
-      List<MoveModel> moveMachine});
+      List<MoveModel> moveMachine,
+      List<MoveModel> moveEgg});
 }
 
 /// @nodoc
@@ -63,6 +65,7 @@ class _$TableMovesStateCopyWithImpl<$Res, $Val extends TableMovesState>
     Object? pokemon = freezed,
     Object? moveLevelUp = null,
     Object? moveMachine = null,
+    Object? moveEgg = null,
   }) {
     return _then(_value.copyWith(
       moves: null == moves
@@ -85,6 +88,10 @@ class _$TableMovesStateCopyWithImpl<$Res, $Val extends TableMovesState>
           ? _value.moveMachine
           : moveMachine // ignore: cast_nullable_to_non_nullable
               as List<MoveModel>,
+      moveEgg: null == moveEgg
+          ? _value.moveEgg
+          : moveEgg // ignore: cast_nullable_to_non_nullable
+              as List<MoveModel>,
     ) as $Val);
   }
 }
@@ -102,7 +109,8 @@ abstract class _$$TableMovesStateImplCopyWith<$Res>
       Status movesStatus,
       PokemonModel? pokemon,
       List<MoveModel> moveLevelUp,
-      List<MoveModel> moveMachine});
+      List<MoveModel> moveMachine,
+      List<MoveModel> moveEgg});
 }
 
 /// @nodoc
@@ -123,6 +131,7 @@ class __$$TableMovesStateImplCopyWithImpl<$Res>
     Object? pokemon = freezed,
     Object? moveLevelUp = null,
     Object? moveMachine = null,
+    Object? moveEgg = null,
   }) {
     return _then(_$TableMovesStateImpl(
       moves: null == moves
@@ -145,6 +154,10 @@ class __$$TableMovesStateImplCopyWithImpl<$Res>
           ? _value._moveMachine
           : moveMachine // ignore: cast_nullable_to_non_nullable
               as List<MoveModel>,
+      moveEgg: null == moveEgg
+          ? _value._moveEgg
+          : moveEgg // ignore: cast_nullable_to_non_nullable
+              as List<MoveModel>,
     ));
   }
 }
@@ -157,10 +170,12 @@ class _$TableMovesStateImpl implements _TableMovesState {
       required this.movesStatus,
       this.pokemon,
       required final List<MoveModel> moveLevelUp,
-      required final List<MoveModel> moveMachine})
+      required final List<MoveModel> moveMachine,
+      required final List<MoveModel> moveEgg})
       : _moves = moves,
         _moveLevelUp = moveLevelUp,
-        _moveMachine = moveMachine;
+        _moveMachine = moveMachine,
+        _moveEgg = moveEgg;
 
   final List<MoveModel> _moves;
   @override
@@ -190,9 +205,17 @@ class _$TableMovesStateImpl implements _TableMovesState {
     return EqualUnmodifiableListView(_moveMachine);
   }
 
+  final List<MoveModel> _moveEgg;
+  @override
+  List<MoveModel> get moveEgg {
+    if (_moveEgg is EqualUnmodifiableListView) return _moveEgg;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_moveEgg);
+  }
+
   @override
   String toString() {
-    return 'TableMovesState(moves: $moves, movesStatus: $movesStatus, pokemon: $pokemon, moveLevelUp: $moveLevelUp, moveMachine: $moveMachine)';
+    return 'TableMovesState(moves: $moves, movesStatus: $movesStatus, pokemon: $pokemon, moveLevelUp: $moveLevelUp, moveMachine: $moveMachine, moveEgg: $moveEgg)';
   }
 
   @override
@@ -207,7 +230,8 @@ class _$TableMovesStateImpl implements _TableMovesState {
             const DeepCollectionEquality()
                 .equals(other._moveLevelUp, _moveLevelUp) &&
             const DeepCollectionEquality()
-                .equals(other._moveMachine, _moveMachine));
+                .equals(other._moveMachine, _moveMachine) &&
+            const DeepCollectionEquality().equals(other._moveEgg, _moveEgg));
   }
 
   @override
@@ -217,7 +241,8 @@ class _$TableMovesStateImpl implements _TableMovesState {
       movesStatus,
       pokemon,
       const DeepCollectionEquality().hash(_moveLevelUp),
-      const DeepCollectionEquality().hash(_moveMachine));
+      const DeepCollectionEquality().hash(_moveMachine),
+      const DeepCollectionEquality().hash(_moveEgg));
 
   /// Create a copy of TableMovesState
   /// with the given fields replaced by the non-null parameter values.
@@ -235,7 +260,8 @@ abstract class _TableMovesState implements TableMovesState {
       required final Status movesStatus,
       final PokemonModel? pokemon,
       required final List<MoveModel> moveLevelUp,
-      required final List<MoveModel> moveMachine}) = _$TableMovesStateImpl;
+      required final List<MoveModel> moveMachine,
+      required final List<MoveModel> moveEgg}) = _$TableMovesStateImpl;
 
   @override
   List<MoveModel> get moves;
@@ -247,6 +273,8 @@ abstract class _TableMovesState implements TableMovesState {
   List<MoveModel> get moveLevelUp;
   @override
   List<MoveModel> get moveMachine;
+  @override
+  List<MoveModel> get moveEgg;
 
   /// Create a copy of TableMovesState
   /// with the given fields replaced by the non-null parameter values.

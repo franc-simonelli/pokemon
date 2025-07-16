@@ -11,6 +11,8 @@ import 'package:pokedex/components/widgets/download_stream.dart';
 import 'package:pokedex/countries/repositories/countries_repository.dart';
 import 'package:pokedex/countries/cubit/countries_cubit.dart';
 import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
+import 'package:pokedex/games/cubit/game_tab_cubit.dart';
+import 'package:pokedex/games/widgets/games_tab.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';
@@ -37,6 +39,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late CountriesCubit countriesCubit;
   ApplicationBloc? applicationBloc;
   late MovesetCubit movesetCubit;
+  late GameTabCubit gamesTabCubit;
   late FavoritesCubit favoritesCubit;
   late ApplicationRepository applicationRepository;
   late PokemonRepository pokemonRepository;
@@ -55,6 +58,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     filtersRepository = FiltersRepository();
     movesetRepository = MovesetRepository();
     countriesRepository = CountriesRepository();
+    gamesTabCubit = GameTabCubit();
     allDataPokemonsCubit = AllDataPokemonsCubit(
       pokemonRepository: pokemonRepository,
     );
@@ -64,6 +68,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     movesetCubit = MovesetCubit(
       movesetRepository: movesetRepository,
       pokemonRepository: pokemonRepository,
+      gameTabCubit: GameTabCubit(),
     );
     favoritesCubit = FavoritesCubit(
       pokemonRepository: pokemonRepository,
@@ -143,6 +148,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           },
         ),
         BlocProvider<FavoritesCubit>.value(value: favoritesCubit),
+        BlocProvider<GameTabCubit>.value(value: gamesTabCubit),
       ],
       child: child,
     );

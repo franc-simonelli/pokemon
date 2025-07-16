@@ -2,15 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pokedex/components/widgets/img_type.dart';
 import 'package:pokedex/other_informations/cubit/evolution_line_cubit.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/pages/evolution_line_page.dart';
 import 'package:pokedex/other_informations/pages/moveset_page.dart';
-import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/shared/utils/mapping_color.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 import 'package:pokedex/shared/widget/wallpaper_type_pokemon.dart';
@@ -41,13 +38,8 @@ class _OtherInformationState extends State<OtherInformation>
     _tabController = TabController(length: 2, vsync: this);
     _visitedTabs = List<bool>.filled(2, false);
 
-    // final movesetRepository = context.read<MovesetRepository>();
     final pokemonRepository = context.read<PokemonRepository>();
-    // _movesetCubit = MovesetCubit(
-    //   pokemon: widget.pokemon,
-    //   movesetRepository: movesetRepository,
-    //   pokemonRepository: pokemonRepository,
-    // );
+
     context.read<MovesetCubit>().initialize(
           pokemon: widget.pokemon,
         );

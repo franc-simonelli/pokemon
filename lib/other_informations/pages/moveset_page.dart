@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/components/widgets/download_stream.dart';
+import 'package:pokedex/games/widgets/games_tab.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/widgets/ability_content.dart';
@@ -23,6 +24,8 @@ class MovesetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gamesTab = context.watch<MovesetCubit>().gameTabCubit;
+
     return BlocBuilder<MovesetCubit, MovesetState>(
       builder: (context, state) {
         if (state.status == Status.loading) {
@@ -31,15 +34,31 @@ class MovesetPage extends StatelessWidget {
           );
         }
         if (state.status == Status.success) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 30),
-                _buildAbilities(state, context),
-                SizedBox(height: 0),
-                _buildMoveset(context)
-              ],
-            ),
+          return Column(
+            children: [
+              SizedBox(height: 30),
+              // _buildGamesOption(state, appTheme),
+              GamesTab(
+                games: gamesTab.state.games,
+                gameSelected: gamesTab.state.gameSelected,
+                onGameSelected: (game) {
+                  gamesTab.changeGameSelected(game);
+                },
+              ),
+              SizedBox(height: 20),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 30),
+                      _buildAbilities(state, context),
+                      SizedBox(height: 0),
+                      _buildMoveset(context)
+                    ],
+                  ),
+                ),
+              ),
+            ],
           );
         }
         return Container();
@@ -71,37 +90,90 @@ class MovesetPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 10),
-            // if (state.autoDownloadStatus != Status.loading)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: MyText.labelSmall(
-                    context: context,
-                    text: 'Moves level-up',
-                    color: appTheme.colorScheme.primary,
-                    isFontBold: true,
-                  ),
-                ),
-                _buildListMoves(state.moveLevelUp),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: MyText.labelSmall(
-                    context: context,
-                    text: 'Moves machine',
-                    color: appTheme.colorScheme.primary,
-                    isFontBold: true,
-                  ),
-                ),
-                _buildListMoves(state.moveMachine),
-              ],
-            )
+            SizedBox(height: 30),
+            _buildMovesLvUp(context, state, appTheme),
+            SizedBox(height: 40),
+            _buildMovesMachine(context, state, appTheme),
+            SizedBox(height: 40),
+            _buildMovesEgg(context, state, appTheme),
           ],
         );
       },
+    );
+  }
+
+  Widget _buildMovesEgg(
+    BuildContext context,
+    MovesetState state,
+    ThemeData appTheme,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (state.moveEgg.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: MyText.labelSmall(
+              context: context,
+              text: 'Moves egg',
+              color: appTheme.colorScheme.primary,
+              isFontBold: true,
+            ),
+          ),
+          SizedBox(height: 10),
+          _buildListMoves(state.moveEgg),
+        ]
+      ],
+    );
+  }
+
+  Widget _buildMovesMachine(
+    BuildContext context,
+    MovesetState state,
+    ThemeData appTheme,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (state.moveMachine.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: MyText.labelSmall(
+              context: context,
+              text: 'Moves machine (${state.moveMachine.length})',
+              color: appTheme.colorScheme.primary,
+              isFontBold: true,
+            ),
+          ),
+          SizedBox(height: 10),
+          _buildListMoves(state.moveMachine),
+        ]
+      ],
+    );
+  }
+
+  Widget _buildMovesLvUp(
+    BuildContext context,
+    MovesetState state,
+    ThemeData appTheme,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (state.moveLevelUp.isNotEmpty) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: MyText.labelSmall(
+              context: context,
+              text: 'Moves level-up (${state.moveLevelUp.length})',
+              color: appTheme.colorScheme.primary,
+              isFontBold: true,
+            ),
+          ),
+          SizedBox(height: 10),
+          _buildListMoves(state.moveLevelUp),
+        ]
+      ],
     );
   }
 

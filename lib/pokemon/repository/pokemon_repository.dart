@@ -263,4 +263,13 @@ class PokemonRepository {
       await sharedPrefsService.setValue(kFavorites, jsonEncode(favoriteIds));
     }
   }
+
+  Future<void> removeFavoritePokemon(String id) async {
+    final favoritesId = await sharedPrefsService.getValue<String>(kFavorites);
+    if (favoritesId != null) {
+      List<String> favoriteIds = List<String>.from(jsonDecode(favoritesId));
+      favoriteIds.remove(id);
+      await sharedPrefsService.setValue(kFavorites, jsonEncode(favoriteIds));
+    }
+  }
 }
