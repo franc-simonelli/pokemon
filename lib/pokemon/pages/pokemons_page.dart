@@ -124,8 +124,8 @@ class PokemonsPage extends StatelessWidget {
     return SliverAppBar(
       surfaceTintColor: Colors.black,
       backgroundColor: Colors.transparent,
-      pinned: false,
-      floating: false,
+      pinned: true,
+      floating: true,
       automaticallyImplyLeading: false,
       expandedHeight: 90.0,
       leading: const SizedBox.shrink(),

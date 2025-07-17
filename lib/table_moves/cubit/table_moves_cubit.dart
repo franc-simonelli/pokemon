@@ -1,10 +1,7 @@
 // ignore_for_file: empty_catches
 
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/games/cubit/game_tab_cubit.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/utils/filter_moves_by_version.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
@@ -24,7 +21,6 @@ class TableMovesCubit extends Cubit<TableMovesState> {
           movesStatus: Status.initial,
           moveLevelUp: [],
           moveMachine: [],
-          moveEgg: [],
         )) {
     initialize();
     // _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
@@ -80,35 +76,9 @@ class TableMovesCubit extends Cubit<TableMovesState> {
         pokemon: pokemon,
         moves: currentMoves,
         movesStatus: Status.success,
+        moveLevelUp: movesOrder,
+        moveMachine: filter['machine'],
       ));
-      // final games = await groupByGame(currentMoves);
-      // final filter = await filterMovesByGame(currentMoves, games[0]);
-
-      // List<MoveModel> movesOrder = [];
-      // final levelUp = filter['levelUp'] as List<MoveModel>;
-      // List<MoveModel> moveslevel = [];
-      // List<MoveModel> movesEvo = [];
-      // try {
-      //   for (var item in levelUp) {
-      //     if (item.versionGroupDetailsModel![0].levelLearnedAt == 0) {
-      //       movesEvo.add(item);
-      //     } else {
-      //       moveslevel.add(item);
-      //     }
-      //   }
-      // } catch (e) {}
-
-      // final levelUpMovesOrder = orderByLevel(moveslevel);
-      // movesOrder.addAll(levelUpMovesOrder);
-      // movesOrder.addAll(movesEvo);
-
-      // emit(state.copyWith(
-      //   pokemon: pokemon,
-      //   moves: currentMoves,
-      //   movesStatus: Status.success,
-      //   moveLevelUp: movesOrder,
-      //   moveMachine: filter['machine'],
-      // ));
     } catch (e) {
       emit(state.copyWith(movesStatus: Status.error));
     }

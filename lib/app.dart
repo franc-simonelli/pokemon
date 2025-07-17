@@ -11,8 +11,6 @@ import 'package:pokedex/components/widgets/download_stream.dart';
 import 'package:pokedex/countries/repositories/countries_repository.dart';
 import 'package:pokedex/countries/cubit/countries_cubit.dart';
 import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
-import 'package:pokedex/games/cubit/game_tab_cubit.dart';
-import 'package:pokedex/games/widgets/games_tab.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/pokemon/cubit/all_data_pokemons_cubit.dart';

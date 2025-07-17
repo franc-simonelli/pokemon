@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokedex/components/widgets/button_scaled.dart';
 import 'package:pokedex/components/widgets/download_stream.dart';
-import 'package:pokedex/games/widgets/games_tab.dart';
 import 'package:pokedex/other_informations/cubit/moveset_cubit.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/widgets/ability_content.dart';
@@ -90,90 +89,37 @@ class MovesetPage extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 30),
-            _buildMovesLvUp(context, state, appTheme),
-            SizedBox(height: 40),
-            _buildMovesMachine(context, state, appTheme),
-            SizedBox(height: 40),
-            _buildMovesEgg(context, state, appTheme),
+            SizedBox(height: 10),
+            // if (state.autoDownloadStatus != Status.loading)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: MyText.labelSmall(
+                    context: context,
+                    text: 'Moves level-up',
+                    color: appTheme.colorScheme.primary,
+                    isFontBold: true,
+                  ),
+                ),
+                _buildListMoves(state.moveLevelUp),
+                SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: MyText.labelSmall(
+                    context: context,
+                    text: 'Moves machine',
+                    color: appTheme.colorScheme.primary,
+                    isFontBold: true,
+                  ),
+                ),
+                _buildListMoves(state.moveMachine),
+              ],
+            )
           ],
         );
       },
-    );
-  }
-
-  Widget _buildMovesEgg(
-    BuildContext context,
-    MovesetState state,
-    ThemeData appTheme,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (state.moveEgg.isNotEmpty) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: MyText.labelSmall(
-              context: context,
-              text: 'Moves egg',
-              color: appTheme.colorScheme.primary,
-              isFontBold: true,
-            ),
-          ),
-          SizedBox(height: 10),
-          _buildListMoves(state.moveEgg),
-        ]
-      ],
-    );
-  }
-
-  Widget _buildMovesMachine(
-    BuildContext context,
-    MovesetState state,
-    ThemeData appTheme,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (state.moveMachine.isNotEmpty) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: MyText.labelSmall(
-              context: context,
-              text: 'Moves machine (${state.moveMachine.length})',
-              color: appTheme.colorScheme.primary,
-              isFontBold: true,
-            ),
-          ),
-          SizedBox(height: 10),
-          _buildListMoves(state.moveMachine),
-        ]
-      ],
-    );
-  }
-
-  Widget _buildMovesLvUp(
-    BuildContext context,
-    MovesetState state,
-    ThemeData appTheme,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (state.moveLevelUp.isNotEmpty) ...[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: MyText.labelSmall(
-              context: context,
-              text: 'Moves level-up (${state.moveLevelUp.length})',
-              color: appTheme.colorScheme.primary,
-              isFontBold: true,
-            ),
-          ),
-          SizedBox(height: 10),
-          _buildListMoves(state.moveLevelUp),
-        ]
-      ],
     );
   }
 

@@ -20,9 +20,6 @@ mixin _$MovesetState {
   List<AbilityModel> get abilities => throw _privateConstructorUsedError;
   List<MoveModel> get moveLevelUp => throw _privateConstructorUsedError;
   List<MoveModel> get moveMachine => throw _privateConstructorUsedError;
-  List<MoveModel> get moveEgg => throw _privateConstructorUsedError;
-  List<String> get games => throw _privateConstructorUsedError;
-  String get gameSelected => throw _privateConstructorUsedError;
   bool get showDownloadIcon => throw _privateConstructorUsedError;
   MovesetModel? get moveset => throw _privateConstructorUsedError;
   PokemonModel? get pokemon => throw _privateConstructorUsedError;
@@ -47,9 +44,6 @@ abstract class $MovesetStateCopyWith<$Res> {
       List<AbilityModel> abilities,
       List<MoveModel> moveLevelUp,
       List<MoveModel> moveMachine,
-      List<MoveModel> moveEgg,
-      List<String> games,
-      String gameSelected,
       bool showDownloadIcon,
       MovesetModel? moveset,
       PokemonModel? pokemon,
@@ -76,9 +70,6 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
     Object? abilities = null,
     Object? moveLevelUp = null,
     Object? moveMachine = null,
-    Object? moveEgg = null,
-    Object? games = null,
-    Object? gameSelected = null,
     Object? showDownloadIcon = null,
     Object? moveset = freezed,
     Object? pokemon = freezed,
@@ -102,18 +93,6 @@ class _$MovesetStateCopyWithImpl<$Res, $Val extends MovesetState>
           ? _value.moveMachine
           : moveMachine // ignore: cast_nullable_to_non_nullable
               as List<MoveModel>,
-      moveEgg: null == moveEgg
-          ? _value.moveEgg
-          : moveEgg // ignore: cast_nullable_to_non_nullable
-              as List<MoveModel>,
-      games: null == games
-          ? _value.games
-          : games // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      gameSelected: null == gameSelected
-          ? _value.gameSelected
-          : gameSelected // ignore: cast_nullable_to_non_nullable
-              as String,
       showDownloadIcon: null == showDownloadIcon
           ? _value.showDownloadIcon
           : showDownloadIcon // ignore: cast_nullable_to_non_nullable
@@ -151,9 +130,6 @@ abstract class _$$MovesetStateImplCopyWith<$Res>
       List<AbilityModel> abilities,
       List<MoveModel> moveLevelUp,
       List<MoveModel> moveMachine,
-      List<MoveModel> moveEgg,
-      List<String> games,
-      String gameSelected,
       bool showDownloadIcon,
       MovesetModel? moveset,
       PokemonModel? pokemon,
@@ -178,9 +154,6 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
     Object? abilities = null,
     Object? moveLevelUp = null,
     Object? moveMachine = null,
-    Object? moveEgg = null,
-    Object? games = null,
-    Object? gameSelected = null,
     Object? showDownloadIcon = null,
     Object? moveset = freezed,
     Object? pokemon = freezed,
@@ -204,18 +177,6 @@ class __$$MovesetStateImplCopyWithImpl<$Res>
           ? _value._moveMachine
           : moveMachine // ignore: cast_nullable_to_non_nullable
               as List<MoveModel>,
-      moveEgg: null == moveEgg
-          ? _value._moveEgg
-          : moveEgg // ignore: cast_nullable_to_non_nullable
-              as List<MoveModel>,
-      games: null == games
-          ? _value._games
-          : games // ignore: cast_nullable_to_non_nullable
-              as List<String>,
-      gameSelected: null == gameSelected
-          ? _value.gameSelected
-          : gameSelected // ignore: cast_nullable_to_non_nullable
-              as String,
       showDownloadIcon: null == showDownloadIcon
           ? _value.showDownloadIcon
           : showDownloadIcon // ignore: cast_nullable_to_non_nullable
@@ -248,9 +209,6 @@ class _$MovesetStateImpl implements _MovesetState {
       required final List<AbilityModel> abilities,
       required final List<MoveModel> moveLevelUp,
       required final List<MoveModel> moveMachine,
-      required final List<MoveModel> moveEgg,
-      required final List<String> games,
-      required this.gameSelected,
       required this.showDownloadIcon,
       this.moveset,
       this.pokemon,
@@ -258,9 +216,7 @@ class _$MovesetStateImpl implements _MovesetState {
       this.isAllMovesDowloaded})
       : _abilities = abilities,
         _moveLevelUp = moveLevelUp,
-        _moveMachine = moveMachine,
-        _moveEgg = moveEgg,
-        _games = games;
+        _moveMachine = moveMachine;
 
   @override
   final Status status;
@@ -288,24 +244,6 @@ class _$MovesetStateImpl implements _MovesetState {
     return EqualUnmodifiableListView(_moveMachine);
   }
 
-  final List<MoveModel> _moveEgg;
-  @override
-  List<MoveModel> get moveEgg {
-    if (_moveEgg is EqualUnmodifiableListView) return _moveEgg;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_moveEgg);
-  }
-
-  final List<String> _games;
-  @override
-  List<String> get games {
-    if (_games is EqualUnmodifiableListView) return _games;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_games);
-  }
-
-  @override
-  final String gameSelected;
   @override
   final bool showDownloadIcon;
   @override
@@ -319,7 +257,7 @@ class _$MovesetStateImpl implements _MovesetState {
 
   @override
   String toString() {
-    return 'MovesetState(status: $status, abilities: $abilities, moveLevelUp: $moveLevelUp, moveMachine: $moveMachine, moveEgg: $moveEgg, games: $games, gameSelected: $gameSelected, showDownloadIcon: $showDownloadIcon, moveset: $moveset, pokemon: $pokemon, autoDownloadStatus: $autoDownloadStatus, isAllMovesDowloaded: $isAllMovesDowloaded)';
+    return 'MovesetState(status: $status, abilities: $abilities, moveLevelUp: $moveLevelUp, moveMachine: $moveMachine, showDownloadIcon: $showDownloadIcon, moveset: $moveset, pokemon: $pokemon, autoDownloadStatus: $autoDownloadStatus, isAllMovesDowloaded: $isAllMovesDowloaded)';
   }
 
   @override
@@ -334,10 +272,6 @@ class _$MovesetStateImpl implements _MovesetState {
                 .equals(other._moveLevelUp, _moveLevelUp) &&
             const DeepCollectionEquality()
                 .equals(other._moveMachine, _moveMachine) &&
-            const DeepCollectionEquality().equals(other._moveEgg, _moveEgg) &&
-            const DeepCollectionEquality().equals(other._games, _games) &&
-            (identical(other.gameSelected, gameSelected) ||
-                other.gameSelected == gameSelected) &&
             (identical(other.showDownloadIcon, showDownloadIcon) ||
                 other.showDownloadIcon == showDownloadIcon) &&
             (identical(other.moveset, moveset) || other.moveset == moveset) &&
@@ -355,9 +289,6 @@ class _$MovesetStateImpl implements _MovesetState {
       const DeepCollectionEquality().hash(_abilities),
       const DeepCollectionEquality().hash(_moveLevelUp),
       const DeepCollectionEquality().hash(_moveMachine),
-      const DeepCollectionEquality().hash(_moveEgg),
-      const DeepCollectionEquality().hash(_games),
-      gameSelected,
       showDownloadIcon,
       moveset,
       pokemon,
@@ -379,9 +310,6 @@ abstract class _MovesetState implements MovesetState {
       required final List<AbilityModel> abilities,
       required final List<MoveModel> moveLevelUp,
       required final List<MoveModel> moveMachine,
-      required final List<MoveModel> moveEgg,
-      required final List<String> games,
-      required final String gameSelected,
       required final bool showDownloadIcon,
       final MovesetModel? moveset,
       final PokemonModel? pokemon,
@@ -396,12 +324,6 @@ abstract class _MovesetState implements MovesetState {
   List<MoveModel> get moveLevelUp;
   @override
   List<MoveModel> get moveMachine;
-  @override
-  List<MoveModel> get moveEgg;
-  @override
-  List<String> get games;
-  @override
-  String get gameSelected;
   @override
   bool get showDownloadIcon;
   @override

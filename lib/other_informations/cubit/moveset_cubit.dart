@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pokedex/games/cubit/game_tab_cubit.dart';
 import 'package:pokedex/other_informations/models/ability_model.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/models/moveset_model.dart';
 import 'package:pokedex/other_informations/repository/moveset_repository.dart';
 import 'package:pokedex/other_informations/utils/check_move_sp.dart';
 import 'package:pokedex/other_informations/utils/filter_moves_by_version.dart';
-import 'package:pokedex/other_informations/utils/merge_move_with_new_info.dart';
 import 'package:pokedex/other_informations/utils/save_move_sp.dart';
 import 'package:pokedex/other_informations/utils/update_pokemon_ability_sp.dart';
 import 'package:pokedex/other_informations/utils/update_pokemon_move_sp.dart';
@@ -31,9 +29,6 @@ class MovesetCubit extends Cubit<MovesetState> {
           abilities: [],
           moveLevelUp: [],
           moveMachine: [],
-          moveEgg: [],
-          games: [],
-          gameSelected: '',
           showDownloadIcon: false,
         )) {
     // initialize();
@@ -70,34 +65,23 @@ class MovesetCubit extends Cubit<MovesetState> {
         pokemon.id ?? '',
       );
 
-      final pokemonUpdate = await checkMovesetIsUpdate(pokemonById);
+      final pokemonUpdate = await checkMoveset(pokemonById);
 
       if (pokemonUpdate?.moveset != null) {
-        // final games = await groupByGame(pokemonUpdate?.moveset?.moves ?? []);
-        final checkAllDownload =
+        final filterMoves =
+            await filterScarletAndViolet(pokemonUpdate?.moveset?.moves ?? []);
+
+        final result =
             await checkAllMovesAreDownload(pokemonUpdate?.moveset?.moves ?? []);
-        emit(state.copyWith(
-          status: Status.success,
-          moveset: pokemonUpdate?.moveset,
-          isAllMovesDowloaded: checkAllDownload,
-        ));
-        // await gameTabCubit.fetchGames(pokemonUpdate?.moveset?.moves ?? []);
-
-        // final filterMoves =
-        //     filterMovesByGame(pokemonUpdate?.moveset?.moves ?? [], games[0]);
-
-        // emit(
-        //   state.copyWith(
-        //     status: Status.success,
-        //     moveset: pokemonUpdate?.moveset,
-        //     moveLevelUp: filterMoves['levelUp'],
-        //     moveMachine: filterMoves['machine'],
-        //     moveEgg: filterMoves['egg'],
-        //     games: games,
-        //     gameSelected: games[0],
-        //     isAllMovesDowloaded: result,
-        //   ),
-        // );
+        emit(
+          state.copyWith(
+            status: Status.success,
+            moveset: pokemonUpdate?.moveset,
+            moveLevelUp: filterMoves['levelUp'],
+            moveMachine: filterMoves['machine'],
+            isAllMovesDowloaded: result,
+          ),
+        );
       } else {
         emit(
           state.copyWith(
@@ -132,7 +116,7 @@ class MovesetCubit extends Cubit<MovesetState> {
     return true;
   }
 
-  Future<PokemonModel?> checkMovesetIsUpdate(PokemonModel pokemon) async {
+  Future<PokemonModel?> checkMoveset(PokemonModel pokemon) async {
     if (pokemon.movesetUpdate == null) {
       final pokemonWithMoveset = await movesetRepository.fetchPokemonMovesets(
         int.parse(pokemon.id!.replaceAll("#", "")),
@@ -164,6 +148,9 @@ class MovesetCubit extends Cubit<MovesetState> {
           double nMoves = i.toDouble();
           final value = ((nMoves + 1) * 100) / state.moveset!.moves!.length;
           _progressController.add(value / 100);
+          // await Future.delayed(
+          //   const Duration(milliseconds: 2000),
+          // );
         }
       }
       if (!_isCancelled) {
@@ -184,6 +171,7 @@ class MovesetCubit extends Cubit<MovesetState> {
   }
 
   checkMoveById(MoveModel move) async {
+    // move è un elemento della lista filtrata per scarlet and violet quindi con un solo versiongroup
     if (move.isDownloaded == null) {
       final originalListMoves = state.moveset?.moves?.toList();
 
@@ -234,6 +222,26 @@ class MovesetCubit extends Cubit<MovesetState> {
       //   ),
       // );
     }
+  }
+
+  mergeMoveWithNewInfo({
+    required MoveModel previusMove,
+    required MoveModel moveWithNewInfo,
+  }) {
+    return previusMove.copyWith(
+      move: previusMove.move?.copyWith(name: moveWithNewInfo.move?.name ?? ''),
+      isDownloaded: moveWithNewInfo.isDownloaded,
+      accuracy: moveWithNewInfo.accuracy,
+      power: moveWithNewInfo.power,
+      pp: moveWithNewInfo.pp,
+      priority: moveWithNewInfo.priority,
+      damageClass: moveWithNewInfo.damageClass,
+      type: moveWithNewInfo.type,
+      effectEntries: EffectModel(
+        effect: moveWithNewInfo.effectEntries?.effect,
+        shortEffect: moveWithNewInfo.effectEntries?.shortEffect,
+      ),
+    );
   }
 
   Future<List<MoveModel>> updateLocalMoves(

@@ -8,6 +8,5 @@ class TableMovesState with _$TableMovesState {
     PokemonModel? pokemon,
     required List<MoveModel> moveLevelUp,
     required List<MoveModel> moveMachine,
-    required List<MoveModel> moveEgg,
   }) = _TableMovesState;
 }
