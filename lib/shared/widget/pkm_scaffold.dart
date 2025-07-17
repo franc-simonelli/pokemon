@@ -21,15 +21,15 @@ class PkmScaffold extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(
-            // image: DecorationImage(
-            //   image: AssetImage('assets/images/metal_black.png'),
-            //   fit: BoxFit.cover,
-            //   colorFilter: ColorFilter.mode(
-            //     Colors.black54,
-            //     BlendMode.darken,
-            //   ),
-            // ),
+          image: DecorationImage(
+            image: AssetImage('assets/images/metal_black.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black54,
+              BlendMode.darken,
             ),
+          ),
+        ),
         child: body,
       ),
       bottomNavigationBar: Builder(builder: (context) {

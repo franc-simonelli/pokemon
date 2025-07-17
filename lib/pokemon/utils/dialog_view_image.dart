@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
 import 'package:pokedex/pokemon/widget/view_images_pokemon.dart';

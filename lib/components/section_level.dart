@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/components/widgets/level_selector.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';

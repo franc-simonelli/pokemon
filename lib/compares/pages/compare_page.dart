@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/compares/cubit/compares_cubit.dart';
 import 'package:pokedex/compares/widgets/compare_content.dart';
+import 'package:pokedex/components/widgets/base_app_bar.dart';
 import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/shared/widget/pkm_scaffold.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 
@@ -53,8 +53,7 @@ class _ComparesPageState extends State<ComparesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBarHeight = AppBar().preferredSize.height;
-    final safeAreaHeight = MediaQuery.of(context).padding.top;
+    final ScrollController scrollController = ScrollController();
 
     return MultiBlocProvider(
       providers: [
@@ -62,10 +61,25 @@ class _ComparesPageState extends State<ComparesPage> {
         BlocProvider.value(value: _statsFirstPokemonCubit),
         BlocProvider.value(value: _statsSecondPokemonCubit),
       ],
-      child: Column(
-        children: [
-          _buildAppBar(),
-          // SizedBox(height: appBarHeight + safeAreaHeight),
+      child: widget.initialIndex == null
+          ? _builSafeArea(scrollController)
+          : PkmScaffold(
+              body: _builSafeArea(scrollController),
+            ),
+    );
+  }
+
+  Widget _builSafeArea(ScrollController scrollController) {
+    return SafeArea(
+      bottom: false,
+      top: true,
+      child: CustomScrollView(
+        controller: scrollController,
+        physics: const ScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        slivers: [
+          BaseAppBar(title: 'Compare'),
           CompareContent(
             controller1: controller1,
             controller2: controller2,
@@ -77,17 +91,17 @@ class _ComparesPageState extends State<ComparesPage> {
     );
   }
 
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
-      automaticallyImplyLeading: true,
-      centerTitle: true,
-      title: MyText.labelLarge(
-        context: context,
-        text: 'Comparazing',
-        isFontBold: true,
-      ),
-    );
-  }
+  // AppBar _buildAppBar() {
+  //   return AppBar(
+  //     backgroundColor: Colors.transparent,
+  //     surfaceTintColor: Colors.transparent,
+  //     automaticallyImplyLeading: true,
+  //     centerTitle: true,
+  //     title: MyText.labelLarge(
+  //       context: context,
+  //       text: 'Comparazing',
+  //       isFontBold: true,
+  //     ),
+  //   );
+  // }
 }

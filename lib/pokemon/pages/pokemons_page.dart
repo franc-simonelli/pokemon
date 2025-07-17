@@ -20,27 +20,6 @@ class PokemonsPage extends StatelessWidget {
   final EnumGen gen;
   final ScrollController? scrollController;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   widget.scrollController?.addListener(() {
-  //     if (widget.scrollController!.position.pixels > _scrollThreshold) {
-  //       if (!_showScrollToTopButton) {
-  //         setState(() {
-  //           _showScrollToTopButton = true;
-  //         });
-  //       }
-  //     } else {
-  //       if (_showScrollToTopButton) {
-  //         setState(() {
-  //           _showScrollToTopButton = false;
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,36 +37,6 @@ class PokemonsPage extends StatelessWidget {
       ),
     );
   }
-
-  // Widget _buildIconScrollTop() {
-  //   return Positioned(
-  //     top: 80,
-  //     right: 0,
-  //     child: GestureDetector(
-  //       onTap: () {
-  //         widget.scrollController?.position.animateTo(
-  //           0,
-  //           duration: const Duration(milliseconds: 1000),
-  //           curve: Curves.easeInOut,
-  //         );
-  //       },
-  //       child: Container(
-  //         width: 40,
-  //         height: 40,
-  //         decoration: BoxDecoration(
-  //           shape: BoxShape.circle,
-  //           color: Colors.black,
-  //           border: Border.all(
-  //             color: Colors.white,
-  //           ),
-  //         ),
-  //         child: Center(
-  //           child: Icon(Icons.arrow_upward),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildSliverGrid() {
     return BlocConsumer<PokemonCubit, PokemonState>(
@@ -124,8 +73,8 @@ class PokemonsPage extends StatelessWidget {
     return SliverAppBar(
       surfaceTintColor: Colors.black,
       backgroundColor: Colors.transparent,
-      pinned: true,
-      floating: true,
+      pinned: false,
+      floating: false,
       automaticallyImplyLeading: false,
       expandedHeight: 90.0,
       leading: const SizedBox.shrink(),

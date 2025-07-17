@@ -67,6 +67,6 @@ flutter:
 flutter_icons:
   android: true  
   ios: true
-  image_path: "assets/images/pokeball.png"
+  image_path: "assets/images/pikachu.png"
   daptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/icon/pokeball.png"
+  adaptive_icon_foreground: "assets/icon/pikachu.png"

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:pokedex/other_informations/utils/build_difference_text.dart';
 import 'package:pokedex/shared/widget/my_text_widget.dart';

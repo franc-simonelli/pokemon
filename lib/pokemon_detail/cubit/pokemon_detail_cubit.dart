@@ -44,8 +44,6 @@ enum EnumGen {
         return kGen6;
       case seven:
         return kGen7;
-      default:
-        return '';
     }
   }
 }

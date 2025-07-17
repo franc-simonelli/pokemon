@@ -1,7 +1,10 @@
-// ignore_for_file: empty_catches
+// ignore_for_file: empty_catches, unused_field
+
+import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pokedex/games/cubit/game_tab_cubit.dart';
 import 'package:pokedex/other_informations/models/move_model.dart';
 import 'package:pokedex/other_informations/utils/filter_moves_by_version.dart';
 import 'package:pokedex/pokemon/cubit/pokemon_cubit.dart';
@@ -15,27 +18,28 @@ class TableMovesCubit extends Cubit<TableMovesState> {
   TableMovesCubit({
     required this.id,
     required this.pokemonRepository,
-    // required this.gameTabCubit,
+    required this.gameTabCubit,
   }) : super(TableMovesState(
           moves: [],
           movesStatus: Status.initial,
           moveLevelUp: [],
           moveMachine: [],
+          moveEgg: [],
         )) {
     initialize();
-    // _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
+    _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
   }
 
-  // late final StreamSubscription<GameTabState> _gameTabSubscription;
+  late final StreamSubscription<GameTabState> _gameTabSubscription;
   final String id;
   final PokemonRepository pokemonRepository;
-  // final GameTabCubit gameTabCubit;
+  final GameTabCubit gameTabCubit;
 
-  // Future<void> _onGameTabChanged(GameTabState state) async {
-  //   if (state.gameSelected.isNotEmpty) {
-  //     changeGameSelected(state.gameSelected);
-  //   }
-  // }
+  Future<void> _onGameTabChanged(GameTabState state) async {
+    if (state.gameSelected.isNotEmpty) {
+      changeGameSelected(state.gameSelected);
+    }
+  }
 
   changeGameSelected(String game) {
     final filterMoves = filterMovesByGame(state.moves, game);
@@ -70,15 +74,41 @@ class TableMovesCubit extends Cubit<TableMovesState> {
       final pokemon = await pokemonRepository.fetchPokemonById(id);
       final currentMoves = pokemon.moveset?.moves?.toList() ?? [];
 
-      // await gameTabCubit.fetchGames(currentMoves);
+      await gameTabCubit.fetchGames(currentMoves);
 
       emit(state.copyWith(
         pokemon: pokemon,
         moves: currentMoves,
         movesStatus: Status.success,
-        moveLevelUp: movesOrder,
-        moveMachine: filter['machine'],
       ));
+      // final games = await groupByGame(currentMoves);
+      // final filter = await filterMovesByGame(currentMoves, games[0]);
+
+      // List<MoveModel> movesOrder = [];
+      // final levelUp = filter['levelUp'] as List<MoveModel>;
+      // List<MoveModel> moveslevel = [];
+      // List<MoveModel> movesEvo = [];
+      // try {
+      //   for (var item in levelUp) {
+      //     if (item.versionGroupDetailsModel![0].levelLearnedAt == 0) {
+      //       movesEvo.add(item);
+      //     } else {
+      //       moveslevel.add(item);
+      //     }
+      //   }
+      // } catch (e) {}
+
+      // final levelUpMovesOrder = orderByLevel(moveslevel);
+      // movesOrder.addAll(levelUpMovesOrder);
+      // movesOrder.addAll(movesEvo);
+
+      // emit(state.copyWith(
+      //   pokemon: pokemon,
+      //   moves: currentMoves,
+      //   movesStatus: Status.success,
+      //   moveLevelUp: movesOrder,
+      //   moveMachine: filter['machine'],
+      // ));
     } catch (e) {
       emit(state.copyWith(movesStatus: Status.error));
     }

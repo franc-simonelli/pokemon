@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -115,33 +116,31 @@ class _CompareContentState extends State<CompareContent> {
     return BlocBuilder<ComparesCubit, ComparesState>(
       builder: (context, state) {
         if (state.pokemons.isNotEmpty) {
-          return Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  _pokemonsSection(state, context),
-                  SizedBox(height: 20),
-                  _buildTable(state),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildStats(state),
-                      ),
-                      Expanded(
-                        child: _buildGraphic(state),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                ],
-              ),
+          return SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                // SizedBox(height: 20),
+                _pokemonsSection(state, context),
+                SizedBox(height: 20),
+                _buildTable(state),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildStats(state),
+                    ),
+                    Expanded(
+                      child: _buildGraphic(state),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 100),
+              ],
             ),
           );
         }
-        return Center(
-          child: CupertinoActivityIndicator(),
+        return SliverToBoxAdapter(
+          child: Center(child: CircularProgressIndicator()),
         );
       },
     );

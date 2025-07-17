@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/favorite/cubit/favorites_cubit.dart';
+import 'package:pokedex/components/widgets/base_app_bar.dart';
+import 'package:pokedex/favorite/widgets/favorite_content.dart';
 import 'package:pokedex/pokemon/models/pokemon_model.dart';
-import 'package:pokedex/pokemon/repository/pokemon_repository.dart';
-import 'package:pokedex/pokemon/widget/card_pokemon.dart';
-import 'package:pokedex/pokemon/widget/img_pokemon_shadow.dart';
-import 'package:pokedex/shared/utils/mapping_color.dart';
-import 'package:pokedex/shared/widget/my_text_widget.dart';
 import 'package:pokedex/stats_pokemon/cubit/stats_pokemon_cubit.dart';
 import 'package:pokedex/stats_pokemon/utils/generate_stats.dart';
 import 'package:pokedex/stats_pokemon/widgets/stats_pokemon.dart';
@@ -19,6 +15,8 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -26,39 +24,42 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    // return SafeArea(
-    //   bottom: false,
-    //   top: true,
-    //   child: CustomScrollView(
-    //     controller: scrollController,
-    //     physics: const ScrollPhysics(
-    //       parent: BouncingScrollPhysics(),
-    //     ),
-    //     slivers: [BaseAppBar(title: 'Favorites'), FavoriteContent()],
-    //   ),
-    // );
-
-    return Column(
-      children: [
-        _buildAppBar(),
-        FavoriteContent(),
-      ],
-    );
-  }
-
-  AppBar _buildAppBar() {
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
-      automaticallyImplyLeading: true,
-      centerTitle: true,
-      title: MyText.labelLarge(
-        context: context,
-        text: 'Favorites',
-        isFontBold: true,
+    return SafeArea(
+      bottom: false,
+      top: true,
+      child: CustomScrollView(
+        controller: scrollController,
+        physics: const ScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        slivers: [
+          BaseAppBar(title: 'Favorites'),
+          FavoriteContent(),
+        ],
       ),
     );
+
+    // return Column(
+    //   children: [
+    //     _buildAppBar(),
+    //     FavoriteContent(),
+    //   ],
+    // );
   }
+
+  // AppBar _buildAppBar() {
+  //   return AppBar(
+  //     backgroundColor: Colors.transparent,
+  //     surfaceTintColor: Colors.transparent,
+  //     automaticallyImplyLeading: true,
+  //     centerTitle: true,
+  //     title: MyText.labelLarge(
+  //       context: context,
+  //       text: 'Favorites',
+  //       isFontBold: true,
+  //     ),
+  //   );
+  // }
 }
 
 class FavoriteCardSection extends StatefulWidget {
