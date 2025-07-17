@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadMoreData() async {
-    _pokemonCubit.loadMore();
+    // _pokemonCubit.loadMore();
   }
 
   @override

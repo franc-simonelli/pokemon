@@ -24,7 +24,7 @@ class MovesetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gamesTab = context.watch<MovesetCubit>().gameTabCubit;
+    // final gamesTab = context.watch<MovesetCubit>().gameTabCubit;
 
     return BlocBuilder<MovesetCubit, MovesetState>(
       builder: (context, state) {
@@ -38,13 +38,13 @@ class MovesetPage extends StatelessWidget {
             children: [
               SizedBox(height: 30),
               // _buildGamesOption(state, appTheme),
-              GamesTab(
-                games: gamesTab.state.games,
-                gameSelected: gamesTab.state.gameSelected,
-                onGameSelected: (game) {
-                  gamesTab.changeGameSelected(game);
-                },
-              ),
+              // GamesTab(
+              //   games: gamesTab.state.games,
+              //   gameSelected: gamesTab.state.gameSelected,
+              //   onGameSelected: (game) {
+              //     gamesTab.changeGameSelected(game);
+              //   },
+              // ),
               SizedBox(height: 20),
               Expanded(
                 child: SingleChildScrollView(

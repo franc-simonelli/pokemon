@@ -25,24 +25,24 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      top: true,
-      child: CustomScrollView(
-        controller: scrollController,
-        physics: const ScrollPhysics(
-          parent: BouncingScrollPhysics(),
-        ),
-        slivers: [BaseAppBar(title: 'Favorites'), FavoriteContent()],
-      ),
-    );
-
-    // return Column(
-    //   children: [
-    //     _buildAppBar(),
-    //     FavoriteContent(),
-    //   ],
+    // return SafeArea(
+    //   bottom: false,
+    //   top: true,
+    //   child: CustomScrollView(
+    //     controller: scrollController,
+    //     physics: const ScrollPhysics(
+    //       parent: BouncingScrollPhysics(),
+    //     ),
+    //     slivers: [BaseAppBar(title: 'Favorites'), FavoriteContent()],
+    //   ),
     // );
+
+    return Column(
+      children: [
+        _buildAppBar(),
+        FavoriteContent(),
+      ],
+    );
   }
 
   AppBar _buildAppBar() {

@@ -1,0 +1,2 @@
+/Users/fsimonelli/Desktop/Lavoro/Project/pokemon/android/app/.cxx/RelWithDebInfo/421n5y4f/x86/CMakeFiles/edit_cache.dir
+/Users/fsimonelli/Desktop/Lavoro/Project/pokemon/android/app/.cxx/RelWithDebInfo/421n5y4f/x86/CMakeFiles/rebuild_cache.dir

@@ -12,20 +12,21 @@ class FavoriteContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FavoritesCubit, FavoritesState>(
-      builder: (context, state) {
-        return SliverList.builder(
-          itemCount: state.pokemons.length,
-          itemBuilder: (context, index) {
-            final pokemon = state.pokemons[index];
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: _buildCard(pokemon, context),
-            );
-          },
-        );
-      },
-    );
+    return Container();
+    // return BlocBuilder<FavoritesCubit, FavoritesState>(
+    //   builder: (context, state) {
+    //     return SliverList.builder(
+    //       itemCount: state.pokemons.length,
+    //       itemBuilder: (context, index) {
+    //         final pokemon = state.pokemons[index];
+    //         return Padding(
+    //           padding: const EdgeInsets.all(8.0),
+    //           child: _buildCard(pokemon, context),
+    //         );
+    //       },
+    //     );
+    //   },
+    // );
   }
 
   Widget _buildCard(PokemonModel pokemon, BuildContext context) {

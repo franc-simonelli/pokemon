@@ -6,24 +6,70 @@ import 'package:pokedex/shared/widget/my_text_widget.dart';
 Widget buildReasonEvolution(BuildContext context, String reason) {
   if (reason.toLowerCase().contains('trade')) {
     final imageItem = getItemEvolution(reason);
-    return Image.asset(
-      imageItem,
-      width: 30,
+    return Column(
+      children: [
+        Image.asset(
+          imageItem,
+          width: 30,
+        ),
+        SizedBox(height: 4),
+        MyText.labelSmall(
+          context: context,
+          text: 'Scambio',
+          isFontBold: true,
+        ),
+      ],
     );
   }
 
   if (reason.toLowerCase().contains('high friendship') ||
       reason.toLowerCase().contains('affection')) {
-    return Image.asset(
-      'assets/images/affection.png',
-      width: 30,
+    Widget? widg;
+    if (reason.toLowerCase().contains('nighttime')) {
+      widg = MyText.labelSmall(
+        context: context,
+        text: 'Notte',
+        isFontBold: true,
+      );
+    }
+    if (reason.toLowerCase().contains('daytime')) {
+      widg = MyText.labelSmall(
+        context: context,
+        text: 'Giorno',
+        isFontBold: true,
+      );
+    }
+    return Column(
+      children: [
+        Image.asset(
+          'assets/images/affection.png',
+          width: 30,
+        ),
+        SizedBox(height: 4),
+        widg ?? Container(),
+      ],
     );
   }
 
   if (reason.toLowerCase().contains('level up near')) {
-    return Image.asset(
-      'assets/images/map_city.png',
-      width: 30,
+    final location = reason
+        .replaceAll('(', '')
+        .replaceAll(')', '')
+        .replaceAll('level up near an ', '')
+        .replaceAll('level up near a ', '');
+    return Column(
+      children: [
+        Image.asset(
+          'assets/images/map_city.png',
+          width: 30,
+        ),
+        SizedBox(height: 4),
+        MyText.labelSmall(
+          context: context,
+          text: location,
+          isFontBold: true,
+        ),
+      ],
     );
   }
 

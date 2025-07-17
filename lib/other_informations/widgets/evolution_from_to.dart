@@ -43,15 +43,15 @@ class EvolutionLineContent extends StatelessWidget {
                 flex: 1,
                 child: Container(),
               ),
-              Expanded(
-                flex: 4,
-                child: Center(
-                  child: buildReasonEvolution(
-                    context,
-                    pokemon.reason ?? '',
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   flex: 4,
+              //   child: Center(
+              //     child: buildReasonEvolution(
+              //       context,
+              //       pokemon.reason ?? '',
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 1,
                 child: Container(),

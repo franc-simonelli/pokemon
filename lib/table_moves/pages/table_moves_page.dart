@@ -24,7 +24,7 @@ class TableMovesPage extends StatefulWidget {
 }
 
 class _TableMovesPageState extends State<TableMovesPage> {
-  late GameTabCubit _gameTabCubit;
+  // late GameTabCubit _gameTabCubit;
   late TableMovesCubit _tableMovesCubit;
 
   @override
@@ -32,11 +32,11 @@ class _TableMovesPageState extends State<TableMovesPage> {
     super.initState();
 
     final pokemonRepository = context.read<PokemonRepository>();
-    _gameTabCubit = GameTabCubit();
+    // _gameTabCubit = GameTabCubit();
     _tableMovesCubit = TableMovesCubit(
       id: widget.pokemon.id ?? '',
       pokemonRepository: pokemonRepository,
-      gameTabCubit: _gameTabCubit,
+      // gameTabCubit: _gameTabCubit,
     );
   }
 
@@ -58,7 +58,7 @@ class _TableMovesPageState extends State<TableMovesPage> {
               children: [
                 SizedBox(height: appBarHeight + safeAreaHeight),
                 SizedBox(height: 10),
-                _buildGamesTab(),
+                // _buildGamesTab(),
                 SizedBox(height: 10),
                 TableMovesContent(),
               ],
@@ -69,20 +69,20 @@ class _TableMovesPageState extends State<TableMovesPage> {
     );
   }
 
-  Widget _buildGamesTab() {
-    return BlocBuilder<TableMovesCubit, TableMovesState>(
-      builder: (context, state) {
-        final gameTabCubit = context.watch<TableMovesCubit>().gameTabCubit;
-        return GamesTab(
-          games: gameTabCubit.state.games,
-          gameSelected: gameTabCubit.state.gameSelected,
-          onGameSelected: (game) {
-            gameTabCubit.changeGameSelected(game);
-          },
-        );
-      },
-    );
-  }
+  // Widget _buildGamesTab() {
+  //   return BlocBuilder<TableMovesCubit, TableMovesState>(
+  //     builder: (context, state) {
+  //       final gameTabCubit = context.watch<TableMovesCubit>().gameTabCubit;
+  //       return GamesTab(
+  //         games: gameTabCubit.state.games,
+  //         gameSelected: gameTabCubit.state.gameSelected,
+  //         onGameSelected: (game) {
+  //           gameTabCubit.changeGameSelected(game);
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   AppBar _buildAppBar(String title) {
     return AppBar(

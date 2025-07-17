@@ -39,7 +39,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   late CountriesCubit countriesCubit;
   ApplicationBloc? applicationBloc;
   late MovesetCubit movesetCubit;
-  late GameTabCubit gamesTabCubit;
+  // late GameTabCubit gamesTabCubit;
   late FavoritesCubit favoritesCubit;
   late ApplicationRepository applicationRepository;
   late PokemonRepository pokemonRepository;
@@ -58,7 +58,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     filtersRepository = FiltersRepository();
     movesetRepository = MovesetRepository();
     countriesRepository = CountriesRepository();
-    gamesTabCubit = GameTabCubit();
+    // gamesTabCubit = GameTabCubit();
     allDataPokemonsCubit = AllDataPokemonsCubit(
       pokemonRepository: pokemonRepository,
     );
@@ -68,7 +68,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     movesetCubit = MovesetCubit(
       movesetRepository: movesetRepository,
       pokemonRepository: pokemonRepository,
-      gameTabCubit: GameTabCubit(),
+      // gameTabCubit: GameTabCubit(),
     );
     favoritesCubit = FavoritesCubit(
       pokemonRepository: pokemonRepository,
@@ -148,7 +148,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
           },
         ),
         BlocProvider<FavoritesCubit>.value(value: favoritesCubit),
-        BlocProvider<GameTabCubit>.value(value: gamesTabCubit),
+        // BlocProvider<GameTabCubit>.value(value: gamesTabCubit),
       ],
       child: child,
     );

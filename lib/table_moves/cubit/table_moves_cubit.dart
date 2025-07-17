@@ -18,7 +18,7 @@ class TableMovesCubit extends Cubit<TableMovesState> {
   TableMovesCubit({
     required this.id,
     required this.pokemonRepository,
-    required this.gameTabCubit,
+    // required this.gameTabCubit,
   }) : super(TableMovesState(
           moves: [],
           movesStatus: Status.initial,
@@ -27,19 +27,19 @@ class TableMovesCubit extends Cubit<TableMovesState> {
           moveEgg: [],
         )) {
     initialize();
-    _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
+    // _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
   }
 
-  late final StreamSubscription<GameTabState> _gameTabSubscription;
+  // late final StreamSubscription<GameTabState> _gameTabSubscription;
   final String id;
   final PokemonRepository pokemonRepository;
-  final GameTabCubit gameTabCubit;
+  // final GameTabCubit gameTabCubit;
 
-  Future<void> _onGameTabChanged(GameTabState state) async {
-    if (state.gameSelected.isNotEmpty) {
-      changeGameSelected(state.gameSelected);
-    }
-  }
+  // Future<void> _onGameTabChanged(GameTabState state) async {
+  //   if (state.gameSelected.isNotEmpty) {
+  //     changeGameSelected(state.gameSelected);
+  //   }
+  // }
 
   changeGameSelected(String game) {
     final filterMoves = filterMovesByGame(state.moves, game);
@@ -74,7 +74,7 @@ class TableMovesCubit extends Cubit<TableMovesState> {
       final pokemon = await pokemonRepository.fetchPokemonById(id);
       final currentMoves = pokemon.moveset?.moves?.toList() ?? [];
 
-      await gameTabCubit.fetchGames(currentMoves);
+      // await gameTabCubit.fetchGames(currentMoves);
 
       emit(state.copyWith(
         pokemon: pokemon,

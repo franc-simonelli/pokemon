@@ -22,7 +22,7 @@ part 'moveset_cubit.freezed.dart';
 class MovesetCubit extends Cubit<MovesetState> {
   MovesetCubit({
     // required this.pokemon,
-    required this.gameTabCubit,
+    // required this.gameTabCubit,
     required this.movesetRepository,
     required this.pokemonRepository,
   }) : super(MovesetState(
@@ -37,14 +37,14 @@ class MovesetCubit extends Cubit<MovesetState> {
           showDownloadIcon: false,
         )) {
     // initialize();
-    _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
+    // _gameTabSubscription = gameTabCubit.stream.listen(_onGameTabChanged);
   }
 
   // final PokemonModel pokemon;
-  late final StreamSubscription<GameTabState> _gameTabSubscription;
+  // late final StreamSubscription<GameTabState> _gameTabSubscription;
   final MovesetRepository movesetRepository;
   final PokemonRepository pokemonRepository;
-  final GameTabCubit gameTabCubit;
+  // final GameTabCubit gameTabCubit;
 
   final StreamController<double> _progressController =
       StreamController<double>.broadcast();
@@ -53,11 +53,11 @@ class MovesetCubit extends Cubit<MovesetState> {
 
   bool _isCancelled = false;
 
-  Future<void> _onGameTabChanged(GameTabState state) async {
-    if (state.gameSelected.isNotEmpty) {
-      changeGameSelected(state.gameSelected);
-    }
-  }
+  // Future<void> _onGameTabChanged(GameTabState state) async {
+  //   if (state.gameSelected.isNotEmpty) {
+  //     changeGameSelected(state.gameSelected);
+  //   }
+  // }
 
   initialize({required PokemonModel pokemon}) async {
     try {
@@ -81,7 +81,7 @@ class MovesetCubit extends Cubit<MovesetState> {
           moveset: pokemonUpdate?.moveset,
           isAllMovesDowloaded: checkAllDownload,
         ));
-        await gameTabCubit.fetchGames(pokemonUpdate?.moveset?.moves ?? []);
+        // await gameTabCubit.fetchGames(pokemonUpdate?.moveset?.moves ?? []);
 
         // final filterMoves =
         //     filterMovesByGame(pokemonUpdate?.moveset?.moves ?? [], games[0]);
@@ -110,17 +110,17 @@ class MovesetCubit extends Cubit<MovesetState> {
     }
   }
 
-  changeGameSelected(String game) {
-    final filterMoves = filterMovesByGame(state.moveset?.moves ?? [], game);
+  // changeGameSelected(String game) {
+  //   final filterMoves = filterMovesByGame(state.moveset?.moves ?? [], game);
 
-    emit(
-      state.copyWith(
-        moveLevelUp: filterMoves['levelUp'],
-        moveMachine: filterMoves['machine'],
-        moveEgg: filterMoves['egg'],
-      ),
-    );
-  }
+  //   emit(
+  //     state.copyWith(
+  //       moveLevelUp: filterMoves['levelUp'],
+  //       moveMachine: filterMoves['machine'],
+  //       moveEgg: filterMoves['egg'],
+  //     ),
+  //   );
+  // }
 
   checkAllMovesAreDownload(List<MoveModel> moves) async {
     // final moves = state.moveset?.moves?.toList() ?? [];
@@ -219,20 +219,20 @@ class MovesetCubit extends Cubit<MovesetState> {
         pokemon: state.pokemon!,
         pokemonRepository: pokemonRepository,
       );
-      final filterMoves =
-          await filterMovesByGame(movesUpdate, gameTabCubit.state.gameSelected);
-      final result = await checkAllMovesAreDownload(movesUpdate);
-      emit(
-        state.copyWith(
-          isAllMovesDowloaded: result,
-          moveset: state.moveset?.copyWith(
-            moves: movesUpdate,
-          ),
-          moveLevelUp: filterMoves['levelUp'],
-          moveMachine: filterMoves['machine'],
-          moveEgg: filterMoves['egg'],
-        ),
-      );
+      // final filterMoves =
+      //     await filterMovesByGame(movesUpdate, gameTabCubit.state.gameSelected);
+      // final result = await checkAllMovesAreDownload(movesUpdate);
+      // emit(
+      //   state.copyWith(
+      //     isAllMovesDowloaded: result,
+      //     moveset: state.moveset?.copyWith(
+      //       moves: movesUpdate,
+      //     ),
+      //     moveLevelUp: filterMoves['levelUp'],
+      //     moveMachine: filterMoves['machine'],
+      //     moveEgg: filterMoves['egg'],
+      //   ),
+      // );
     }
   }
 
